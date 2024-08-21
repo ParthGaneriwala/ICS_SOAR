@@ -1,0 +1,35 @@
+##!
+# @file
+#
+# @created candice 20240821
+
+echo "\nLoading top-level.soar"
+# sp{ (state }
+
+
+
+# Initialize agent
+sp {propose*initialize
+    (state <s> ^superstate nil
+               ^io.input-link.systemdata <sd>
+              -^name)
+ 
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name initialize)
+    (write (crlf) |Agent initializing...|)
+
+ }
+ # takeoff agent
+sp {propose*latency-check
+    (state <s> ^name cybersickness-monitor
+               ^latency-upper-threshold  <lut>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-latency <sl> > <lut>)
+
+-->
+    (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
+    (<s> ^operator <o> + >,=)
+    (<o> ^name latency-check)
+
+}

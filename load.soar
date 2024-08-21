@@ -1,0 +1,13 @@
+##!
+# @file
+#
+# @created candice 20240821
+
+echo "\nLoading load.soar"
+
+source "settings.soar"
+
+source "top-level.soar"
+
+source "operators/load.soar"
+
