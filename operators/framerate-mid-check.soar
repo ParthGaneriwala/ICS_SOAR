@@ -1,0 +1,18 @@
+##!
+# @file
+#
+# @created rjones 20210118
+
+echo "\nLoading framerate-mid-check.soar"
+
+sp {apply*framerate-mid-check
+    (state <s> ^operator.name framerate-mid-check
+               ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+
+    (write (crlf) |Affected...|)
+    (<out> ^cybersickness-level <cl> -)
+    (<out> ^cybersickness-level  (+ <cl> affected))
+ }

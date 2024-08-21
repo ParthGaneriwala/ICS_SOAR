@@ -1,0 +1,19 @@
+ ##!
+# @file
+#
+# @created candice 20240821
+
+echo "\nLoading framerate-check.soar"
+
+ sp {apply*framerate-check
+    (state <s> ^operator.name framerate-check
+               ^io.input-link.systemdata.sys-framerate  <fr>
+               ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+
+    (write (crlf) |Incapacitated...|)
+    (<out> ^cybersickness-level <cl> -)
+    (<out> ^cybersickness-level  (+ <cl> incapacitated))
+}

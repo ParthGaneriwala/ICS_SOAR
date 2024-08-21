@@ -1,0 +1,19 @@
+##!
+# @file
+#
+# @created candice 20240821
+
+echo "\nLoading latency-check.soar"
+
+sp {apply*latency-check
+    (state <s> ^operator.name latency-check
+               ^io.input-link.systemdata.sys-latency <sl>
+               ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+
+    (write (crlf) |Incapacitated...|)
+    (<out> ^cybersickness-level <cl> -)
+    (<out> ^cybersickness-level  (+ <cl> incapacitated))
+}

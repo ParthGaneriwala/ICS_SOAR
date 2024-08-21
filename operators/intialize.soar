@@ -1,0 +1,20 @@
+##!
+# @file
+#
+# @created candice 20240821
+
+echo "\nLoading initialize.soar"
+
+sp {apply*initialize
+    (state <s> ^operator.name initialize
+               ^io.output-link <out>)
+-->
+    (<s> ^name cybersickness-monitor)
+    (<s> ^latency-mid-threshold 20)
+    (<s> ^latency-upper-threshold 40)
+    (<s> ^framerate-mid-threshold 60)
+    (<s> ^framerate-problem-threshold 40)
+    (<s> ^optic-flow-threshold 1)
+     
+    (write (crlf) |Agent initialized.|)
+}

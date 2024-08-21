@@ -4,9 +4,6 @@
 # @created candice 20240821
 
 echo "\nLoading top-level.soar"
-# sp{ (state }
-
-
 
 # Initialize agent
 sp {propose*initialize
@@ -20,7 +17,9 @@ sp {propose*initialize
     (write (crlf) |Agent initializing...|)
 
  }
- # takeoff agent
+ 
+# R0: If Sys_latency > latency_upper_threshold then cybersickness_level equal to incapacitated
+# latency-check agent
 sp {propose*latency-check
     (state <s> ^name cybersickness-monitor
                ^latency-upper-threshold  <lut>
@@ -31,5 +30,112 @@ sp {propose*latency-check
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
     (<s> ^operator <o> + >,=)
     (<o> ^name latency-check)
+
+}
+
+# R1: If Sys_framerate < framerate_problem_threshold then cybersickness_level equal to incapacitated
+
+sp {propose*framerate-check
+    (state <s> ^name cybersickness-monitor
+               ^framerate-problem-threshold  <fpt>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-framerate <fr> < <fpt>)
+
+-->
+    (write (crlf) |Checking for cybersickness for System Frame Rate value: | <fr>)
+    (<s> ^operator <o> + >,=)
+    (<o> ^name framerate-check)
+
+}
+
+# R3: If btoi(Sys_latency > latency_mid_threshold) + btoi(Sys_framerate_ < framerate_mid_threshold) + btoi(Sys_optic_flow > optic_flow_threshold) >= 2 
+# then cybersickness_level equal to incapacitated 
+# if any 2 of the listed inputs are beyond threshold, you’re incapacitated
+
+sp {propose*latency-framerate-check
+    (state <s> ^name cybersickness-monitor
+               ^latency_mid_threshold <lmt>
+               ^framerate-mid-threshold <fmt>
+               ^opticflow-threshold <ot>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-latency <sl> > <lmt>)
+    (<sd> ^sys-framerate <sf> < <fmt>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name latency-framerate-check)
+
+}
+
+
+sp {propose*latency-opticflow-check
+    (state <s> ^name cybersickness-monitor
+               ^latency_mid_threshold <lmt>
+               ^framerate-mid-threshold <fmt>
+               ^opticflow-threshold <ot>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-latency <sl> > <lmt>)
+    (<sd> ^sys-opticflow <of> > <ot>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name latency-opticflow-check)
+
+}
+
+
+sp {propose*framerate-opticflow-check
+    (state <s> ^name cybersickness-monitor
+               ^latency_mid_threshold <lmt>
+               ^framerate-mid-threshold <fmt>
+               ^opticflow-threshold <ot>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-framerate <sf> < <fmt>)
+    (<sd> ^sys-opticflow <of> > <ot>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name latency-framerate-opticflow-check)
+
+}
+
+# R4: If ((Sys_latency > latency_mid_threshold) or (Sys_framerate_ < framerate_mid_threshold) or (Sys_optic_flow > optic_flow_threshold)) 
+# then cybersickness_level not equal to normal
+
+# (Sys_latency > latency_mid_threshold)
+sp {propose*latency-mid-check
+    (state <s> ^name cybersickness-monitor
+               ^latency-mid-threshold <lmt>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-latency <sl> < <lmt>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name latency-mid-check)
+
+}
+
+# (Sys_framerate_ < framerate_mid_threshold)
+sp {propose*framerate-mid-check
+    (state <s> ^name cybersickness-monitor
+               ^framerate-mid-threshold <fmt>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-framerate <sf> < <fmt>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name framerate-mid-check)
+
+}
+
+sp {propose*opticflow-mid-check
+    (state <s> ^name cybersickness-monitor
+               ^opticflow-threshold <ot>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-opticflow <sof> < <ot>)
+
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name opticflow-mid-check)
 
 }
