@@ -7,7 +7,6 @@ echo "\nLoading framerate-check.soar"
 
  sp {apply*framerate-check
     (state <s> ^operator.name framerate-check
-               ^io.input-link.systemdata.sys-framerate  <fr>
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
@@ -15,5 +14,5 @@ echo "\nLoading framerate-check.soar"
 
     (write (crlf) |Incapacitated...|)
     (<out> ^cybersickness-level <cl> -)
-    (<out> ^cybersickness-level  (+ <cl> incapacitated))
+    (<out> ^cybersickness-level <cl> incapacitated +)
 }

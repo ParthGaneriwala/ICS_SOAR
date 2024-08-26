@@ -15,5 +15,7 @@ sp {apply*initialize
     (<s> ^framerate-mid-threshold 60)
     (<s> ^framerate-problem-threshold 40)
     (<s> ^optic-flow-threshold 1)
+    (<out> ^cybersickness-level <cl> -)
+    (<out> ^cybersickness-level <cl> none +)
     (write (crlf) |Agent initialized.|)
 }
