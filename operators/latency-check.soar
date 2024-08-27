@@ -14,6 +14,5 @@ sp {apply*latency-check
 -->
 
     (write (crlf) |Incapacitated...|)
-    (<out> ^cybersickness-level <cl> -)
-    (<out> ^cybersickness-level  (+ <cl> incapacitated))
+    (<out> ^cybersickness-level <cl> - incapacitated +)
 }

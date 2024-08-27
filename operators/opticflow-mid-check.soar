@@ -6,6 +6,5 @@
 -->
 
     (write (crlf) |Affected...|)
-    (<out> ^cybersickness-level <cl> -)
-    (<out> ^cybersickness-level  (+ <cl> affected))
+    (<out> ^cybersickness-level <cl> - affected +)
 }
