@@ -10,6 +10,7 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     (<s> ^name cybersickness-monitor)
+    (<s> ^check latency)
     (<s> ^latency-mid-threshold 20)
     (<s> ^latency-upper-threshold 40)
     (<s> ^framerate-mid-threshold 60)

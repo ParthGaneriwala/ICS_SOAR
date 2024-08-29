@@ -1,5 +1,6 @@
  sp {apply*opticflow-mid-check
     (state <s> ^operator.name opticflow-mid-check
+               ^check latency
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 

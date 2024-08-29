@@ -7,7 +7,7 @@ echo "\nLoading latency-check.soar"
 
 sp {apply*latency-check
     (state <s> ^operator.name latency-check
-               ^io.input-link.systemdata.sys-latency <sl>
+                ^check framerate
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 

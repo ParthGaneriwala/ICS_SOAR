@@ -7,6 +7,7 @@ echo "\nLoading framerate-check.soar"
 
  sp {apply*framerate-check
     (state <s> ^operator.name framerate-check
+               ^check opticflow-mid
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
