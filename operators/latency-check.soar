@@ -7,12 +7,12 @@ echo "\nLoading latency-check.soar"
 
 sp {apply*latency-check
     (state <s> ^operator.name latency-check
-                ^check framerate
+               ^check latency <c>
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
 -->
-
-    (write (crlf) |Incapacitated...|)
-    (<out> ^cybersickness-level <cl> - incapacitated +)
+    (<s> ^check <c> framerate)
+    (write (crlf) |Latency Incapacitated...|<c>)
+    (<out> ^cybersickness-level <cl> - incapacitatedd +)
 }
