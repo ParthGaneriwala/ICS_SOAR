@@ -102,7 +102,7 @@ sp {propose*framerate-opticflow-check
 
 -->
     (<s> ^operator <o> + >,=)
-    (<o> ^name latency-framerate-opticflow-check)
+    (<o> ^name framerate-opticflow-check)
 
 }
 
