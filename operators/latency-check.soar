@@ -12,7 +12,7 @@ sp {apply*latency-check
     (<out> ^cybersickness-level <cl>)
 
 -->
-    (<s> ^check <c> framerate)
+    (<s> ^check latency - framerate +)
     (write (crlf) |Latency Incapacitated...|<c>)
-    (<out> ^cybersickness-level <cl> - incapacitatedd +)
+    (<out> ^cybersickness-level <cl> - incapacitated +)
 }

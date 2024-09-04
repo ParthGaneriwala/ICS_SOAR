@@ -5,12 +5,12 @@
 
  sp {apply*opticflow-mid-check
     (state <s> ^operator.name opticflow-mid-check
-            ^check opticflow-mid
+            ^check opticflow-mid <c>
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
 -->
-    (<s> ^check <c> - latency +)
-    (write (crlf) |Affected...|)
+    (<s> ^check opticflow-mid - latency +)
+    (write (crlf) |Affected...|<c>)
     (<out> ^cybersickness-level <cl> - affected +)
 }

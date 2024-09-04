@@ -12,7 +12,7 @@ echo "\nLoading framerate-check.soar"
     (<out> ^cybersickness-level <cl>)
 
 -->
-    (<s> ^check <c> - opticflow-mid +)
-    (write (crlf) |Incapacitated...|)
+    (<s> ^check framerate - opticflow-mid +)
+    (write (crlf) |Incapacitated...| <c>)
     (<out> ^cybersickness-level <cl> - incapacitated +)
 }
