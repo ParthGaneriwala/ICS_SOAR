@@ -3,15 +3,15 @@
 #
 # @created candice 20240821
 
-echo "\nLoading framerate-opticflow-check.soar"
+# echo "\nLoading framerate-opticflow-check.soar"
 
-sp {apply*framerate-opticflow-check
-    (state <s> ^operator.name framerate-opticflow-check
-               ^io.output-link <out>)
-    (<out> ^cybersickness-level <cl>)
+# sp {apply*framerate-opticflow-check
+#     (state <s> ^operator.name framerate-opticflow-check
+#                ^io.output-link <out>)
+#     (<out> ^cybersickness-level <cl>)
 
--->
+# -->
 
-    (write (crlf) |Incapacitated...|)
-    (<out> ^cybersickness-level <cl> - incapacitated +)
-}
+#     (write (crlf) |Incapacitated...|)
+#     (<out> ^cybersickness-level <cl> - incapacitated +)
+# }
