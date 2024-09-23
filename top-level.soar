@@ -22,7 +22,7 @@ sp {propose*initialize
 # latency-check agent
 sp {propose*latency-check
     (state <s> ^name cybersickness-monitor
-               ^check latency <c>
+            #    ^check latency <c>
                ^latency-upper-threshold  <lut>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-latency <sl> > <lut>)
@@ -30,7 +30,7 @@ sp {propose*latency-check
 
 
 -->
-    (write (crlf) |Checking for cybersickness for System Latency value: | <sl> <c>)
+    (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
     (<s> ^operator <o> + >,=)
     (<o> ^name latency-check)
 
@@ -40,13 +40,13 @@ sp {propose*latency-check
 
 sp {propose*framerate-check
     (state <s> ^name cybersickness-monitor
-               ^check framerate <c> 
+            #    ^check framerate <c> 
                ^framerate-problem-threshold  <fpt>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-framerate <sf> < <fpt>)
 
 -->
-    (write (crlf) |Checking for cybersickness for System FrameRate value: | <sf> <c>)
+    (write (crlf) |Checking for cybersickness for System FrameRate value: | <sf>)
     (<s> ^operator <o> + >,=)
     (<o> ^name framerate-check)
 
@@ -106,12 +106,13 @@ sp {propose*framerate-check
 # (Sys_latency > latency_mid_threshold)
 sp {propose*latency-mid-check
     (state <s> ^name cybersickness-monitor
-               ^check latency-mid
+            #    ^check latency-mid
                ^latency-mid-threshold <lmt>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-latency <sl> < <lmt>)
 
 -->
+    (write (crlf) |Checking for cybersickness for System Latency Mid Check: | <sl>)
     (<s> ^operator <o> + >,=)
     (<o> ^name latency-mid-check)
 
@@ -120,13 +121,13 @@ sp {propose*latency-mid-check
 # (Sys_framerate_ < framerate_mid_threshold)
 sp {propose*framerate-mid-check
     (state <s> ^name cybersickness-monitor
-               ^check framerate-mid
+            #    ^check framerate-mid
                ^framerate-mid-threshold <fmt>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-framerate <sf> < <fmt>)
 
 -->
-    (write (crlf) |Checking for cybersickness for System Mid Framerate: | <sf>)
+    (write (crlf) |Checking for cybersickness for System Framerate Mid: | <sf>)
     (<s> ^operator <o> + >,=)
     (<o> ^name framerate-mid-check)
 
@@ -134,7 +135,7 @@ sp {propose*framerate-mid-check
 
 sp {propose*opticflow-mid-check
     (state <s> ^name cybersickness-monitor
-               ^check opticflow-mid
+            #    ^check opticflow-mid
                ^optic-flow-threshold <ot>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-opticflow <sof> < <ot>)

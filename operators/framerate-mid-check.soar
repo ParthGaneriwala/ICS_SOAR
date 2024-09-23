@@ -13,5 +13,6 @@ sp {apply*framerate-mid-check
 -->
 
     (write (crlf) |Affected... Mid-Check|)
+    # (<out> ^cybersickness-check <cc> - framerate-mid-check +)
     (<out> ^cybersickness-level <cl> - affected +)
  }

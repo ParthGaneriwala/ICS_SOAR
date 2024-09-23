@@ -13,5 +13,6 @@ echo "\nLoading latency-mid-check.soar"
 -->
 
     (write (crlf) |Affected...|)
+    # (<out> ^cybersickness-check <cc> - latency-mid-check +)
     (<out> ^cybersickness-level <cl> - affected +)
 }
