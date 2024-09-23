@@ -17,7 +17,6 @@ sp {propose*initialize
     (write (crlf) |Agent initializing...|)
 
  }
- 
 # R0: If Sys_latency > latency_upper_threshold then cybersickness_level equal to incapacitated
 # latency-check agent
 sp {propose*latency-check
@@ -113,7 +112,7 @@ sp {propose*latency-mid-check
 
 -->
     (write (crlf) |Checking for cybersickness for System Latency Mid Check: | <sl>)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name latency-mid-check)
 
 }
@@ -128,7 +127,7 @@ sp {propose*framerate-mid-check
 
 -->
     (write (crlf) |Checking for cybersickness for System Framerate Mid: | <sf>)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name framerate-mid-check)
 
 }
@@ -142,7 +141,7 @@ sp {propose*opticflow-mid-check
 
 -->
     (write (crlf) |Checking for cybersickness for System Mid OpticFlow Framerate: | <sof>)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name opticflow-mid-check)
 
 }
