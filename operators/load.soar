@@ -5,5 +5,5 @@
 
 echo "\nLoading operators/load.soar"
 
-source "initalize.soar"
+source "initialize.soar"
 

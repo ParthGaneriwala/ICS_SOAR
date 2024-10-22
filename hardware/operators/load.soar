@@ -1,0 +1,22 @@
+##!
+# @file: 
+#
+# @created candice 20240821
+
+echo "\nLoading operators/load.soar"
+
+source "latency-check.soar"
+
+source "framerate-check.soar"
+
+source "latency-framerate-check.soar"
+
+source "latency-opticflow-check.soar"
+
+source "framerate-opticflow-check.soar"
+
+source "latency-mid-check.soar"
+
+source "framerate-mid-check.soar"
+
+source "opticflow-mid-check.soar"
