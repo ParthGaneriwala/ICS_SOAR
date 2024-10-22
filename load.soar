@@ -9,5 +9,5 @@ source "settings.soar"
 
 source "top-level.soar"
 
-source "operators/load.soar"
+source "hardware/operators/load.soar"
 
