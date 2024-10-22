@@ -16,4 +16,5 @@ echo "\nLoading framerate-check.soar"
     (write (crlf) |Incapacitated...|)
     # (<out> ^cybersickness-check <cc> - framerate +)
     (<out> ^cybersickness-level <cl> - incapacitated +)
+
 }
