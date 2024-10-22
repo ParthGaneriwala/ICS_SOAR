@@ -3,9 +3,7 @@
 #
 # @created candice 20240821
 
-echo "\nLoading operators/load.soar"
-
-source "initialize.soar"
+echo "\nLoading hardware/load.soar"
 
 source "latency-check.soar"
 

@@ -9,5 +9,7 @@ source "settings.soar"
 
 source "top-level.soar"
 
-source "hardware/operators/load.soar"
-
+source "operators/load.soar"
+source "hardware/load.soar"
+source "software/load.soar"
+# source "human/load.soar"

@@ -1,0 +1,10 @@
+##!
+# @file
+#
+# @created parth 20241022
+
+echo "\nLoading operators/load.soar"
+
+source "operators/load.soar"
+
+source "software-check.soar"
