@@ -12,12 +12,10 @@ sp {propose*latency-check
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-latency <sl> > <lut>)
 
-
-
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
     (<s> ^operator <o> + >,=)
-    (<o> ^name latency-check)
+    (<o> ^name apply-latency-violated)
 
 }
 
@@ -32,10 +30,25 @@ sp {propose*framerate-check
 
 -->
     (write (crlf) |Checking for cybersickness for System FrameRate value: | <sf>)
-    (<s> ^operator <o> + >,=)
-    (<o> ^name framerate-check)
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-framerate-violated)
 
 }
+
+sp {propose*opticflow-mid-check
+    (state <s> ^name cybersickness-monitor
+            #    ^check opticflow-mid
+               ^optic-flow-threshold <ot>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-opticflow <sof> < <ot>)
+
+-->
+    (write (crlf) |Checking for cybersickness for System Mid OpticFlow Framerate: | <sof>)
+    (<s> ^operator <o> + < )
+    (<o> ^name apply-opticflow-mid-violated)
+
+}
+
 
 # R3: If btoi(Sys_latency > latency_mid_threshold) + btoi(Sys_framerate_ < framerate_mid_threshold) + btoi(Sys_optic_flow > optic_flow_threshold) >= 2 
 # then cybersickness_level equal to incapacitated 
@@ -88,46 +101,46 @@ sp {propose*framerate-check
 # R4: If ((Sys_latency > latency_mid_threshold) or (Sys_framerate_ < framerate_mid_threshold) or (Sys_optic_flow > optic_flow_threshold)) 
 # then cybersickness_level not equal to normal
 
-# (Sys_latency > latency_mid_threshold)
-sp {propose*latency-mid-check
-    (state <s> ^name cybersickness-monitor
-            #    ^check latency-mid
-               ^latency-mid-threshold <lmt>
-               ^io.input-link.systemdata <sd>)
-    (<sd> ^sys-latency <sl> < <lmt>)
+# # (Sys_latency > latency_mid_threshold)
+# sp {propose*latency-mid-check
+#     (state <s> ^name cybersickness-monitor
+#             #    ^check latency-mid
+#                ^latency-mid-threshold <lmt>
+#                ^io.input-link.systemdata <sd>)
+#     (<sd> ^sys-latency <sl> < <lmt>)
 
--->
-    (write (crlf) |Checking for cybersickness for System Latency Mid Check: | <sl>)
-    (<s> ^operator <o> + =)
-    (<o> ^name latency-mid-check)
+# -->
+#     (write (crlf) |Checking for cybersickness for System Latency Mid Check: | <sl>)
+#     (<s> ^operator <o> + =)
+#     (<o> ^name latency-mid-check)
 
-}
+# }
 
-# (Sys_framerate_ < framerate_mid_threshold)
-sp {propose*framerate-mid-check
-    (state <s> ^name cybersickness-monitor
-            #    ^check framerate-mid
-               ^framerate-mid-threshold <fmt>
-               ^io.input-link.systemdata <sd>)
-    (<sd> ^sys-framerate <sf> < <fmt>)
+# # (Sys_framerate_ < framerate_mid_threshold)
+# sp {propose*framerate-mid-check
+#     (state <s> ^name cybersickness-monitor
+#             #    ^check framerate-mid
+#                ^framerate-mid-threshold <fmt>
+#                ^io.input-link.systemdata <sd>)
+#     (<sd> ^sys-framerate <sf> < <fmt>)
 
--->
-    (write (crlf) |Checking for cybersickness for System Framerate Mid: | <sf>)
-    (<s> ^operator <o> + =)
-    (<o> ^name framerate-mid-check)
+# -->
+#     (write (crlf) |Checking for cybersickness for System Framerate Mid: | <sf>)
+#     (<s> ^operator <o> + =)
+#     (<o> ^name framerate-mid-check)
 
-}
+# }
 
-sp {propose*opticflow-mid-check
-    (state <s> ^name cybersickness-monitor
-            #    ^check opticflow-mid
-               ^optic-flow-threshold <ot>
-               ^io.input-link.systemdata <sd>)
-    (<sd> ^sys-opticflow <sof> < <ot>)
+# sp {propose*opticflow-mid-check
+#     (state <s> ^name cybersickness-monitor
+#             #    ^check opticflow-mid
+#                ^optic-flow-threshold <ot>
+#                ^io.input-link.systemdata <sd>)
+#     (<sd> ^sys-opticflow <sof> < <ot>)
 
--->
-    (write (crlf) |Checking for cybersickness for System Mid OpticFlow Framerate: | <sof>)
-    (<s> ^operator <o> + =)
-    (<o> ^name opticflow-mid-check)
+# -->
+#     (write (crlf) |Checking for cybersickness for System Mid OpticFlow Framerate: | <sof>)
+#     (<s> ^operator <o> + =)
+#     (<o> ^name apply-opticflow-mid-violated)
 
-}
+# }

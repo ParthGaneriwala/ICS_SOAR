@@ -5,9 +5,11 @@
 
 echo "\nLoading operators/load.soar"
 
-source "latency-check.soar"
+source "apply-latency-violated.soar"
 
-source "framerate-check.soar"
+source "apply-framerate-violated.soar"
+
+source "apply-opticflow-mid-violated.soar"
 
 source "latency-framerate-check.soar"
 
@@ -18,5 +20,3 @@ source "framerate-opticflow-check.soar"
 source "latency-mid-check.soar"
 
 source "framerate-mid-check.soar"
-
-source "opticflow-mid-check.soar"
