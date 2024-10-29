@@ -5,6 +5,8 @@
 
 echo "\nLoading operators/load.soar"
 
+source "hardware-apply.soar"
+
 source "apply-latency-violated.soar"
 
 source "apply-framerate-violated.soar"
