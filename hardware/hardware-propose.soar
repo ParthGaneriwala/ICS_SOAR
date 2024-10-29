@@ -6,7 +6,7 @@
 # R0: If Sys_latency > latency_upper_threshold then cybersickness_level equal to incapacitated
 # latency-check agent
 sp {propose*latency-check
-    (state <s> ^name cybersickness-monitor
+    (state <s> ^name hw-cybersickness-monitor
             #    ^check latency <c>
                ^latency-upper-threshold  <lut>
                ^io.input-link.systemdata <sd>)
@@ -22,7 +22,7 @@ sp {propose*latency-check
 # R1: If Sys_framerate < framerate_problem_threshold then cybersickness_level equal to incapacitated
 
 sp {propose*framerate-check
-    (state <s> ^name cybersickness-monitor
+    (state <s> ^name hw-cybersickness-monitor
             #    ^check framerate <c> 
                ^framerate-problem-threshold  <fpt>
                ^io.input-link.systemdata <sd>)
@@ -36,7 +36,7 @@ sp {propose*framerate-check
 }
 
 sp {propose*opticflow-mid-check
-    (state <s> ^name cybersickness-monitor
+    (state <s> ^name hw-cybersickness-monitor
             #    ^check opticflow-mid
                ^optic-flow-threshold <ot>
                ^io.input-link.systemdata <sd>)
