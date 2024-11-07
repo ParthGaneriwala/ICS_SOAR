@@ -14,7 +14,7 @@ sp {propose*latency-check
 
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + >)
     (<o> ^name apply-latency-violated)
 
 }
@@ -30,7 +30,7 @@ sp {propose*framerate-check
 
 -->
     (write (crlf) |Checking for cybersickness for System FrameRate value: | <sf>)
-    (<s> ^operator <o> + = )
+    (<s> ^operator <o> + =)
     (<o> ^name apply-framerate-violated)
 
 }
@@ -44,7 +44,7 @@ sp {propose*opticflow-check
 
 -->
     (write (crlf) |Checking for cybersickness for System OpticFlow Framerate: | <sof>)
-    (<s> ^operator <o> + < )
+    (<s> ^operator <o> + <)
     (<o> ^name apply-opticflow-violated)
 
 }
