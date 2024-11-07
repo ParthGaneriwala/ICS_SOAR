@@ -31,16 +31,16 @@ sp {apply*apply-framerate-check
 
 }
 
-sp {apply*apply-opticflow-mid-violated
-    (state <s> ^operator.name apply-opticflow-mid-violated
+sp {apply*apply-opticflow-violated
+    (state <s> ^operator.name apply-opticflow-violated
             # ^check opticflow-mid <c>
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
 -->
-    # (<s> ^check opticflow-mid - latency +)
+    # (<s> ^check opticflow - latency +)
     (write (crlf) |Affected...|)
-    # (<out> ^cybersickness-check <cc> - opticflow-mid +)
+    # (<out> ^cybersickness-check <cc> - opticflow +)
     (<out> ^cybersickness-level <cl> - affected-level-I +)
 }
 
