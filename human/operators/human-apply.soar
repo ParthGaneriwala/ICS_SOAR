@@ -1,0 +1,15 @@
+##!
+# @file
+#
+# @created candice 20241107
+
+# Assigning the users gender
+
+sp {apply*check*hw-cybersickness
+    (state <s> ^operator.name hw-check)
+
+-->
+    (write (crlf) |Switched...|)
+    (<s> ^name hw-cybersickness-monitor)
+
+}

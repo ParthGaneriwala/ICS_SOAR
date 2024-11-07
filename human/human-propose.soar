@@ -8,8 +8,15 @@
 sp {top-state*elaborate*gender-check
     (state <s> ^name demographic-monitor
                ^io.input-link.systemdata.user-gender <ug>)
-    (<s> ^gender <g>)
 -->
-    (<g> ^current-gender <ug>)
-    (write (crlf) |Assigning the user gender: | <g>)
+    (<s> ^gender <g> ^current-gender <ug>)
+    (write (crlf) |Assigning the user gender: | <ug>)
     }
+
+sp {propose*check*hw-cybersickness
+    (state <s> ^gender)
+-->
+    (<s> ^operator <o> + <)
+    (<o> ^name hw-check)
+    (write (crlf) |Agent switching to Hardware Cybersickness...|)
+}

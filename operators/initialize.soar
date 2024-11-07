@@ -9,14 +9,14 @@ sp {apply*initialize
     (state <s> ^operator.name initialize
                ^io.output-link <out>)
 -->
-    (<s> ^name hw-cybersickness-monitor)
+    (<s> ^name demographic-monitor)
     # (<s> ^check latency)
     (<s> ^latency-mid-threshold 20)
     (<s> ^latency-upper-threshold 40)
     (<s> ^framerate-mid-threshold 60)
     (<s> ^framerate-problem-threshold 40)
     (<s> ^optic-flow-threshold 1)
-    (<s> ^gender none)
+    # (<s> ^gender none)
     (<out> ^cybersickness-check none)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)
