@@ -3,19 +3,7 @@
 #
 # @created candice 20241107
 
-# R0: If Sys_latency > latency_upper_threshold then cybersickness_level equal to incapacitated
-# latency-check agent
-# sp {propose*gender-check
-#     (state <s> ^name hw-cybersickness-monitor
-#                ^gender <g>
-#                ^io.input-link.systemdata <sd>)
-# -->
-#     (<sd>  ^user-gender <g> )
-#     (write (crlf) |Assigning the user gender: | <g>)
-#     (<s> ^operator <o> + >,=)
-#     (<o> ^name apply-gender)
-
-# }
+# Assigning the users gender
 
 sp {top-state*elaborate*gender-check
     (state <s> ^name demographic-monitor
