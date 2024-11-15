@@ -7,7 +7,6 @@
 # latency-check agent
 sp {propose*latency-check
     (state <s> ^name hw-cybersickness-monitor
-               ^gender F
                ^latency-upper-threshold  <lut>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-latency <sl> > <lut>)
