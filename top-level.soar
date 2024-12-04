@@ -9,7 +9,7 @@ echo "\nLoading top-level.soar"
 sp {propose*initialize
     (state <s> ^superstate nil
                ^io.input-link.systemdata <sd>
-              -^name)
+               -^name)
  
 -->
     (<s> ^operator <o> + >,=)

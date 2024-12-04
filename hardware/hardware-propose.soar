@@ -24,7 +24,6 @@ sp {propose*latency-check
 
 sp {propose*framerate-check
     (state <s> ^name hw-cybersickness-monitor
-            #    ^check framerate <c> 
                ^framerate-problem-threshold  <fpt>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-framerate <sf> < <fpt>)
@@ -38,7 +37,6 @@ sp {propose*framerate-check
 
 sp {propose*opticflow-check
     (state <s> ^name hw-cybersickness-monitor
-            #    ^check opticflow
                ^optic-flow-threshold <ot>
                ^io.input-link.systemdata <sd>)
     (<sd> ^sys-opticflow <sof> < <ot>)
