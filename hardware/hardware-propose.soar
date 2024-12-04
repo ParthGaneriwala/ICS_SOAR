@@ -8,8 +8,9 @@
 sp {propose*latency-check
     (state <s> ^name hw-cybersickness-monitor
             #    ^check latency <c>
+               ^gender <g> F
                ^latency-upper-threshold  <lut>
-               ^io.input-link.systemdata <sd>)
+               ^io.input-link.systemdata <sd>)         
     (<sd> ^sys-latency <sl> > <lut>)
 
 -->
