@@ -1,0 +1,26 @@
+##!
+# @file
+#
+# @created candice 20241104
+
+echo "\nLoading scrolling-text-check.soar"
+sp {apply*apply-scrolling-text-violated
+    (state <s> ^operator.name apply-scrolling-text-violated
+               ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+    (write (crlf) |Scrolling Text above thershold...|)
+    (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
+}
+
+# echo "\nLoading scrolling-text-check.soar"
+sp {apply*apply-scrolling-text-not-violated
+    (state <s> ^operator.name apply-scrolling-text-not-violated
+                ^sw-violated yes)
+
+-->
+    (write (crlf) |Reset sw-violated...|)
+    (<s> ^sw-violated yes -)
+    (<s>  ^sw-violated no +)
+}
