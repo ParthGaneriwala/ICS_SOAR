@@ -10,6 +10,7 @@ sp {apply*apply-scrolling-text-violated
     (<out> ^cybersickness-level <cl>)
 
 -->
+    (<s> ^sw-violated yes)
     (write (crlf) |Scrolling Text above thershold...|)
     (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
 }
@@ -23,4 +24,12 @@ sp {apply*apply-scrolling-text-not-violated
     (write (crlf) |Reset sw-violated...|)
     (<s> ^sw-violated yes -)
     (<s>  ^sw-violated no +)
+}
+
+sp {apply*check*sw-cybersickness
+    (state <s> ^operator.name switch-monitor)
+-->
+    (write (crlf) |Switched...|)
+    (<s> ^name sw-cybersickness-monitor - )
+    (<s>  ^name hw-cybersickness-monitor +)
 }
