@@ -23,7 +23,7 @@ sp {apply*apply-scrolling-text-not-violated
 -->
     (write (crlf) |Reset sw-violated...|)
     (<s> ^sw-violated yes -)
-    (<s>  ^sw-violated no +)
+    (<s> ^sw-violated no +)
 }
 
 sp {apply*check*sw-cybersickness
@@ -31,5 +31,5 @@ sp {apply*check*sw-cybersickness
 -->
     (write (crlf) |Switched...|)
     (<s> ^name sw-cybersickness-monitor - )
-    (<s>  ^name hw-cybersickness-monitor +)
+    (<s> ^name hw-cybersickness-monitor +)
 }

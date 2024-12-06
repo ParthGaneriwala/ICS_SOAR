@@ -18,6 +18,7 @@ sp {top-state*elaborate*set*threshold*male
     (<s> ^latency-upper-threshold 50)
     (<s> ^framerate-problem-threshold 50)
     (<s> ^optic-flow-threshold 2)
+    (<s> ^scrolling-text-threshold  5)
     (<s> ^threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)
     }
@@ -27,6 +28,7 @@ sp {top-state*elaborate*set*threshold*female
 -->
     (<s> ^latency-upper-threshold 40)
     (<s> ^framerate-problem-threshold 40)
+    (<s> ^scrolling-text-threshold  5)
     (<s> ^optic-flow-threshold 1)
     (<s> ^threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)

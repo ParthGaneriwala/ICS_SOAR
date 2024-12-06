@@ -7,11 +7,9 @@
 # latency-check agent
 sp {propose*latency-check
     (state <s> ^name hw-cybersickness-monitor
-            #    ^check latency <c>
                ^latency-upper-threshold  <lut>
                ^io.input-link.systemdata <sd>)         
     (<sd> ^sys-latency <sl> > <lut>)
-
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
     (<s> ^operator <o> + >)
@@ -44,5 +42,16 @@ sp {propose*opticflow-check
     (write (crlf) |Checking for cybersickness for System OpticFlow Framerate: | <sof>)
     (<s> ^operator <o> + <)
     (<o> ^name apply-opticflow-violated)
+
+}
+
+sp {propose*latency-counter-check
+    (state <s> ^name hw-cybersickness-monitor
+               ^latency-counter <lc>)
+    (<s> ^latency-counter > 5)
+-->
+    (write (crlf) |Checking the number of time latency was violated: | <lc>)
+    (<s> ^operator <o> + >,=)
+    (<o> ^name apply-latency-counter-check)
 
 }

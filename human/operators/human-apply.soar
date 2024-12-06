@@ -10,5 +10,5 @@ sp {apply*check*hw-cybersickness
 -->
     (write (crlf) |Switched...|)
     (<s> ^name demographic-monitor - )
-    (<s>  ^name sw-cybersickness-monitor +)
+    (<s>  ^name hw-cybersickness-monitor +)
 }
