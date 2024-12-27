@@ -9,14 +9,14 @@ source "apply-latency-violated.soar"
 
 source "apply-framerate-violated.soar"
 
-source "apply-opticflow-mid-violated.soar"
+source "apply-opticflow-violated.soar"
 
-source "latency-framerate-check.soar"
+# source "latency-framerate-check.soar"
 
-source "latency-opticflow-check.soar"
+# source "latency-opticflow-check.soar"
 
-source "framerate-opticflow-check.soar"
+# source "framerate-opticflow-check.soar"
 
-source "latency-mid-check.soar"
+# source "latency-mid-check.soar"
 
-source "framerate-mid-check.soar"
+# source "framerate-mid-check.soar"

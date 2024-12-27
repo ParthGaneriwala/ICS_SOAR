@@ -11,5 +11,5 @@ source "top-level.soar"
 
 
 source "hardware/load.soar"
-source "software/load.soar"
+# source "software/load.soar"
 # source "human/load.soar"

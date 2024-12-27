@@ -7,4 +7,4 @@ echo "\nLoading settings.soar"
 
 waitsnc --on
 
-# decide indifferent-selection --first
+decide indifferent-selection --first
