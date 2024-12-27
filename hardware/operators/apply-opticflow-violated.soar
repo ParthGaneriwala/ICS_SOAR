@@ -5,13 +5,10 @@
 
  sp {apply*apply-opticflow-violated
     (state <s> ^operator.name apply-opticflow-violated
-            # ^check opticflow-mid <c>
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
 -->
-    # (<s> ^check opticflow-mid - latency +)
     (write (crlf) |Affected...|)
-    # (<out> ^cybersickness-check <cc> - opticflow-mid +)
     (<out> ^cybersickness-level <cl> - affected-level-I +)
 }

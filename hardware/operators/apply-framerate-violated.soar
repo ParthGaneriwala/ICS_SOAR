@@ -7,14 +7,11 @@ echo "\nLoading framerate-check.soar"
 
  sp {apply*apply-framerate-check
     (state <s> ^operator.name apply-framerate-violated
-                # ^check framerate <c> 
                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
 
 -->
-    # (<s> ^check framerate - opticflow-mid +)
     (write (crlf) |Incapacitated...|)
-    # (<out> ^cybersickness-check <cc> - framerate +)
     (<out> ^cybersickness-level <cl> - affected-level-II +)
 
 }
