@@ -5,13 +5,13 @@
 
 # R0: If Sys_latency > latency_upper_threshold then cybersickness_level equal to incapacitated
 # latency-check agent
-sp {propose*latency-check
+sp {propose*latency-violated
     (state <s> ^name hw-cybersickness-monitor
                ^latency-upper-threshold  <lut>
-               ^io.input-link.systemdata <sd>)         
+               ^io.input-link.systemdata <sd>
+               ^latency-violated no)         
     (<sd> ^sys-latency <sl> > <lut>)
 -->
-    (write (crlf) |Checking for cybersickness for System Latency value: | <sl>)
     (<s> ^operator <o> + >)
     (<o> ^name apply-latency-violated)
 
@@ -45,13 +45,34 @@ sp {propose*opticflow-check
 
 }
 
-sp {propose*latency-counter-check
-    (state <s> ^name hw-cybersickness-monitor
-               ^latency-counter <lc>)
-    (<s> ^latency-counter > 5)
--->
-    (write (crlf) |Checking the number of time latency was violated: | <lc>)
-    (<s> ^operator <o> + >,=)
-    (<o> ^name apply-latency-counter-check)
+# sp {propose*count-latency-violation
+#     (state <s> ^name hw-cybersickness-monitor)
+#     (<s> ^latency-violated yes)
+# -->
+#     (<s> ^operator <o> + >)
+#     (<o> ^name count-latency-violation)
+# }
+# sp {top-state*elaborate*latency-violation-check
+#     (state <s>  ^name hw-cybersickness-monitor
+#                 ^latency-upper-threshold  <lut>
+#                 ^io.input-link.systemdata <sd>
+#                 ^latency-counter <lc>
+#                 ^latency-violated no)
+#     (<sd> ^sys-latency <sl> > <lut>)
+    
+# -->
+#     (<s> ^latency-counter <lc> -
+#          ^latency-counter (+ 1 <lc>))
+#     (write (crlf) |Increment Latency Counter...| <lc>)
+#     }
 
-}
+
+
+# sp {apply*apply-latency-violated
+#     (state <s> ^operator.name apply-latency-violated
+#                 ^io.output-link <out>)
+#     (<out> ^cybersickness-level <cl>)
+# -->    
+#     (write (crlf) |Latency Incapacitated...|)
+#     (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
+# }

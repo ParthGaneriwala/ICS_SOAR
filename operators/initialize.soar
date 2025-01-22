@@ -13,7 +13,8 @@ sp {apply*initialize
     # (<s> ^latency-upper-threshold 40)
     # (<s> ^framerate-problem-threshold 40)
     # (<s> ^optic-flow-threshold 1)
-    (<s> ^latency-counter 0)
+    (<s> ^latency-counter 0
+         ^latency-violated no)
     (<s> ^threshold-set no)
     (<out> ^cybersickness-check none)
     (<out> ^cybersickness-level none)
