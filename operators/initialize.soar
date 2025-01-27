@@ -15,7 +15,8 @@ sp {apply*initialize
     # (<s> ^optic-flow-threshold 1)
     (<s> ^latency-counter 0
          ^latency-violated no)
-    (<s> ^threshold-set no)
+    (<s> ^gender-threshold-set no)
+    (<s> ^age-set no)
     (<out> ^cybersickness-check none)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)

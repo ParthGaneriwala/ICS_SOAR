@@ -12,6 +12,15 @@ sp {top-state*elaborate*gender-check
     (write (crlf) |Assigning the user gender: | <ug>)
     }
 
+sp {top-state*elaborate*age-check
+    (state <s> ^io.input-link.systemdata.user-age <ua>)
+-->
+    (<s> ^age <ua>)
+    (<s> ^age-set yes)
+    (write (crlf) |Assigning the user age: | <ua>)
+    }
+
+
 sp {top-state*elaborate*set*threshold*male
     (state <s> ^gender Male <g>)
 -->
@@ -19,7 +28,7 @@ sp {top-state*elaborate*set*threshold*male
     (<s> ^framerate-problem-threshold 50)
     (<s> ^optic-flow-threshold 2)
     (<s> ^scrolling-text-threshold  5)
-    (<s> ^threshold-set yes)
+    (<s> ^gender-threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)
     }
 
@@ -30,7 +39,7 @@ sp {top-state*elaborate*set*threshold*female
     (<s> ^framerate-problem-threshold 40)
     (<s> ^scrolling-text-threshold  5)
     (<s> ^optic-flow-threshold 1)
-    (<s> ^threshold-set yes)
+    (<s> ^gender-threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)
     }
 
@@ -44,8 +53,9 @@ sp {top-state*elaborate*set*threshold*female
 #     }
 sp {propose*check*hw-cybersickness
     (state <s> ^name demographic-monitor
-               ^gender
-               ^threshold-set yes)
+            #    ^gender
+               ^age-set yes
+               ^gender-threshold-set yes)
 -->
     # (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)
