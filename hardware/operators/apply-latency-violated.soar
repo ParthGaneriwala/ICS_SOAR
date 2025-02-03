@@ -3,15 +3,26 @@
 #
 # @created candice 20240821
 
-echo "\nLoading latency-check.soar"
+echo "\nLoading latency-check-incapacitated.soar"
+sp {apply*apply-latency-violated-incapacitated
+    (state <s> ^operator.name apply-latency-violated-incapacitated
+                ^latency-upper-counter <luc>
+                ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+-->
+    (<s> ^latency-upper-counter <luc> -
+         ^latency-upper-counter (+ 1 <luc>))
+    (write (crlf) |Increment Latency Counter...| <luc>)
+}
 
+echo "\nLoading latency-check.soar"
 sp {apply*apply-latency-violated
     (state <s> ^operator.name apply-latency-violated
-               ^io.output-link <out>)
+                ^latency-counter <lc>
+                ^io.output-link <out>)
     (<out> ^cybersickness-level <cl>)
-
 -->
-    (write (crlf) |Latency Incapacitated...|)
-    (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
-   
+    (<s> ^latency-counter <lc> -
+         ^latency-counter (+ 1 <lc>))
+    (write (crlf) |Increment Latency Counter...| <lc>)
 }
