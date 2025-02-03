@@ -29,7 +29,7 @@
 sp {apply*check*sw-cybersickness
     (state <s> ^operator.name switch-monitor)
 -->
-    (write (crlf) |Switched...|)
+    (write (crlf) |Switched... Software to Hardware|)
     (<s> ^name sw-cybersickness-monitor - )
     (<s> ^name hw-cybersickness-monitor +)
 }

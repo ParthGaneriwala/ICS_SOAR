@@ -13,7 +13,9 @@ sp {apply*initialize
     # (<s> ^latency-upper-threshold 40)
     # (<s> ^framerate-problem-threshold 40)
     # (<s> ^optic-flow-threshold 1)
-    (<s> ^latency-counter 0
+    (<s> ^latency-upper-counter 0
+         ^latency-counter 0
+         ^latency-upper-violated no
          ^latency-violated no)
     (<s> ^gender-threshold-set no)
     (<s> ^age-set no)
