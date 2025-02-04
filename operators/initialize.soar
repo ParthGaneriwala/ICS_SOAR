@@ -11,7 +11,7 @@ sp {apply*initialize
 -->
     (<s> ^name cybersickness-monitor)
     (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-problem-threshold 20)
+    (<s> ^latency-lower-threshold 20)
     (<s> ^framerate-problem-threshold 30)
     (<s> ^optic-flow-threshold 1)
     (<out> ^cybersickness-check none)
