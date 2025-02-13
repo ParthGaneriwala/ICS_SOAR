@@ -16,16 +16,103 @@
 # }
 
 echo "\nLoading latency-check.soar"
-sp {apply*apply-latency-violated
-    (state <s> ^operator.name apply-latency-violated
-                ^latency-counter <lc>
-                ^io.output-link <out>)
+# sp {apply*apply-latency-violated
+#     (state <s> ^operator.name apply-latency-violated
+#                 ^latency-counter <lc>
+#                 ^io.output-link <out>)
+#     (<out> ^cybersickness-level <cl>)
+# -->
+#     (<s> ^latency-counter <lc> -
+#          ^latency-counter (+ 1 <lc>))
+#     (write (crlf) |Increment Latency Counter...| <lc>)
+# }
+
+
+
+
+
+
+
+
+
+sp {top-state*elaborate*latency-counter-check
+    (state <s> ^name hw-cybersickness-monitor
+               ^latency-violated no
+               ^io.output-link <out>
+               ^latency-counter.current <lcc> >= 20
+               ^recovery-counter <rc>)
     (<out> ^cybersickness-level <cl>)
 -->
-    (<s> ^latency-counter <lc> -
-         ^latency-counter (+ 1 <lc>))
-    (write (crlf) |Increment Latency Counter...| <lc>)
-}
+    (<s> ^latency-violated no -)
+    (<s> ^latency-violated yes)
+    (<s> ^latency-counter.current 20)
+    (<s> ^recovery-counter 0
+         ^reduce-latency-flag 0)
+    (<out> ^cybersickness-level <cl> - affected-III +)
+    (write (crlf) |Latency Affected...|)
+    }
+
+# sp {top-state*elaborate*increment-recovery-counter
+#     (state <s> ^name hw-cybersickness-monitor
+#                ^latency-violated yes
+#                ^latency-counter.current <lcc> > 0
+#                ^recovery-counter <rc>)
+    
+# -->
+#     (<s> ^recovery-counter (+ 1 <rc>)) 
+#     (write (crlf) |Increment Recovery Counter...| <rc>)
+# }
+
+# sp {top-state*elaborate*toggle-flag
+#     (state <s> ^name hw-cybersickness-monitor
+#                ^latency-violated yes
+#                ^latency-counter.current <lcc> > 0
+#                ^recovery-counter <rc>
+#                ^reduce-latency-flag <rfl>)
+#     (<s> ^recovery-counter <rc> > 0)
+    
+# -->
+#     (<s> ^reduce-latency-flag 1)
+# }
+
+# sp {top-state*elaborate*latency-reduction
+#     (state <s> ^name hw-cybersickness-monitor
+#                ^latency-violated yes
+#                ^latency-counter.current <lcc> > 0
+#                ^reduce-latency-flag 1)
+
+# -->
+#     (<s> ^latency-counter.current (- 1 <lcc>))
+#     (<s> ^reduce-latency-flag 0)
+#     (write (crlf) |Reducing Latency Counter...| <lcc>)
+# }
+# sp {apply*latency-monitor
+#     (state <s> ^operator.name check-latency
+#                ^latency-counter <lc> <= 20
+#                ^latency-violated no)
+# -->
+#     (<s> ^latency-counter (+ 1 <lc>)
+#          ^operator <o> -)
+#     (write (crlf) |Increment Latency Counter...| <lc>)
+# }
+
+# sp {apply*latency-violation
+#     (state <s> ^operator.name trigger-violation
+#                ^latency-violated no
+#                ^latency-counter <lc> > 20
+#                ^io.output-link <out>)
+    
+#     (<out> ^cybersickness-level <cl>)
+# -->
+#     (<s> ^latency-violated no -)
+#     (<s> ^latency-violated yes)
+#     (<s> ^latency-counter 20
+#          ^operator <o> -) 
+#     (<out> ^cybersickness-level <cl> - affected-III +)
+#     (write (crlf) |Latency Threshold Reached! Counter Stopped.|)
+# }
+
+
 
 
 # echo "\nLoading latency-check-incapacitated.soar"
@@ -81,19 +168,6 @@ sp {apply*apply-opticflow-violated
 #     (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
 #     (write (crlf) |Latency Incapacitated...|)
 #     }
-
-sp {top-state*elaborate*latency-counter-check
-    (state <s> ^name hw-cybersickness-monitor
-               ^latency-violated <lv> no
-               ^io.output-link <out>)
-    (<s> ^latency-counter <lc> > 5)
-    (<out> ^cybersickness-level <cl>)
--->
-    (<s> ^latency-violated <lv> - yes +)
-    (<out> ^cybersickness-level <cl> - affected-III +)
-    (write (crlf) |Latency Affected...|)
-    }
-
 
 # sp {apply*apply-latency-violated
 #     (state <s> ^operator.name apply-latency-violated

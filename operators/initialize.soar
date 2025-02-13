@@ -10,11 +10,12 @@ sp {apply*initialize
 -->
     (<s> ^name demographic-monitor)
     # (<s> ^check latency)
-    # (<s> ^latency-upper-threshold 40)
-    # (<s> ^framerate-problem-threshold 40)
-    # (<s> ^optic-flow-threshold 1)
+    (<s> ^latency-upper-threshold 40)
+    (<s> ^framerate-problem-threshold 40)
+    (<s> ^optic-flow-threshold 1)
     (<s> ^latency-upper-counter 0
-         ^latency-counter 0
+         ^latency-counter.current 0
+         ^latency-counter.prev 0
          ^latency-upper-violated no
          ^latency-violated no)
     (<s> ^gender-threshold-set no)
