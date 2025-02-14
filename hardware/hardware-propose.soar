@@ -98,23 +98,26 @@ sp {propose*opticflow-check
 #     (<out> ^cybersickness-level <cl> - incapacitated-level-III +)
 # }
 
-
 sp {top-state*elaborate*latency-violation-check
     (state <s>  ^name hw-cybersickness-monitor
                 ^latency-upper-threshold  <lut>
                 ^io.input-link.systemdata <sd>
-                ^latency-counter.current <lcc> < 20
-                ^latency-counter.prev <lcp>
+                # ^latency-counter.current <lcc>
+                ^latency-counter <lc>
+                # ^latency-counter.prev <lcp>
                 ^latency-violated no)
     (<sd> ^sys-latency <sl> > <lut>)
     
 -->
-    # (<s> ^latency-counter <lc> -
-    #      ^latency-counter (+ 1 <lc>))
+# ^latency-counter <lcc> -
+         
+    (<s> ^latency-counter (+ 1 <lc>))
     # (<s> ^latency-counter.prev <lcp> -)
     # (<s> ^latency-counter.prev <lcp> <lcc> +)
-    (<s> ^latency-counter.current (+ 1 <lcc>))
-    (write (crlf) |Increment Latency Counter... | <lcc> | Prev Value: | <lcp>)
+    # (<s> ^latency-counter.current <lcc> -)
+    # (<s> ^latency-counter.current (+ 1 <lcc>))
+    (write (crlf) |Increment Latency Counter... | <lc> )
+    # | Prev Value: | <lcp>
     }
 
 # sp {propose*latency-monitor

@@ -39,15 +39,15 @@ sp {top-state*elaborate*latency-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^latency-violated no
                ^io.output-link <out>
-               ^latency-counter.current <lcc> >= 20
-               ^recovery-counter <rc>)
+               ^latency-counter <lc> > 20)
+            #    ^recovery-counter <rc>)
     (<out> ^cybersickness-level <cl>)
 -->
     (<s> ^latency-violated no -)
     (<s> ^latency-violated yes)
-    (<s> ^latency-counter.current 20)
-    (<s> ^recovery-counter 0
-         ^reduce-latency-flag 0)
+    (<s> ^latency-counter 20)
+    # (<s> ^recovery-counter 0
+    #      ^reduce-latency-flag 0)
     (<out> ^cybersickness-level <cl> - affected-III +)
     (write (crlf) |Latency Affected...|)
     }
@@ -55,9 +55,8 @@ sp {top-state*elaborate*latency-counter-check
 # sp {top-state*elaborate*increment-recovery-counter
 #     (state <s> ^name hw-cybersickness-monitor
 #                ^latency-violated yes
-#                ^latency-counter.current <lcc> > 0
-#                ^recovery-counter <rc>)
-    
+#                ^latency-counter <lcc> > 0
+#                ^recovery-counter <rc> < 5)
 # -->
 #     (<s> ^recovery-counter (+ 1 <rc>)) 
 #     (write (crlf) |Increment Recovery Counter...| <rc>)
