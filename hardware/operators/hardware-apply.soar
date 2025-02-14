@@ -28,13 +28,6 @@ echo "\nLoading latency-check.soar"
 # }
 
 
-
-
-
-
-
-
-
 sp {top-state*elaborate*latency-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^latency-violated no
@@ -43,13 +36,13 @@ sp {top-state*elaborate*latency-counter-check
             #    ^recovery-counter <rc>)
     (<out> ^cybersickness-level <cl>)
 -->
-    (<s> ^latency-violated no -)
-    (<s> ^latency-violated yes)
+    (<s> ^latency-violated <lv> -)
+    (<s> ^latency-violated <lv> yes)
     (<s> ^latency-counter 20)
     # (<s> ^recovery-counter 0
     #      ^reduce-latency-flag 0)
     (<out> ^cybersickness-level <cl> - affected-III +)
-    (write (crlf) |Latency Affected...|)
+    (write (crlf) |Latency Affected...| <lv>)
     }
 
 # sp {top-state*elaborate*increment-recovery-counter
