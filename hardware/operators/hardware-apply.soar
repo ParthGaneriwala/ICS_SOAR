@@ -162,7 +162,7 @@ sp {top-state*elaborate*latency-lower-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^latency-lower-violated no
                ^io.output-link <out>)
-    (<s> ^latency-lower-counter <lc> > 20)
+    (<s> ^latency-lower-counter <lc> > 60)
     (<out> ^cybersickness-level <cl>)
 -->
     (<s> ^latency-lower-violated <llv> - yes +)

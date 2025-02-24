@@ -25,7 +25,7 @@ sp {top-state*elaborate*set*threshold*male
     (state <s> ^gender Male <g>)
 -->
     (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-problem-threshold 50)
+    (<s> ^latency-problem-threshold 30)
     (<s> ^framerate-problem-threshold 30)
     (<s> ^optic-flow-threshold 1)
     (<s> ^gender-threshold-set yes)
