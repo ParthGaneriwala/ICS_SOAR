@@ -6,4 +6,4 @@
 echo "\nLoading operators/load.soar"
 
 source "initialize.soar"
-
+source "mission.soar"

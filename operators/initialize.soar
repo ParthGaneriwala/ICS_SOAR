@@ -17,6 +17,7 @@ sp {apply*initialize
          ^latency-lower-violated no)
     (<s> ^gender-threshold-set no)
     (<s> ^age-set no)
+    (<s> ^mission-success none)
     (<out> ^cybersickness-check none)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)
