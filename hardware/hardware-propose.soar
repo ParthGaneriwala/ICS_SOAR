@@ -13,7 +13,7 @@ sp {propose*latency-violated-incapacitated
     (<sd> ^sys-latency <sl> > <lut>)
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl> | Latency Threshold | <lut>)
-    (<s> ^operator <o> + >)
+    (<s> ^operator <o> + = 1.0)
     (<o> ^name apply-latency-violated-incapacitated)
 
     }
@@ -43,7 +43,7 @@ sp {propose*latency-violated
     (<sd> ^sys-latency <sl> > <lpt>)
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl> | Latency Threshold | <lpt>)
-    (<s> ^operator <o> + >)
+    (<s> ^operator <o> +  = 4.0)
     (<o> ^name apply-latency-violated
                ^original-latency-lower-counter <n>)
     }
@@ -52,8 +52,7 @@ sp {propose*latency-lower-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^latency-problem-threshold <lpt>
                ^io.input-link.systemdata <sd>
-               ^latency-lower-counter <n>
-               ^latency-lower-violated no)        
+               ^latency-lower-counter <n>)        
     (<s> ^latency-lower-counter <n> > 60)
 -->
     (write (crlf) |Counter Value Reached|)
