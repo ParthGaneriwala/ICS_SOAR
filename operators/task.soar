@@ -1,0 +1,21 @@
+##!
+# @file
+#
+# @created candice 20250228
+
+echo "\nLoading apply-task-complete.soar"
+sp {apply*apply-task-complete
+    (state <s> ^operator.name apply-task-complete)
+-->
+    (<s> ^task-success <ts> none - success +)
+    (write (crlf) |Task Successful...| )
+}
+
+
+echo "\nLoading apply-task-not-complete.soar"
+sp {apply*apply-task-not-complete
+    (state <s> ^operator.name apply-task-not-complete)
+-->
+    (<s> ^task-success <ts> none - failed +)
+    (write (crlf) |Task Failed...| )
+}
