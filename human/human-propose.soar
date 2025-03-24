@@ -4,7 +4,6 @@
 # @created candice 20241107
 
 # Assigning the users gender
-
 sp {top-state*elaborate*gender-check
     (state <s> ^io.input-link.systemdata.user-gender <ug>)
 -->
@@ -12,6 +11,7 @@ sp {top-state*elaborate*gender-check
     (write (crlf) |Assigning the user gender: | <ug>)
     }
 
+# Assigning the users age
 sp {top-state*elaborate*age-check
     (state <s> ^io.input-link.systemdata.user-age <ua>)
 -->
@@ -20,12 +20,21 @@ sp {top-state*elaborate*age-check
     (write (crlf) |Assigning the user age: | <ua>)
     }
 
+# Assigning the users ssq
+sp {top-state*elaborate*SSQ-check
+     (state <s> ^io.input-link.systemdata.user-ssq <ssq>)
+-->
+     (<s> ^ssq <ssq>)
+     (<s> ^ssq-set yes)
+     (write (crlf) |Assigning the user SSQ: | <ssq>)
+   }
 
+# Assigning the thresholds based on the user's gender
 sp {top-state*elaborate*set*threshold*male
     (state <s> ^gender Male <g>)
 -->
     (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-problem-threshold 30)
+    (<s> ^latency-lower-threshold 30)
     (<s> ^framerate-problem-threshold 30)
     (<s> ^optic-flow-threshold 1)
     (<s> ^gender-threshold-set yes)
@@ -36,25 +45,18 @@ sp {top-state*elaborate*set*threshold*female
     (state <s> ^gender Female <g>)
 -->
     (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-problem-threshold 50)
+    (<s> ^latency-lower-threshold 50)
     (<s> ^framerate-problem-threshold 30)
     (<s> ^optic-flow-threshold 1)
     (<s> ^gender-threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)
     }
 
-# sp {top-state*elaborate*check*hw-cybersickness
-#     (state <s> ^name demographic-monitor
-#                ^gender
-#                ^threshold-set yes)
-# -->
-#     (write (crlf) |Switched...|)
-#     (<s> ^name - hw-cybersickness-monitor +)
-#     }
+# Switching to the software monitor
 sp {propose*check*hw-cybersickness
     (state <s> ^name demographic-monitor
-            #    ^gender
                ^age-set yes
+               ^ssq-set yes
                ^gender-threshold-set yes)
 -->
     # (write (crlf) |Switched...|)

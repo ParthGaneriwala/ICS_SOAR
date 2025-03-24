@@ -9,15 +9,22 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     (<s> ^name demographic-monitor)
-    # (<s> ^check latency)
     (<s> ^latency-upper-counter 0
          ^latency-lower-counter 0
-        #  ^latency-counter.prev 0
          ^latency-upper-violated no
          ^latency-lower-violated no)
+    (<s> ^ framerate-counter 0
+         ^framerate-violated no)
+    (<s> ^ opticflow-counter 0
+         ^ opticflow-violated no)
     (<s> ^gender-threshold-set no)
     (<s> ^age-set no)
+    (<s> ^ssq-set no)
     (<s> ^mission-success none)
+    (<s> ^total-violations 0)
+    (<s> ^x2 0)
+    (<s> ^x3 0)
+    (<s> ^x4 0)
     (<out> ^cybersickness-check none)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)

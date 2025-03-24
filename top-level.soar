@@ -15,28 +15,55 @@ sp {propose*initialize
     (<s> ^operator <o> + >,=)
     (<o> ^name initialize)
     (write (crlf) |Agent initializing...|)
-
  }
 
-echo "\nLoading task-not-complete"
-sp{propose*task-not-complete
-  (state <s> )
-
-  (<s> -^io.output-link.cybersickness_level none )
--->
-    (write (crlf) |Agent cannot complete task...|)
-    (<s> ^operator <o> + = 4.0)
-    (<o> ^name apply-task-not-complete)
+echo "\nLoading calculating x1"
+sp{propose*total-violations-check
+   (state <s> ^total-violations
+              ^cybersickness_level None)
+--> 
+   (<s> ^operator <o> + >,=)
+   (<o> ^name apply-total-violations-check)
 }
 
-echo "\nLoading task-complete"
-sp{propose*task-complete
-  (state <s>  ^io.output-link.cybersickness-level)
-
-  (<s> -^io.output-link.cybersickness_level none )
+echo "\nCalculating x2 low"
+sp{propose*x2-low
+  (state <s> ^latency-lower-counter <llc>
+             ^latency-upper-counter <luc>)
+  (<s> latency-lower-counter <llc> < 6)
 -->
-    (write (crlf) |Agent can complete task...|)
-    (<s> ^operator <o> + = 3.0)
-    (<o> ^name apply-task-complete)
-    
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x2-low)
 }
+
+echo "\nCalculating x2 medium"
+sp{propose*x2-medium
+  (state <s> ^latency-lower-counter <llc>
+             ^latency-upper-counter <luc>)
+  (<s> latency-lower-counter <llc> > 4)
+  (<s> latency-lower-counter <llc> < 11)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x2-medium)
+}
+
+echo "\nCalculating x2 high"
+sp{propose*x2-high
+  (state <s> ^latency-lower-counter <llc>
+             ^latency-upper-counter <luc>)
+  (<s> latency-lower-counter <llc> > 9)
+  (<s> latency-lower-counter <llc> < 21)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x2-high)
+}
+
+# Linear equation for calculating the cybersickness level
+# c1x1 + c2x2 + c3x3 + c4x4 >= [ssq1, ssq2,ssq3]
+# c1, c2, c3 weights
+# ssq1 -> low; ssq2 -> medium; ssq3 -> high
+# x1 = total number of violations
+# x2 = total number of latency violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+# x3 = total number of framerate violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+# x4 = total number of opticflow violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+
