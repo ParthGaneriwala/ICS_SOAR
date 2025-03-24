@@ -40,6 +40,6 @@ sp {apply*initialize
          ^l2mprob 0.9                   # low → med transition prob (0.75*gender-factor (1.2))
          ^stay-low-prob 0.1             # complement
          ^log-l2mprob -0.105            # log(0.9)
-         ^log-stay-low -2.302           # log(0.1)
+         ^log-stay-low -2.302)           # log(0.1)
     (write (crlf) |Agent initialized with PRISM model variables.|)
 }

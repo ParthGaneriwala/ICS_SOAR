@@ -1,0 +1,2 @@
+source "ssq-transitions.soar"
+source "operators/load.soar"
