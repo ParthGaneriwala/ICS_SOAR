@@ -1,0 +1,11 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+# === Apply chosen operator ===
+sp {apply*ssq-stay-low
+    (state <s> ^operator.name ssq-stay-low)
+-->
+    (write |Stayed in SSQ = low.| (crlf))
+}

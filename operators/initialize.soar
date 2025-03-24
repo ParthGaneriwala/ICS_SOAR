@@ -8,35 +8,42 @@ sp {apply*initialize
     (state <s> ^operator.name initialize
                ^io.output-link <out>)
 -->
-    (<s> ^name demographic-monitor)
-
     # -- User state
     (<s> ^ssq low                 # PRISM SSQ starts at 0 (low)
          ^gender female           # 0 = male, 1 = female
-         ^gender-threshold-set no
-         ^age-set no
-         ^mission-success none)
-
+         ^mission-success none
     # -- Headset state
-    (<s> ^headset.h 0            # initial headset sickness influence index
+         ^headset.h 0            # initial headset sickness influence index
          ^headset.optic-flow low
-         ^headset.latency low)
+         ^headset.latency low
+    # -- PRISM-derived transition probabilities 
+    
+    # We map these to preference values using softmax-friendly logit scores:
 
-    # -- PRISM-derived transition probabilities (optional — for rule checks or sim logic)
-    (<s> ^low-to-med-prob 0.75
-         ^low-to-high-prob 0.25
-         ^med-to-high-prob 0.50
-         ^gender-factor 1.2)
+    # logit(p) = log ⁡ ( p / 1 − p ) 
 
+    # Or, more generally:
+    # utility_i = log ⁡ ( p_i )  (up to a constant shift) 
+
+    # So for 0.75 and 0.25:
+    # log(0.75) ≈ -0.2877 
+    # log(0.25) ≈ -1.386 
+
+    # We also precomupte the probablities given below as l2mprob and log of those variables. 
+
+         ^low-to-med-prob -0.2877
+         ^low-to-high-prob -1.386
+         ^med-to-high-prob -0.301
+         ^gender-factor 1.2
+
+         ^l2mprob 0.9                   # low → med transition prob
+         ^stay-low-prob 0.1             # complement
+         ^log-l2mprob -0.105            # log(0.9)
+         ^log-stay-low -2.302           # log(0.1)
     # -- Latency monitoring
-    (<s> ^latency-upper-counter 0
+         ^latency-upper-counter 0
          ^latency-lower-counter 0
          ^latency-upper-violated no
          ^latency-lower-violated no)
-
-    # -- Output link variables (for interfacing with environment or UI)
-    (<out> ^cybersickness-check none
-           ^cybersickness-level none)
-
     (write (crlf) |Agent initialized with PRISM model variables.|)
 }

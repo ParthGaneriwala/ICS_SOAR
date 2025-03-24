@@ -2,3 +2,47 @@
 # @file
 #
 # @created parth 20250324
+
+# ----------------------------------------------------------
+# Transition: SSQ = low & sortasickening headset
+# Two outcomes: 
+#   - Transition to medium (prob = 0.9)
+#   - Stay at low (prob = 0.1)
+# Use log-probs as numeric preferences for softmax behavior
+# ----------------------------------------------------------
+# When the headset is in the sortasickening range (h ∈ [1..5]), Soar will:
+
+# Propose two operators: ssq-low-to-med and ssq-stay-low
+
+# Each with a numeric preference based on the precomputed log-probability
+
+# Soar will resolve the decision stochastically, preferring the higher log-prob, but allowing the lower one occasionally (like PRISM)
+
+# === Propose transition to medium ===
+sp {propose*ssq-low-to-med
+    (state <s>
+        ^ssq low
+        ^gender female
+        ^headset.h <h>
+        ^log-l2mprob <logmed>)
+    (<h> >= 1)
+    (<h> <= 5)
+-->
+    (<s> ^operator <o> + = <logmed>) # ~ log(0.9)
+    (<o> ^name ssq-low-to-med)    
+}
+
+# === Propose to stay in low ===
+sp {propose*ssq-stay-low
+    (state <s>
+        ^ssq low
+        ^gender female
+        ^headset.h <h>
+        ^log-stay-low <logstay>)
+    (<h> >= 1)
+    (<h> <= 5)
+-->
+    (<s> ^operator <o> + = <logstay>) # ~ log(0.1)
+    (<o> ^name ssq-stay-low)    
+}
+

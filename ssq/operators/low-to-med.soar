@@ -1,0 +1,14 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+# === Apply chosen operator ===
+sp {apply*ssq-low-to-med
+    (state <s> ^operator.name ssq-low-to-med)
+-->
+    (<s> ^ssq medium
+         ^last-transition ssq-low-to-med)
+    (write |Transitioned SSQ from low to medium.| (crlf))
+}
+
