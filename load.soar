@@ -1,7 +1,8 @@
 ##!
 # @file
 #
-# @created candice 20240821
+# @created parth 20250324
+
 
 echo "\nLoading load.soar"
 
@@ -9,7 +10,3 @@ source "settings.soar"
 source "operators/load.soar"
 source "top-level.soar"
 
-
-source "hardware/load.soar"
-source "human/load.soar"
-source "software/load.soar"

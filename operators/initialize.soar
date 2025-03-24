@@ -1,7 +1,7 @@
 ##!
 # @file
 #
-# @created candice 20240821
+# @created parth 20250324
 
 echo "\nLoading initialize.soar"
 sp {apply*initialize
@@ -9,16 +9,34 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     (<s> ^name demographic-monitor)
-    # (<s> ^check latency)
+
+    # -- User state
+    (<s> ^ssq low                 ; PRISM SSQ starts at 0 (low)
+         ^gender female           ; 0 = male, 1 = female
+         ^gender-threshold-set no
+         ^age-set no
+         ^mission-success none)
+
+    # -- Headset state
+    (<s> ^headset.h 0            ; initial headset sickness influence index
+         ^headset.optic-flow low
+         ^headset.latency low)
+
+    # -- PRISM-derived transition probabilities (optional — for rule checks or sim logic)
+    (<s> ^low-to-med-prob 0.75
+         ^low-to-high-prob 0.25
+         ^med-to-high-prob 0.50
+         ^gender-factor 1.2)
+
+    # -- Latency monitoring
     (<s> ^latency-upper-counter 0
          ^latency-lower-counter 0
-        #  ^latency-counter.prev 0
          ^latency-upper-violated no
          ^latency-lower-violated no)
-    (<s> ^gender-threshold-set no)
-    (<s> ^age-set no)
-    (<s> ^mission-success none)
-    (<out> ^cybersickness-check none)
-    (<out> ^cybersickness-level none)
-    (write (crlf) |Agent initialized.|)
+
+    # -- Output link variables (for interfacing with environment or UI)
+    (<out> ^cybersickness-check none
+           ^cybersickness-level none)
+
+    (write (crlf) |Agent initialized with PRISM model variables.|)
 }

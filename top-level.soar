@@ -1,7 +1,7 @@
 ##!
 # @file
 #
-# @created candice 20240821
+# @created parth 20250324
 
 echo "\nLoading top-level.soar"
 
@@ -17,26 +17,3 @@ sp {propose*initialize
     (write (crlf) |Agent initializing...|)
 
  }
-
-echo "\nLoading mission-not-complete"
-sp{propose*mission-not-complete
-  (state <s> )
-
-  (<s> -^io.output-link.cybersickness_level none )
--->
-    (write (crlf) |Agent cannot complete mission...|)
-    (<s> ^operator <o> + = 4.0)
-    (<o> ^name apply-mission-not-complete)
-}
-
-echo "\nLoading mission-complete"
-sp{propose*mission-complete
-  (state <s>  ^io.output-link.cybersickness-level)
-
-  (<s> -^io.output-link.cybersickness_level none )
--->
-    (write (crlf) |Agent can complete mission...|)
-    (<s> ^operator <o> + = 3.0)
-    (<o> ^name apply-mission-complete)
-    
-}
