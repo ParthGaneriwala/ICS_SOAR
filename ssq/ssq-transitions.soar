@@ -20,7 +20,8 @@ echo "\nLoading ssq-transitions.soar"
 
 # === Propose to stay in low ===
 sp {propose*ssq-stay-low
-    (state <s> ^ssq low
+    (state <s> ^name monitor
+        ^ssq low
         ^gender female
         ^headset.h >= 1
         ^headset.h <= 5
@@ -32,7 +33,8 @@ sp {propose*ssq-stay-low
 
 # === Propose transition to medium ===
 sp {propose*ssq-low-to-med
-    (state <s> ^gender female
+    (state <s> ^name monitor
+               ^gender female
                ^ssq low
                ^headset.h <h> >= 1
                ^headset.h <h> <= 5

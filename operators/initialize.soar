@@ -9,11 +9,12 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     # -- User state
-    (<s> ^ssq low                 # PRISM SSQ starts at 0 (low)
+    (<s> ^name monitor
+         ^ssq low                 # PRISM SSQ starts at 0 (low)
          ^gender female           # 0 = male, 1 = female
          ^mission-success none
     # -- Headset state
-         ^headset.h 0            # initial headset sickness influence index
+         ^headset.h 4           # initial headset sickness influence index
          ^headset.optic-flow low
          ^headset.latency low
 
