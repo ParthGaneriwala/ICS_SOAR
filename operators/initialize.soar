@@ -16,6 +16,7 @@ sp {apply*initialize
          ^headset.h 0            # initial headset sickness influence index
          ^headset.optic-flow low
          ^headset.latency low
+
     # -- PRISM-derived transition probabilities 
     
     # We map these to preference values using softmax-friendly logit scores:
@@ -36,14 +37,9 @@ sp {apply*initialize
          ^med-to-high-prob -0.301
          ^gender-factor 1.2
 
-         ^l2mprob 0.9                   # low → med transition prob
+         ^l2mprob 0.9                   # low → med transition prob (0.75*gender-factor (1.2))
          ^stay-low-prob 0.1             # complement
          ^log-l2mprob -0.105            # log(0.9)
          ^log-stay-low -2.302           # log(0.1)
-    # -- Latency monitoring
-         ^latency-upper-counter 0
-         ^latency-lower-counter 0
-         ^latency-upper-violated no
-         ^latency-lower-violated no)
     (write (crlf) |Agent initialized with PRISM model variables.|)
 }

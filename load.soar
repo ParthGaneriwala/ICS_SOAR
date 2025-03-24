@@ -10,3 +10,6 @@ source "settings.soar"
 source "operators/load.soar"
 source "top-level.soar"
 
+source "ssq/ssq-transitions.soar"
+source "ssq/low-to-med.soar"
+source "ssq/stay-low.soar"
