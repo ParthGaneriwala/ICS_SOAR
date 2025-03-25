@@ -13,10 +13,9 @@ sp {apply*initialize
          ^ssq low                 # PRISM SSQ starts at 0 (low)
          ^gender female           # 0 = male, 1 = female
          ^mission-success none
-    # -- Headset state
-         ^headset.h 4           # initial headset sickness influence index
-         ^headset.optic-flow low
-         ^headset.latency low
+
+    # -- Opticflow Module
+         ^opticflow.range low
          ^hs 0.2
          ^log-hs -0.6989
          ^no-change 0.6
@@ -47,3 +46,10 @@ sp {apply*initialize
          ^log-stay-low -2.302)           # log(0.1)
     (write (crlf) |Agent initialized with PRISM model variables.|)
 }
+
+
+
+    # -- Headset state
+     #     ^headset.h 4           # initial headset sickness influence index
+     #     ^headset.optic-flow low
+     #     ^headset.latency low

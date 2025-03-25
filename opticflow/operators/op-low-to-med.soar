@@ -7,7 +7,7 @@
 sp {apply*op-low-to-med
     (state <s> ^operator.name opticflow-low-to-med)
 -->
-    (<s> ^headset.opticflow medium
+    (<s> ^opticflow.range medium
          ^last-transition opticflow-low-to-med)
     (write |Transitioned Opticflow from low to medium.| (crlf))
 }
