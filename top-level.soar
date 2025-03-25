@@ -18,7 +18,7 @@ sp {propose*initialize
  }
 
 echo "\nLoading calculating x1"
-sp{propose*total-violations-check
+sp {propose*total-violations-check
    (state <s> ^total-violations
               ^cybersickness_level None)
 --> 
@@ -27,32 +27,32 @@ sp{propose*total-violations-check
 }
 
 echo "\nCalculating x2 low"
-sp{propose*x2-low
+sp {propose*x2-low
   (state <s> ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>)
-  (<s> latency-lower-counter <llc> < 6)
+  (<s> ^latency-lower-counter <llc> < 6)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-x2-low)
 }
 
 echo "\nCalculating x2 medium"
-sp{propose*x2-medium
+sp {propose*x2-medium
   (state <s> ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>)
-  (<s> latency-lower-counter <llc> > 4)
-  (<s> latency-lower-counter <llc> < 11)
+  (<s> ^latency-lower-counter <llc> > 4)
+  (<s> ^latency-lower-counter <llc> < 11)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-x2-medium)
 }
 
 echo "\nCalculating x2 high"
-sp{propose*x2-high
+sp {propose*x2-high
   (state <s> ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>)
-  (<s> latency-lower-counter <llc> > 9)
-  (<s> latency-lower-counter <llc> < 21)
+  (<s> ^latency-lower-counter <llc> > 9)
+  (<s> ^latency-lower-counter <llc> < 21)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-x2-high)

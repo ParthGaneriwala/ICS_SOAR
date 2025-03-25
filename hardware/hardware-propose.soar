@@ -40,7 +40,7 @@ sp {propose*latency-lower-violated
     (<s> ^latency-lower-counter <llc> < 21)       
     (<sd> ^sys-latency <sl> > <llt>)
 -->
-    (write (crlf) |Checking for cybersickness for System Latency value: | <sl> | Latency Lower Threshold | <lpt>)
+    (write (crlf) |Checking for cybersickness for System Latency value: | <sl> | Latency Lower Threshold | <llt>)
     (<s> ^operator <o> +  = 4.0)
     (<o> ^name apply-latency-lower-violated)
     }
@@ -71,7 +71,7 @@ sp {propose*framerate-check
     (<o> ^name apply-framerate-violated)
 }
 
-sp{propose*framerate-counter-check
+sp {propose*framerate-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^framerate-counter <fc>)
     (<s> ^framerate-counter <fc> > 20)
@@ -97,7 +97,7 @@ sp {propose*opticflow-check
     (<o> ^name apply-opticflow-violated)
 }
 
-sp{propose*opticflow-counter-check
+sp {propose*opticflow-counter-check
     (state <s> ^name hw-cybersickness-monitor
                ^opticflow-counter <oc>)
     (<s> ^opticflow-counter <oc> > 20)

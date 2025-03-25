@@ -5,16 +5,20 @@
 
 echo "\nLoading apply-total-violations-check"
 sp {apply*apply-total-violations-check
-    (state <s> ^operator.name apply-total-violations-check)
+    (state <s> ^operator.name apply-total-violations-check
+             ^latency-lower-counter <llc>
+             ^latency-upper-counter <luc>
+             ^opticflow-counter <oc>
+             ^framerate-counter <fc>)
 -->
     (<s> ^total-violations <tv> -
-         ^total-violations (+ (+ (+ <oc>) <llc>) <luc>) <fc>)
+         ^total-violations (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
     (write (crlf) |Total Violations: | <tv> )
 }
 
 echo "Calculating x2-low"
-sp{apply*apply-x2-low
-    (state <s> operator.name apply-x2-low)
+sp {apply*apply-x2-low
+    (state <s> ^operator.name apply-x2-low)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 1 <x2>))
@@ -22,8 +26,8 @@ sp{apply*apply-x2-low
 }
 
 echo "Calculating x2-medium"
-sp{apply*apply-x2-medium
-    (state <s> operator.name apply-x2-medium)
+sp {apply*apply-x2-medium
+    (state <s> ^operator.name apply-x2-medium)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 2 <x2>))
@@ -31,8 +35,8 @@ sp{apply*apply-x2-medium
 }
 
 echo "Calculating x2-high"
-sp{apply*apply-x2-low
-    (state <s> operator.name apply-x2-high)
+sp {apply*apply-x2-high
+    (state <s> ^operator.name apply-x2-high)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 3 <x2>))

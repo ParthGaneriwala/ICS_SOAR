@@ -19,7 +19,6 @@ sp {apply*apply-latency-upper-counter
     (state <s> ^name hw-cybersickness-monitor
                ^latency-upper-violated no)
     (<s> ^latency-upper-counter <luc> > 20)
-    (<out> ^cybersickness-level <cl>)
 -->
     (<s> ^latency-upper-violated no - yes +)
     (write (crlf) |Latency Upper Violated...|)
@@ -78,7 +77,7 @@ sp {apply*apply-opticflow-violated
     }
 
 echo "\nLoading apply-opticflow-counter"
-sp{apply*apply-opticflow-counter
+sp {apply*apply-opticflow-counter
     (state <s> ^name hw-cybersickness-monitor
                ^opticflow-violated no)
     (<s> ^opticflow-counter <oc> > 20)
