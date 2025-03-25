@@ -17,7 +17,10 @@ sp {apply*initialize
          ^headset.h 4           # initial headset sickness influence index
          ^headset.optic-flow low
          ^headset.latency low
-
+         ^hs 0.2
+         ^log-hs -0.6989
+         ^no-change 0.6
+         ^log-no-change -0.2218
     # -- PRISM-derived transition probabilities 
     
     # We map these to preference values using softmax-friendly logit scores:

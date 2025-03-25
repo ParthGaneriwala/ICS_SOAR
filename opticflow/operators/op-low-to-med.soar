@@ -1,0 +1,14 @@
+##!
+# @file
+#
+# @created parth 20250325
+
+# === Apply chosen operator ===
+sp {apply*op-low-to-med
+    (state <s> ^operator.name opticflow-low-to-med)
+-->
+    (<s> ^headset.opticflow medium
+         ^last-transition opticflow-low-to-med)
+    (write |Transitioned Opticflow from low to medium.| (crlf))
+}
+

@@ -5,4 +5,6 @@
 
 echo "\nLoading operators/load.soar"
 
-source "apply-optic.soar"
+source "op-low-to-med.soar"
+source "op-low-to-high.soar"
+source "op-no-change.soar"

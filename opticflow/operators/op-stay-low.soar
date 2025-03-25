@@ -1,0 +1,11 @@
+##!
+# @file
+#
+# @created parth 20250325
+
+# === Apply chosen operator ===
+sp {apply*op-stay-low
+    (state <s> ^operator.name opticflow-stay-low)
+-->
+    (write |Stayed in Opticflow = low.| (crlf))
+}
