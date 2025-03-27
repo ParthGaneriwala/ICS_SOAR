@@ -16,7 +16,17 @@ sp {propose*initialize
     (<o> ^name initialize)
     (write (crlf) |Agent initializing...|)
  }
+# Linear equation for calculating the cybersickness level
+# c1x1 + c2x2 + c3x3 + c4x4 >= [ssq1, ssq2,ssq3]
+# c1, c2, c3 weights
+# ssq1 -> low; ssq2 -> medium; ssq3 -> high
+# x1 = total number of violations
+# x2 = total number of latency violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+# x3 = total number of framerate violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+# x4 = total number of opticflow violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
 
+
+# x1 = total number of violations
 echo "\nLoading calculating x1"
 sp {propose*total-violations-check
    (state <s> ^total-violations
@@ -25,6 +35,8 @@ sp {propose*total-violations-check
    (<s> ^operator <o> + >,=)
    (<o> ^name apply-total-violations-check)
 }
+
+# x2 = total number of latency violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
 
 echo "\nCalculating x2 low"
 sp {propose*x2-low
@@ -40,7 +52,7 @@ echo "\nCalculating x2 medium"
 sp {propose*x2-medium
   (state <s> ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>)
-  (<s> ^latency-lower-counter <llc> > 4)
+  (<s> ^latency-lower-counter <llc> > 5)
   (<s> ^latency-lower-counter <llc> < 11)
 -->
   (<s> ^operator <o> + >,=)
@@ -51,19 +63,119 @@ echo "\nCalculating x2 high"
 sp {propose*x2-high
   (state <s> ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>)
-  (<s> ^latency-lower-counter <llc> > 9)
+  (<s> ^latency-lower-counter <llc> > 10)
   (<s> ^latency-lower-counter <llc> < 21)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-x2-high)
 }
 
-# Linear equation for calculating the cybersickness level
-# c1x1 + c2x2 + c3x3 + c4x4 >= [ssq1, ssq2,ssq3]
-# c1, c2, c3 weights
-# ssq1 -> low; ssq2 -> medium; ssq3 -> high
-# x1 = total number of violations
-# x2 = total number of latency violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
 # x3 = total number of framerate violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
-# x4 = total number of opticflow violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+echo "\nCalculating x3 low"
+sp {propose*x3-low
+  (state <s> ^framerate-counter <fc>)
+  (<s> ^framerate-counter <fc> < 6)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x3-low)
+}
 
+echo "\nCalculating x3 medium"
+sp {propose*x3-medium
+  (state <s> ^framerate-counter <fc>)
+  (<s> ^framerate-counter <fc> > 5)
+  (<s> ^framerate-counter <fc> < 11)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x3-medium)
+}
+
+echo "\nCalculating x3 high"
+sp {propose*x3-high
+  (state <s> ^framerate-counter <fc>)
+  (<s> ^framerate-counter <fc> > 10)
+  (<s> ^framerate-counter <fc> < 21)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x3-high)
+}
+
+# x4 = total number of opticflow violations maps to a range of [low = 1, medium = 2, high = 3]: [5counts, 10counts, 20counts]
+echo "\nCalculating x4 low"
+sp {propose*x4-low
+  (state <s> ^opticflow-counter <oc>)
+  (<s> ^opticflow-counter <oc> < 6)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x4-low)
+}
+
+echo "\nCalculating x4 medium"
+sp {propose*x4-medium
+  (state <s> ^opticflow-counter <oc>)
+  (<s> ^opticflow-counter <oc> > 5)
+  (<s> ^opticflow-counter <oc> < 11)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x4-medium)
+}
+
+echo "\nCalculating x4 high"
+sp {propose*x4-high
+  (state <s> ^opticflow-counter <oc>)
+  (<s> ^opticflow-counter <oc> > 10)
+  (<s> ^opticflow-counter <oc> < 21)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-x4-high)
+}
+
+
+# Linear equation for calculating the cybersickness level
+# c1x1 + c2x2 + c3x3 + c4x4 >= [ssq-low, ssq-medium, ssq3-high]
+# c1, c2, c3 weights
+sp {propose*normal-cybersickness-level
+  (state <s> ^x1 <x1>
+             ^x2 <x2>
+             ^x3 <x3>
+             ^x4 <x4>
+             ^io.input-link.systemdata <sd>
+             ^ssq <ssq>)
+  (<s> ^sum <sum> -
+         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+  (<s> ^)
+  (<s> ^sum <sum> < <ssq>)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-normal-cybersickness-level)
+}
+
+sp {propose*affected-cybersickness-level
+  (state <s> ^x1 <x1>
+             ^x2 <x2>
+             ^x3 <x3>
+             ^x4 <x4>
+             ^io.input-link.systemdata <sd>
+             ^ssq <ssq>)
+  (<s> ^sum <sum> -
+         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+  (<s> ^sum <sum> > <ssq>)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-affected-cybersickness-level)
+}
+
+sp {propose*incapacitated-cybersickness-level
+  (state <s> ^x1 <x1>
+             ^x2 <x2>
+             ^x3 <x3>
+             ^x4 <x4>
+             ^io.input-link.systemdata <sd>
+             ^ssq <ssq>)
+  (<s> ^sum <sum> -
+         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+  (<s> ^sum <sum> > <ssq>)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-incapacitated-cybersickness-level)
+}

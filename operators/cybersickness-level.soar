@@ -42,3 +42,87 @@ sp {apply*apply-x2-high
          ^x2 (+ 3 <x2>))
     (write (crlf) |x2 = 3|) 
 }
+
+echo "Calculating x3-low"
+sp {apply*apply-x3-low
+    (state <s> ^operator.name apply-x3-low)
+--> 
+    (<s> ^x3 <x3> -
+         ^x3 (+ 1 <x3>))
+    (write (crlf) |x3 = 1|) 
+}
+
+echo "Calculating x3-medium"
+sp {apply*apply-x3-medium
+    (state <s> ^operator.name apply-x3-medium)
+--> 
+    (<s> ^x3 <x3> -
+         ^x3 (+ 2 <x3>))
+    (write (crlf) |x3 = 2|) 
+}
+
+echo "Calculating x3-high"
+sp {apply*apply-x3-high
+    (state <s> ^operator.name apply-x3-high)
+--> 
+    (<s> ^x3 <x3> -
+         ^x3 (+ 3 <x3>))
+    (write (crlf) |x3 = 3|) 
+}
+
+echo "Calculating x4-low"
+sp {apply*apply-x4-low
+    (state <s> ^operator.name apply-x4-low)
+--> 
+    (<s> ^x4 <x4> -
+         ^x4 (+ 1 <x4>))
+    (write (crlf) |x4 = 1|) 
+}
+
+echo "Calculating x4-medium"
+sp {apply*apply-x4-medium
+    (state <s> ^operator.name apply-x4-medium)
+--> 
+    (<s> ^x4 <x4> -
+         ^x4 (+ 2 <x4>))
+    (write (crlf) |x4 = 2|) 
+}
+
+echo "Calculating x4-high"
+sp {apply*apply-x4-high
+    (state <s> ^operator.name apply-x4-high)
+--> 
+    (<s> ^x4 <x4> -
+         ^x4 (+ 3 <x4>))
+    (write (crlf) |x4 = 3|) 
+}
+
+sp {apply*apply-normal-cybersickness-level
+  (state <s> ^operator.name apply-normal-cybersickness-level
+              ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+    (write (crlf) |Not Affected...|)
+    (<out> ^cybersickness-level <cl> - not-affected +)
+}
+
+sp {apply*apply-affected-cybersickness-level
+  (state <s> ^operator.name apply-affected-cybersickness-level
+              ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+    (write (crlf) |Affected...|)
+    (<out> ^cybersickness-level <cl> - affected +)
+}
+
+sp {apply*apply-incapacitated-cybersickness-level
+  (state <s> ^operator.name apply-incapacitated-cybersickness-level
+              ^io.output-link <out>)
+    (<out> ^cybersickness-level <cl>)
+
+-->
+    (write (crlf) |Incapcitated...|)
+    (<out> ^cybersickness-level <cl> - incapacitated +)
+}
