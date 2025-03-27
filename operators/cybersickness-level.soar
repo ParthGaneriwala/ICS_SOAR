@@ -9,16 +9,21 @@ sp {apply*apply-total-violations-check
              ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>
              ^opticflow-counter <oc>
-             ^framerate-counter <fc>)
+             ^framerate-counter <fc>
+             ^total-violations <tv>
+             ^total-violations-set <tvs>)
 -->
     (<s> ^total-violations <tv> -
+         ^total-violations-set <tvs> - yes +
          ^total-violations (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
     (write (crlf) |Total Violations: | <tv> )
 }
 
 echo "Calculating x2-low"
 sp {apply*apply-x2-low
-    (state <s> ^operator.name apply-x2-low)
+    (state <s> ^operator.name apply-x2-low
+               ^x2 <x2>
+               ^x2-set <x2-set>)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 1 <x2>))
@@ -28,7 +33,9 @@ sp {apply*apply-x2-low
 
 echo "Calculating x2-medium"
 sp {apply*apply-x2-medium
-    (state <s> ^operator.name apply-x2-medium)
+    (state <s> ^operator.name apply-x2-medium
+               ^x2 <x2>
+               ^x2-set <x2-set>)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 2 <x2>))
@@ -38,17 +45,21 @@ sp {apply*apply-x2-medium
 
 echo "Calculating x2-high"
 sp {apply*apply-x2-high
-    (state <s> ^operator.name apply-x2-high)
+    (state <s> ^operator.name apply-x2-high
+               ^x2 <x2>
+               ^x2-set <x2-set>)
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 3 <x2>))
-    (<s> ^x3-set <x3-set> - yes +)
+    (<s> ^x2-set <x2-set> - yes +)
     (write (crlf) |x2 = 3|) 
 }
 
 echo "Calculating x3-low"
 sp {apply*apply-x3-low
-    (state <s> ^operator.name apply-x3-low)
+    (state <s> ^operator.name apply-x3-low
+               ^x3 <x3>
+               ^x3-set <x3-set>)
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 1 <x3>))
@@ -58,7 +69,9 @@ sp {apply*apply-x3-low
 
 echo "Calculating x3-medium"
 sp {apply*apply-x3-medium
-    (state <s> ^operator.name apply-x3-medium)
+    (state <s> ^operator.name apply-x3-medium
+               ^x3 <x3>
+               ^x3-set <x3-set>)
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 2 <x3>))
@@ -68,7 +81,9 @@ sp {apply*apply-x3-medium
 
 echo "Calculating x3-high"
 sp {apply*apply-x3-high
-    (state <s> ^operator.name apply-x3-high)
+    (state <s> ^operator.name apply-x3-high
+               ^x3 <x3>
+               ^x3-set <x3-set>)
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 3 <x3>))
@@ -78,7 +93,9 @@ sp {apply*apply-x3-high
 
 echo "Calculating x4-low"
 sp {apply*apply-x4-low
-    (state <s> ^operator.name apply-x4-low)
+    (state <s> ^operator.name apply-x4-low
+               ^x4 <x4>
+               ^x4-set <x4-set>)
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 1 <x4>))
@@ -88,7 +105,9 @@ sp {apply*apply-x4-low
 
 echo "Calculating x4-medium"
 sp {apply*apply-x4-medium
-    (state <s> ^operator.name apply-x4-medium)
+    (state <s> ^operator.name apply-x4-medium
+               ^x4 <x4>
+               ^x4-set <x4-set>)
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 2 <x4>))
@@ -98,7 +117,9 @@ sp {apply*apply-x4-medium
 
 echo "Calculating x4-high"
 sp {apply*apply-x4-high
-    (state <s> ^operator.name apply-x4-high)
+    (state <s> ^operator.name apply-x4-high
+               ^x4 <x4>
+               ^x4-set <x4-set>)
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 3 <x4>))
