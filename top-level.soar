@@ -31,6 +31,9 @@ echo "\nLoading calculating x1"
 sp {propose*total-violations-check
    (state <s> ^total-violations
               ^cybersickness_level None)
+   (<s> ^x2-set yes)
+   (<s> ^x3-set yes)
+   (<s> ^x4-set yes)
 --> 
    (<s> ^operator <o> + >,=)
    (<o> ^name apply-total-violations-check)
@@ -134,16 +137,20 @@ sp {propose*x4-high
 # Linear equation for calculating the cybersickness level
 # c1x1 + c2x2 + c3x3 + c4x4 >= [ssq-low, ssq-medium, ssq3-high]
 # c1, c2, c3 weights
-sp {propose*normal-cybersickness-level
+sp {propose*sum-weights
   (state <s> ^x1 <x1>
              ^x2 <x2>
              ^x3 <x3>
              ^x4 <x4>
-             ^io.input-link.systemdata <sd>
-             ^ssq <ssq>)
-  (<s> ^sum <sum> -
-         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
-  (<s> ^)
+             ^sum <sum>)
+-->
+  (<s> ^operator <o> + >,=)
+  (<o> ^name apply-sum)
+}
+
+sp {propose*normal-cybersickness-level
+  (state <s> ^io.input-link.systemdata <sd>)
+  (<sd> ^ssq <ssq>)
   (<s> ^sum <sum> < <ssq>)
 -->
   (<s> ^operator <o> + >,=)
@@ -151,14 +158,8 @@ sp {propose*normal-cybersickness-level
 }
 
 sp {propose*affected-cybersickness-level
-  (state <s> ^x1 <x1>
-             ^x2 <x2>
-             ^x3 <x3>
-             ^x4 <x4>
-             ^io.input-link.systemdata <sd>
-             ^ssq <ssq>)
-  (<s> ^sum <sum> -
-         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+  (state <s> ^io.input-link.systemdata <sd>)
+  (<sd> ^ssq <ssq>)
   (<s> ^sum <sum> > <ssq>)
 -->
   (<s> ^operator <o> + >,=)
@@ -166,14 +167,8 @@ sp {propose*affected-cybersickness-level
 }
 
 sp {propose*incapacitated-cybersickness-level
-  (state <s> ^x1 <x1>
-             ^x2 <x2>
-             ^x3 <x3>
-             ^x4 <x4>
-             ^io.input-link.systemdata <sd>
-             ^ssq <ssq>)
-  (<s> ^sum <sum> -
-         ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+  (state <s> ^io.input-link.systemdata <sd>)
+  (<sd> ^ssq <ssq>)
   (<s> ^sum <sum> > <ssq>)
 -->
   (<s> ^operator <o> + >,=)

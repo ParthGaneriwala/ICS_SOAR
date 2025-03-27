@@ -13,19 +13,20 @@ sp {apply*initialize
          ^latency-lower-counter 0
          ^latency-upper-violated no
          ^latency-lower-violated no)
-    (<s> ^ framerate-counter 0
+    (<s> ^framerate-counter 0
          ^framerate-violated no)
-    (<s> ^ opticflow-counter 0
-         ^ opticflow-violated no)
+    (<s> ^opticflow-counter 0
+         ^opticflow-violated no)
     (<s> ^gender-threshold-set no)
     (<s> ^age-set no)
     (<s> ^ssq-set no)
-    (<s> ^ssq-low 75)
-    (<s> ^ssq-medium 75)
-    (<s> ^ssq-high 100)
     (<s> ^sum 0)
     (<s> ^mission-success none)
     (<s> ^total-violations 0)
+    (<s> ^x1 0)
+    (<s> ^x1-set no)
+    (<s> ^x2-set no)
+    (<s> ^x3-set no)
     (<s> ^x2 0)
     (<s> ^x3 0)
     (<s> ^x4 0)
