@@ -6,4 +6,3 @@
 echo "\nLoading operators/load.soar"
 
 source "initialize.soar"
-source "cybersickness-level.soar"

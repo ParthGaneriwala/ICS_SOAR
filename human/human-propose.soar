@@ -53,7 +53,7 @@ sp {top-state*elaborate*set*threshold*female
     }
 
 # Switching to the software monitor
-sp {propose*check*hw-cybersickness
+sp {propose*check*h-cybersickness
     (state <s> ^name demographic-monitor
                ^age-set yes
                ^ssq-set yes

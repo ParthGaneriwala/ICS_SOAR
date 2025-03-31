@@ -3,20 +3,20 @@
 #
 # @created candice 20250228
 
-echo "\nLoading apply-total-violations-check"
-sp {apply*apply-total-violations-check
-    (state <s> ^operator.name apply-total-violations-check
+echo "\nLoading apply-x1"
+sp {apply*apply-x1
+    (state <s> ^operator.name apply-x1
              ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>
              ^opticflow-counter <oc>
              ^framerate-counter <fc>
-             ^total-violations <tv>
-             ^total-violations-set <tvs>)
+             ^x1 <x1>
+             ^x1-set <x1-set>)
 -->
-    (<s> ^total-violations <tv> -
-         ^total-violations-set <tvs> - yes +
-         ^total-violations (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
-    (write (crlf) |Total Violations: | <tv> )
+    (<s> ^x1 <x1> -
+         ^x1 (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
+    (<s> ^x1-set <x1-set> - yes +)
+    (write (crlf) |x1: | <x1> )
 }
 
 echo "Calculating x2-low"
@@ -127,9 +127,9 @@ sp {apply*apply-x4-high
     (write (crlf) |x4 = 3|) 
 }
 
-echo "\nLoading apply-sum"
-sp {apply*apply-sum
-    (state <s> ^operator.name apply-sum
+echo "\nLoading apply-sum-weights"
+sp {apply*apply-sum-weights
+    (state <s> ^operator.name apply-sum-weights
                ^x1 <x1>
                ^x2 <x2>
                ^x3 <x3>

@@ -5,7 +5,7 @@
 
 # Assigning the users gender
 
-sp {apply*check*hw-cybersickness
+sp {apply*check*h-cybersickness
     (state <s> ^operator.name switch-monitor
                ^name demographic-monitor)
 -->

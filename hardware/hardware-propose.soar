@@ -107,6 +107,18 @@ sp {propose*opticflow-counter-check
     (<o> ^name apply-opticflow-counter)            
 }
 
+
+sp {propose*check*hw-cybersickness
+    (state <s> ^name hw-cybersickness-monitor
+               ^latency-lower-violated yes)
+            #    ^framerate-violated yes
+            #    ^opticflow-violated yes)
+-->
+    (write (crlf) |Switched...|)
+    (<s> ^operator <o> + >,=)
+    (<o> ^name switch-monitor)
+    }
+
 # R0: If sys_latency > latency_problem_threshold then cybersickness_level equal to affected
 # latency-check agent
 # sp {propose*latency-violated
