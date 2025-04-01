@@ -74,7 +74,8 @@ sp {propose*x2-high
 echo "\nCalculating x3 low"
 sp {propose*x3-low
   (state <s> ^name cybersickness-monitor
-             ^framerate-counter <fc>)
+             ^framerate-counter <fc>
+             ^x3-set <x3-set> no)
   (<s> ^framerate-counter <fc> > 0)
   (<s> ^framerate-counter <fc> < 6)
 -->
@@ -85,7 +86,8 @@ sp {propose*x3-low
 echo "\nCalculating x3 medium"
 sp {propose*x3-medium
   (state <s> ^name cybersickness-monitor
-             ^framerate-counter <fc>)
+             ^framerate-counter <fc>
+             ^x3-set <x3-set> no)
   (<s> ^framerate-counter <fc> > 5)
   (<s> ^framerate-counter <fc> < 11)
 -->
@@ -96,7 +98,8 @@ sp {propose*x3-medium
 echo "\nCalculating x3 high"
 sp {propose*x3-high
   (state <s> ^name cybersickness-monitor
-             ^framerate-counter <fc>)
+             ^framerate-counter <fc>
+             ^x3-set <x3-set> no)
   (<s> ^framerate-counter <fc> > 10)
   (<s> ^framerate-counter <fc> < 21)
 -->
@@ -108,7 +111,8 @@ sp {propose*x3-high
 echo "\nCalculating x4 low"
 sp {propose*x4-low
   (state <s> ^name cybersickness-monitor
-             ^opticflow-counter <oc>)
+             ^opticflow-counter <oc>
+             ^x4-set <x4-set> no)
   (<s> ^opticflow-counter <oc> > 0)
   (<s> ^opticflow-counter <oc> < 6)
 -->
@@ -119,7 +123,8 @@ sp {propose*x4-low
 echo "\nCalculating x4 medium"
 sp {propose*x4-medium
   (state <s> ^name cybersickness-monitor
-             ^opticflow-counter <oc>)
+             ^opticflow-counter <oc>
+             ^x4-set <x4-set> no)
   (<s> ^opticflow-counter <oc> > 5)
   (<s> ^opticflow-counter <oc> < 11)
 -->
@@ -130,7 +135,8 @@ sp {propose*x4-medium
 echo "\nCalculating x4 high"
 sp {propose*x4-high
   (state <s> ^name cybersickness-monitor
-             ^opticflow-counter <oc>)
+             ^opticflow-counter <oc>
+             ^x4-set <x4-set> no)
   (<s> ^opticflow-counter <oc> > 10)
   (<s> ^opticflow-counter <oc> < 21)
 -->
@@ -158,10 +164,12 @@ sp {propose*sum-weights
 
 sp {propose*normal-cybersickness-level
   (state <s> ^name cybersickness-monitor
-             ^io.input-link.systemdata.ssq <ssq>
-             ^sum <sum> < <ssq>
+             ^io.input-link.systemdata.user-ssq <ssq>
+             ^ssq <ssq>
+             ^sum <sum>
              ^sum-weights <sum-w> yes
              ^cybersickness-level none)
+  (<s> ^sum <sum> < <ssq>)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-normal-cybersickness-level)
@@ -169,11 +177,12 @@ sp {propose*normal-cybersickness-level
 
 sp {propose*affected-cybersickness-level
   (state <s> ^name cybersickness-monitor
-             ^io.input-link.systemdata <sd>
+             ^io.input-link.systemdata.user-ssq <ssq>
+             ^ssq <ssq>
+             ^sum <sum>
              ^sum-weights <sum-w> yes
-             ^cybersickness-level <cl> none)
-  (<sd> ^ssq <ssq>)
-  (<s> ^sum <sum> > <ssq>)
+             ^cybersickness-level none)
+  (<s> ^sum <sum> < <ssq>)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-affected-cybersickness-level)
@@ -181,11 +190,12 @@ sp {propose*affected-cybersickness-level
 
 sp {propose*incapacitated-cybersickness-level
   (state <s> ^name cybersickness-monitor
-             ^io.input-link.systemdata <sd>
+             ^io.input-link.systemdata.user-ssq <ssq>
+             ^ssq <ssq>
+             ^sum <sum>
              ^sum-weights <sum-w> yes
-             ^cybersickness-level <cl> none)
-  (<sd> ^ssq <ssq>)
-  (<s> ^sum <sum> > <ssq>)
+             ^cybersickness-level none)
+  (<s> ^sum <sum> < <ssq>)
 -->
   (<s> ^operator <o> + >,=)
   (<o> ^name apply-incapacitated-cybersickness-level)
