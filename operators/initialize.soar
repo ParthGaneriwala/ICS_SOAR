@@ -21,6 +21,7 @@ sp {apply*initialize
     (<s> ^age-set no)
     (<s> ^ssq-set no)
     (<s> ^sum 0)
+    (<s> ^sum-weights no)
     (<s> ^x1 0)
     (<s> ^x1-set no)
     (<s> ^x2 0)
@@ -29,7 +30,7 @@ sp {apply*initialize
     (<s> ^x3-set no)
     (<s> ^x4 0)
     (<s> ^x4-set no)
-    (<out> ^cybersickness-check none)
+    (<s> ^cybersickness-level none)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)
 }

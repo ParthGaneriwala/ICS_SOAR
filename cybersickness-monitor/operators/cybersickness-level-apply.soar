@@ -134,40 +134,48 @@ sp {apply*apply-sum-weights
                ^x2 <x2>
                ^x3 <x3>
                ^x4 <x4>
-               ^sum <sum>)
+               ^sum <sum>
+               ^sum-weights <sum-w>)
 -->
     (<s> ^sum <sum> -
          ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
+    (<s> ^sum-weights <sum-w> - yes +)
     (write (crlf) |Total Sum: | <sum> )
 }
 
 
 sp {apply*apply-normal-cybersickness-level
   (state <s> ^operator.name apply-normal-cybersickness-level
-              ^io.output-link <out>)
-    (<out> ^cybersickness-level <cl>)
+             ^io.output-link <out>
+             ^cybersickness-level <cl>)
+  (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Not Affected...|)
+    (<s> ^cybersickness-level <cl> - yes +)
     (<out> ^cybersickness-level <cl> - not-affected +)
 }
 
 sp {apply*apply-affected-cybersickness-level
   (state <s> ^operator.name apply-affected-cybersickness-level
-              ^io.output-link <out>)
-    (<out> ^cybersickness-level <cl>)
+             ^io.output-link <out>
+             ^cybersickness-level <cl>)
+  (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Affected...|)
+    (<s> ^cybersickness-level <cl> - yes +)
     (<out> ^cybersickness-level <cl> - affected +)
 }
 
 sp {apply*apply-incapacitated-cybersickness-level
   (state <s> ^operator.name apply-incapacitated-cybersickness-level
-              ^io.output-link <out>)
-    (<out> ^cybersickness-level <cl>)
+             ^io.output-link <out>
+             ^cybersickness-level <cl>)
+  (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Incapcitated...|)
+    (<s> ^cybersickness-level <cl> - yes +)
     (<out> ^cybersickness-level <cl> - incapacitated +)
 }
