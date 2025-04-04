@@ -143,7 +143,6 @@ sp {apply*apply-sum-weights
     (write (crlf) |Total Sum: | <sum> )
 }
 
-
 sp {apply*apply-normal-cybersickness-level
   (state <s> ^operator.name apply-normal-cybersickness-level
              ^io.output-link <out>
