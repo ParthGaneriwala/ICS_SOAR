@@ -10,8 +10,8 @@ sp {apply*initialize
 -->
     # -- User state
     (<s> ^name monitor
-         ^ssq low                 # PRISM SSQ starts at 0 (low)
-         ^gender female           # 0 = male, 1 = female
+         ^ssq 0                 # PRISM SSQ starts at 0 (low)
+         ^gender 1           # 0 = male, 1 = female
          ^mission-success none
 
     # -- Opticflow Module

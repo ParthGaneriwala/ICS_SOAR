@@ -7,7 +7,7 @@
 sp {apply*ssq-low-to-med
     (state <s> ^operator.name ssq-low-to-med)
 -->
-    (<s> ^ssq medium
+    (<s> ^ssq 1
          ^last-transition ssq-low-to-med)
     (write |Transitioned SSQ from low to medium.| (crlf))
 }

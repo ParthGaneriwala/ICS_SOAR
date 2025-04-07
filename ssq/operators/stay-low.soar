@@ -7,5 +7,6 @@
 sp {apply*ssq-stay-low
     (state <s> ^operator.name ssq-stay-low)
 -->
+    (<s> ^ssq 0)
     (write |Stayed in SSQ = low.| (crlf))
 }
