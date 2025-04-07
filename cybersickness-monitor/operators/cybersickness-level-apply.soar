@@ -11,7 +11,10 @@ sp {apply*apply-x1
              ^opticflow-counter <oc>
              ^framerate-counter <fc>
              ^x1 <x1>
-             ^x1-set <x1-set>)
+             ^x1-set <x1-set>
+             ^x2-set <x2-set>
+             ^x3-set <x3-set>
+             ^x4-set <x4-set>)
 -->
     (<s> ^x1 <x1> -
          ^x1 (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
@@ -134,6 +137,7 @@ sp {apply*apply-sum-weights
                ^x2 <x2>
                ^x3 <x3>
                ^x4 <x4>
+               ^x1-set <x1-set>
                ^sum <sum>
                ^sum-weights <sum-w>)
 -->
@@ -146,35 +150,51 @@ sp {apply*apply-sum-weights
 sp {apply*apply-normal-cybersickness-level
   (state <s> ^operator.name apply-normal-cybersickness-level
              ^io.output-link <out>
-             ^cybersickness-level <cl>)
+             ^sum-weights <sum-w>)
   (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Not Affected...|)
-    (<s> ^cybersickness-level <cl> - yes +)
+    (<s> ^cybersickness-level-checked <clc> - yes +)
     (<out> ^cybersickness-level <cl> - not-affected +)
 }
 
 sp {apply*apply-affected-cybersickness-level
   (state <s> ^operator.name apply-affected-cybersickness-level
              ^io.output-link <out>
-             ^cybersickness-level <cl>)
+             ^sum-weights <sum-w>)
   (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Affected...|)
-    (<s> ^cybersickness-level <cl> - yes +)
+    (<s> ^cybersickness-level-checked <clc> - yes +)
     (<out> ^cybersickness-level <cl> - affected +)
 }
 
 sp {apply*apply-incapacitated-cybersickness-level
   (state <s> ^operator.name apply-incapacitated-cybersickness-level
              ^io.output-link <out>
-             ^cybersickness-level <cl>)
+             ^sum-weights <sum-w>)
   (<out> ^cybersickness-level <cl>)
 
 -->
     (write (crlf) |Incapcitated...|)
-    (<s> ^cybersickness-level <cl> - yes +)
+    (<s> ^cybersickness-level-checked <clc> - yes +)
     (<out> ^cybersickness-level <cl> - incapacitated +)
+}
+
+sp {apply*check*cybersickness
+    (state <s> ^name cybersickness-monitor
+               ^operator.name switch-monitor)
+-->
+    (write (crlf) |Switched... Cybersickness-Monitor to Hardware |)
+    (<s> ^check-flag <check-flag> - no +)
+    (<s> ^cybersickness-level-checked <clc> - no +)
+    (<s> ^sum-weights <sum-w> - no +)
+    (<s> ^x1-set <x1-set> - no +)
+    (<s> ^x2-set <x2-set> - no +)
+    (<s> ^x3-set <x3-set> - no +)
+    (<s> ^x4-set <x4-set> - no +)
+    (<s> ^name cybersickness-monitor - )
+    (<s> ^name hw-cybersickness-monitor)
 }

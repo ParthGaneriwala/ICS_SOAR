@@ -22,7 +22,7 @@ sp {apply*initialize
     (<s> ^ssq-set no)
     (<s> ^ssq-low 20)
     (<s> ^ssq-medium 30)
-    (<s> ^ssq-high 40)
+    (<s> ^ssq-high 100)
     (<s> ^sum 0)
     (<s> ^sum-weights no)
     (<s> ^x1 0)
@@ -33,7 +33,8 @@ sp {apply*initialize
     (<s> ^x3-set no)
     (<s> ^x4 0)
     (<s> ^x4-set no)
-    (<s> ^cybersickness-level none)
+    (<s> ^check-flag no)
+    (<s> ^cybersickness-level-checked no)
     (<out> ^cybersickness-level none)
     (write (crlf) |Agent initialized.|)
 }
