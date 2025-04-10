@@ -36,8 +36,8 @@ sp {propose*ssq-low-to-med
     (state <s> ^name monitor
                ^ssq 0
                ^gender 1
-               ^headset.h <h> >= 1
-               ^headset.h <h> <= 5
+               ^headset.h >= 1
+               ^headset.h <= 5
                ^log-l2mprob <logmed>)
 -->
     (<s> ^operator <o> + = <logmed>) # ~ log(0.9)
