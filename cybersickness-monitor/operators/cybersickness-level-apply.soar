@@ -11,14 +11,11 @@ sp {apply*apply-x1
              ^opticflow-counter <oc>
              ^framerate-counter <fc>
              ^x1 <x1>
-             ^x1-set <x1-set>
-             ^x2-set <x2-set>
-             ^x3-set <x3-set>
-             ^x4-set <x4-set>)
+             ^x1-set <x1-set>)
 -->
     (<s> ^x1 <x1> -
          ^x1 (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
-    (<s> ^x1-set <x1-set> - yes +)
+    (<s> ^x1-set no - yes +)
     (write (crlf) |x1: | <x1> )
 }
 
@@ -30,8 +27,8 @@ sp {apply*apply-x2-low
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 1 <x2>))
-    (<s> ^x2-set <x2-set> - yes +)
-    (write (crlf) |x2 = 1|) 
+    (<s> ^x2-set no - yes +)
+    (write (crlf) |x2 = | <x2>) 
 }
 
 echo "Calculating x2-medium"
@@ -42,8 +39,8 @@ sp {apply*apply-x2-medium
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 2 <x2>))
-    (<s> ^x2-set <x2-set> - yes +)
-    (write (crlf) |x2 = 2|) 
+    (<s> ^x2-set no - yes +)
+    (write (crlf) |x2 = | <x2>) 
 }
 
 echo "Calculating x2-high"
@@ -54,8 +51,8 @@ sp {apply*apply-x2-high
 --> 
     (<s> ^x2 <x2> -
          ^x2 (+ 3 <x2>))
-    (<s> ^x2-set <x2-set> - yes +)
-    (write (crlf) |x2 = 3|) 
+    (<s> ^x2-set no - yes +)
+    (write (crlf) |x2 = | <x2>) 
 }
 
 echo "Calculating x3-low"
@@ -66,8 +63,8 @@ sp {apply*apply-x3-low
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 1 <x3>))
-    (<s> ^x3-set <x3-set> - yes +)
-    (write (crlf) |x3 = 1|) 
+    (<s> ^x3-set no - yes +)
+    (write (crlf) |x3 = | <x3>) 
 }
 
 echo "Calculating x3-medium"
@@ -78,8 +75,8 @@ sp {apply*apply-x3-medium
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 2 <x3>))
-    (<s> ^x3-set <x3-set> - yes +)
-    (write (crlf) |x3 = 2|) 
+    (<s> ^x3-set no - yes +)
+    (write (crlf) |x3 = | <x3>) 
 }
 
 echo "Calculating x3-high"
@@ -90,8 +87,8 @@ sp {apply*apply-x3-high
 --> 
     (<s> ^x3 <x3> -
          ^x3 (+ 3 <x3>))
-    (<s> ^x3-set <x3-set> - yes +)
-    (write (crlf) |x3 = 3|) 
+    (<s> ^x3-set no - yes +)
+    (write (crlf) |x3 = | <x3>) 
 }
 
 echo "Calculating x4-low"
@@ -102,8 +99,8 @@ sp {apply*apply-x4-low
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 1 <x4>))
-    (<s> ^x4-set <x4-set> - yes +)
-    (write (crlf) |x4 = 1|) 
+    (<s> ^x4-set no - yes +)
+    (write (crlf) |x4 = | <x4>) 
 }
 
 echo "Calculating x4-medium"
@@ -114,8 +111,8 @@ sp {apply*apply-x4-medium
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 2 <x4>))
-    (<s> ^x4-set <x4-set> - yes +)
-    (write (crlf) |x4 = 2|) 
+    (<s> ^x4-set no - yes +)
+    (write (crlf) |x4 = | <x4>) 
 }
 
 echo "Calculating x4-high"
@@ -126,8 +123,8 @@ sp {apply*apply-x4-high
 --> 
     (<s> ^x4 <x4> -
          ^x4 (+ 3 <x4>))
-    (<s> ^x4-set <x4-set> - yes +)
-    (write (crlf) |x4 = 3|) 
+    (<s> ^x4-set no - yes +)
+    (write (crlf) |x4 = | <x4>) 
 }
 
 echo "\nLoading apply-sum-weights"
@@ -143,7 +140,7 @@ sp {apply*apply-sum-weights
 -->
     (<s> ^sum <sum> -
          ^sum (+ (+ (+ (+ <x1>) <x2>) <x3>) <x4>))
-    (<s> ^sum-weights <sum-w> - yes +)
+    (<s> ^sum-weights no - yes +)
     (write (crlf) |Total Sum: | <sum> )
 }
 
@@ -155,7 +152,7 @@ sp {apply*apply-normal-cybersickness-level
 
 -->
     (write (crlf) |Not Affected...|)
-    (<s> ^cybersickness-level-checked <clc> - yes +)
+    (<s> ^cybersickness-level-checked no - yes +)
     (<out> ^cybersickness-level <cl> - not-affected +)
 }
 
@@ -167,7 +164,7 @@ sp {apply*apply-affected-cybersickness-level
 
 -->
     (write (crlf) |Affected...|)
-    (<s> ^cybersickness-level-checked <clc> - yes +)
+    (<s> ^cybersickness-level-checked no - yes +)
     (<out> ^cybersickness-level <cl> - affected +)
 }
 
@@ -179,18 +176,22 @@ sp {apply*apply-incapacitated-cybersickness-level
 
 -->
     (write (crlf) |Incapcitated...|)
-    (<s> ^cybersickness-level-checked <clc> - yes +)
+    (<s> ^cybersickness-level-checked no - yes +)
     (<out> ^cybersickness-level <cl> - incapacitated +)
 }
 
 sp {apply*check*cybersickness
     (state <s> ^name cybersickness-monitor
-               ^operator.name switch-monitor)
+               ^operator.name switch-monitor
+               ^x1-set <x1-set>
+               ^x2-set <x2-set>
+               ^x3-set <x3-set>
+               ^x4-set <x4-set>)
 -->
     (write (crlf) |Switched... Cybersickness-Monitor to Hardware |)
-    (<s> ^check-flag <check-flag> - no +)
-    (<s> ^cybersickness-level-checked <clc> - no +)
-    (<s> ^sum-weights <sum-w> - no +)
+    (<s> ^check-flag yes - no +)
+    (<s> ^cybersickness-level-checked yes - no +)
+    (<s> ^sum-weights yes - no +)
     (<s> ^x1-set <x1-set> - no +)
     (<s> ^x2-set <x2-set> - no +)
     (<s> ^x3-set <x3-set> - no +)
