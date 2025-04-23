@@ -4,11 +4,10 @@
 # @created parth 20250325
 
 # === Apply chosen operator ===
-sp {apply*op-low-to-med
+sp {apply*opticflow-low-to-med
     (state <s> ^operator.name opticflow-low-to-med)
 -->
-    (<s> ^opticflow.range medium
-         ^last-transition opticflow-low-to-med)
+    (<s> ^opticflow.range 1)
     (write |Transitioned Opticflow from low to medium.| (crlf))
 }
 

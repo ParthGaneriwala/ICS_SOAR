@@ -7,4 +7,4 @@ echo "\nLoading operators/load.soar"
 
 source "op-low-to-med.soar"
 source "op-low-to-high.soar"
-source "op-no-change.soar"
+source "op-stay-low.soar"

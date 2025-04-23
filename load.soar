@@ -10,4 +10,5 @@ source "settings.soar"
 source "operators/load.soar"
 source "top-level.soar"
 source "ssq/load.soar"
+source "opticflow/load.soar"
 

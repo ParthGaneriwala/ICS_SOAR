@@ -4,8 +4,9 @@
 # @created parth 20250325
 
 # === Apply chosen operator ===
-sp {apply*op-stay-low
+sp {apply*opticflow-stay-low
     (state <s> ^operator.name opticflow-stay-low)
 -->
+    (<s> ^opticflow.range 0)
     (write |Stayed in Opticflow = low.| (crlf))
 }

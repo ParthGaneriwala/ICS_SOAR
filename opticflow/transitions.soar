@@ -9,7 +9,7 @@ echo "\nLoading opticflow-transitions.soar"
 
 sp {propose*opticflow-stay-low
     (state <s> ^name monitor
-        ^opticflow.range low
+        ^opticflow.range 0
         ^log-no-change <lognochange>)
 -->
     (<s> ^operator <o> + = <lognochange>) # ~ log(0.6)
@@ -18,8 +18,8 @@ sp {propose*opticflow-stay-low
 
 sp {propose*opticflow-low-to-med
     (state <s> ^name monitor
-        ^opticflow.range low
-               ^log-hs <logopmed>)
+        ^opticflow.range 0
+        ^log-hs <logopmed>)
 -->
     (<s> ^operator <o> + = <logopmed>) # ~ log(0.2)
     (<o> ^name opticflow-low-to-med)    
@@ -27,8 +27,8 @@ sp {propose*opticflow-low-to-med
 
 sp {propose*opticflow-low-to-high
     (state <s> ^name monitor
-        ^opticflow.range low
-               ^log-hs <logophigh>)
+        ^opticflow.range 0
+        ^log-hs <logophigh>)
 -->
     (<s> ^operator <o> + = <logophigh>) # ~ log(0.2)
     (<o> ^name opticflow-low-to-high)    

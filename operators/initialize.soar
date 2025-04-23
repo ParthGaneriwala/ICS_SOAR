@@ -15,7 +15,7 @@ sp {apply*initialize
          ^mission-success none
 
     # -- Opticflow Module
-         ^opticflow.range low
+         ^opticflow.range 0
          ^hs 0.2
          ^log-hs -0.6989
          ^no-change 0.6
