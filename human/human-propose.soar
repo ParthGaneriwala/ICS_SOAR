@@ -19,15 +19,6 @@ sp {top-state*elaborate*age-check
     (<s> ^age-set yes)
     (write (crlf) |Assigning the user age: | <ua>)
     }
-
-# Assigning the users ssq
-sp {top-state*elaborate*SSQ-check
-     (state <s> ^io.input-link.systemdata.user-ssq <ssq>)
--->
-     (<s> ^ssq <ssq>)
-     (<s> ^ssq-set yes)
-     (write (crlf) |Assigning the user SSQ: | <ssq>)
-   }
    
 # Assigning the thresholds based on the user's gender
 sp {top-state*elaborate*set*threshold*male
@@ -56,7 +47,6 @@ sp {top-state*elaborate*set*threshold*female
 sp {propose*check*h-cybersickness
     (state <s> ^name demographic-monitor
                ^age-set yes
-               ^ssq-set yes
                ^gender-threshold-set yes)
 -->
     # (write (crlf) |Switched...|)

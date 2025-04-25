@@ -18,7 +18,6 @@ sp {propose*latency-violated-incapacitated
     (<s> ^operator <o> + = 1.0)
     (<o> ^name apply-latency-violated-incapacitated
          ^original-latency-upper-counter <luc>)
-
     }
 
 # R0: If sys_latency > latency_lower_threshold then increment the latency lower counter

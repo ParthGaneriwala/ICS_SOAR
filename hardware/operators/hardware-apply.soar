@@ -7,30 +7,34 @@
 echo "\nLoading apply-latency-violated-incapacitated"
 sp {apply*apply-latency-violated-incapacitated
     (state <s> ^name hw-cybersickness-monitor
+               ^io.output-link <out>
                ^operator <o>
                ^check-flag <check-flag>
                ^latency-upper-counter <luc>)
+    (<out> ^l-upper-counter <oluc>)
     (<o> ^name apply-latency-violated-incapacitated
          ^original-latency-upper-counter <luc>)
 -->
     (<s> ^latency-upper-counter <luc> -
          ^latency-upper-counter (+ 1 <luc>))
-    (<s> ^check-flag no - yes +)
+    (<out> ^l-upper-counter <oluc> - <luc> +)
     (write (crlf) |Increment Upper Latency Counter...| <luc>)
 }
 
 echo "\nLoading apply-latency-lower-violated"
 sp {apply*apply-latency-lower-violated
     (state <s> ^name hw-cybersickness-monitor
+               ^io.output-link <out>
                ^operator <o>
                ^check-flag <check-flag>
                ^latency-lower-counter <llc>)
+    (<out> ^l-lower-counter <ollc>)
     (<o> ^name apply-latency-lower-violated
          ^original-latency-lower-counter <llc>)
 -->
     (<s> ^latency-lower-counter <llc> -
          ^latency-lower-counter (+ 1 <llc>))
-    (<s> ^check-flag no - yes +)
+    (<out> ^l-lower-counter <ollc> - <llc> +)
     (write (crlf) |Increment Lower Latency Counter...| <llc>)
 }
 
@@ -38,15 +42,17 @@ sp {apply*apply-latency-lower-violated
 echo "\nLoading framerate-check"
 sp {apply*apply-framerate-violated
     (state <s> ^name hw-cybersickness-monitor
+               ^io.output-link <out>
                ^operator <o> 
                ^check-flag <check-flag>
                ^framerate-counter <fc>)
+    (<out> ^fr-counter <frc>)
     (<o> ^name apply-framerate-violated
          ^original-framerate-counter <fc>)
 -->
     (<s> ^framerate-counter <fc> -
          ^framerate-counter (+ 1 <fc>))
-    (<s> ^check-flag no - yes +)
+    (<out> ^fr-counter <frc> - <fc> +)
     (write (crlf) |Increment Framerate Counter...|)
 }
 
@@ -54,15 +60,17 @@ sp {apply*apply-framerate-violated
 echo "\nLoading opticflow-check"
 sp {apply*apply-opticflow-violated
     (state <s> ^name hw-cybersickness-monitor
+               ^io.output-link <out>
                ^operator <o>
                ^check-flag <check-flag>
                ^opticflow-counter <oc>)
+    (<out> ^of-counter <ofc>)
     (<o> ^name apply-opticflow-violated
          ^original-opticflow-counter <oc>)
 -->
     (<s> ^opticflow-counter <oc> -
          ^opticflow-counter (+ 1 <oc>))
-    (<s> ^check-flag no - yes +)
+    (<out> ^of-counter <ofc> - <oc> +)
     (write (crlf) |Increment Opticflow Counter...|) 
     }
 
