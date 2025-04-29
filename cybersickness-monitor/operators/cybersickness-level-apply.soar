@@ -5,20 +5,22 @@
 
 echo "\nLoading apply-c1x1"
 sp {apply*apply-c1x1
-    (state <s> ^operator.name apply-x1
+    (state <s> ^operator.name apply-c1x1
              ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>
              ^opticflow-counter <oc>
              ^framerate-counter <fc>
              ^x1 <x1>
+             ^c1 <c1>
              ^c1x1 <c1x1>
-             ^x1-set <x1-set>)
+             ^c1x1-set <c1x1-set>)
 -->
     (<s> ^x1 <x1> -
          ^x1 (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
-    (<s> ^c1x1 (* <c1> <x1> +))
-    (<s> ^c1x1 (<c1x1> -))
+    (<s> ^c1x1 (* <c1> <x1> )+)
+    (<s> ^c1x1 <c1x1> -)
     (<s> ^c1x1-set no - yes +)
+    (write (crlf) |c1x1 = | <c1x1>)
 }
 
 echo "Calculating c2x2"
@@ -29,8 +31,8 @@ sp {apply*apply-c2x2
             ^latency-lower-counter <llc>
             ^c2x2-set <c2x2-set>)
 -->
- (<s> ^c2x2 (* <c2> <llc> +))
- (<s> ^c2x2 (<c2x2> -))
+ (<s> ^c2x2 (* <c2> <llc>) +)
+ (<s> ^c2x2 <c2x2> -)
  (<s> ^c2x2-set no - yes +)
  (write (crlf) |c2x2 = | <c2x2>) 
 }
@@ -43,8 +45,8 @@ sp {apply*apply-c3x3
             ^framerate-counter <fc>
             ^c3x3-set <c3x3-set>)
 -->
- (<s> ^c3x3 (* <c3> <fc> +))
- (<s> ^c3x3 (<c3x3> -))
+ (<s> ^c3x3 (* <c3> <fc>) +)
+ (<s> ^c3x3 <c3x3> -)
  (<s> ^c3x3-set no - yes +)
  (write (crlf) |c3x3 = | <c3x3>) 
  }
@@ -52,13 +54,13 @@ sp {apply*apply-c3x3
 echo "Calculating c4x4"
 sp {apply*apply-c4x4
  (state <s> ^operator.name apply-c4x4
-            ^c4x4 <c2x2>
-            ^c4 <c2>
+            ^c4x4 <c4x4>
+            ^c4 <c4>
             ^opticflow-counter <oc>
             ^c4x4-set <c4x4-set>)
 -->
- (<s> ^c4x4 (* <c4> <oc> +))
- (<s> ^c4x4 (<c4x4> -))
+ (<s> ^c4x4 (* <c4> <oc>) +)
+ (<s> ^c4x4 <c4x4> -)
  (<s> ^c4x4-set no - yes +)
  (write (crlf) |c4x4 = | <c4x4>) 
 }

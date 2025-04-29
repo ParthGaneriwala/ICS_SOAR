@@ -11,7 +11,7 @@ sp {propose*latency-violated-incapacitated
                ^io.input-link.systemdata <sd>
                ^latency-upper-counter <luc>
                ^latency-upper-violated no)         
-    (<s> ^latency-upper-counter <luc> < 21)
+    (<s> ^latency-upper-counter <luc> < 20)
     (<sd> ^sys-latency <sl> > <lut>)
 -->
     (write (crlf) |Checking for cybersickness for System Latency value: | <sl> | Latency Upper Threshold | <lut>)
@@ -76,8 +76,6 @@ sp {propose*opticflow-check
 sp {propose*check*hw-cybersickness
     (state <s> ^name hw-cybersickness-monitor
                ^check-flag yes)
-            #    ^framerate-counter 20
-            #    ^opticflow-counter 20)
 -->
     (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)
