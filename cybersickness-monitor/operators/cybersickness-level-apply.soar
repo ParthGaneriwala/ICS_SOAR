@@ -9,14 +9,13 @@ sp {apply*apply-c1x1
              ^latency-lower-counter <llc>
              ^latency-upper-counter <luc>
              ^opticflow-counter <oc>
-             ^framerate-counter <fc>
              ^x1 <x1>
              ^c1 <c1>
              ^c1x1 <c1x1>
              ^c1x1-set <c1x1-set>)
 -->
     (<s> ^x1 <x1> -
-         ^x1 (+ (+ (+ (+ <oc>) <llc>) <luc>) <fc>))
+         ^x1 (+ (+ (+ <oc>) <llc>) <luc>))
     (<s> ^c1x1 (* <c1> <x1> )+)
     (<s> ^c1x1 <c1x1> -)
     (<s> ^c1x1-set no - yes +)
@@ -42,10 +41,10 @@ sp {apply*apply-c3x3
  (state <s> ^operator.name apply-c3x3
             ^c3x3 <c3x3>
             ^c3 <c3>
-            ^framerate-counter <fc>
+            ^latency-upper-counter <luc>
             ^c3x3-set <c3x3-set>)
 -->
- (<s> ^c3x3 (* <c3> <fc>) +)
+ (<s> ^c3x3 (* <c3> <luc>) +)
  (<s> ^c3x3 <c3x3> -)
  (<s> ^c3x3-set no - yes +)
  (write (crlf) |c3x3 = | <c3x3>) 
@@ -54,7 +53,7 @@ sp {apply*apply-c3x3
 echo "Calculating c4x4"
 sp {apply*apply-c4x4
  (state <s> ^operator.name apply-c4x4
-            ^c4x4 <c4x4>
+            ^c3x3 <c4x4>
             ^c4 <c4>
             ^opticflow-counter <oc>
             ^c4x4-set <c4x4-set>)
@@ -63,7 +62,7 @@ sp {apply*apply-c4x4
  (<s> ^c4x4 <c4x4> -)
  (<s> ^c4x4-set no - yes +)
  (write (crlf) |c4x4 = | <c4x4>) 
-}
+ }
 
 echo "\nLoading apply-sum-weights"
 sp {apply*apply-sum-weights
