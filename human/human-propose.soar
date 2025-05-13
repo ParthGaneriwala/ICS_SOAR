@@ -24,8 +24,7 @@ sp {top-state*elaborate*age-check
 sp {top-state*elaborate*set*threshold*male
     (state <s> ^gender Male <g>)
 -->
-    (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-lower-threshold 30)
+    (<s> ^latency-threshold 30)
     (<s> ^optic-flow-threshold 1)
     (<s> ^gender-threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)
@@ -34,8 +33,7 @@ sp {top-state*elaborate*set*threshold*male
 sp {top-state*elaborate*set*threshold*female
     (state <s> ^gender Female <g>)
 -->
-    (<s> ^latency-upper-threshold 70)
-    (<s> ^latency-lower-threshold 20)
+    (<s> ^latency-threshold 20)
     (<s> ^optic-flow-threshold 1)
     (<s> ^gender-threshold-set yes)
     (write (crlf) |Assigning the thresholds for gender: | <g>)

@@ -6,8 +6,7 @@
 echo "\nLoading apply-c1x1"
 sp {apply*apply-c1x1
     (state <s> ^operator.name apply-c1x1
-             ^latency-lower-counter <llc>
-             ^latency-upper-counter <luc>
+             ^latency-counter <lc>
              ^opticflow-counter <oc>
              ^x1 <x1>
              ^c1 <c1>
@@ -15,22 +14,22 @@ sp {apply*apply-c1x1
              ^c1x1-set <c1x1-set>)
 -->
     (<s> ^x1 <x1> -
-         ^x1 (+ (+ (+ <oc>) <llc>) <luc>))
+         ^x1 (+ (+ <oc>) <lc>))
     (<s> ^c1x1 (* <c1> <x1> )+)
     (<s> ^c1x1 <c1x1> -)
     (<s> ^c1x1-set no - yes +)
     (write (crlf) |c1x1 = | <c1x1>)
 }
 
-echo "Calculating c2x2"
+echo "\Calculating c2x2"
 sp {apply*apply-c2x2
  (state <s> ^operator.name apply-c2x2
             ^c2x2 <c2x2>
             ^c2 <c2>
-            ^latency-lower-counter <llc>
+            ^latency-counter <lc>
             ^c2x2-set <c2x2-set>)
 -->
- (<s> ^c2x2 (* <c2> <llc>) +)
+ (<s> ^c2x2 (* <c2> <lc>) +)
  (<s> ^c2x2 <c2x2> -)
  (<s> ^c2x2-set no - yes +)
  (write (crlf) |c2x2 = | <c2x2>) 
@@ -41,27 +40,13 @@ sp {apply*apply-c3x3
  (state <s> ^operator.name apply-c3x3
             ^c3x3 <c3x3>
             ^c3 <c3>
-            ^latency-upper-counter <luc>
+            ^opticflow-counter <oc>
             ^c3x3-set <c3x3-set>)
 -->
- (<s> ^c3x3 (* <c3> <luc>) +)
+ (<s> ^c3x3 (* <c3> <oc>) +)
  (<s> ^c3x3 <c3x3> -)
  (<s> ^c3x3-set no - yes +)
  (write (crlf) |c3x3 = | <c3x3>) 
- }
-
-echo "Calculating c4x4"
-sp {apply*apply-c4x4
- (state <s> ^operator.name apply-c4x4
-            ^c3x3 <c4x4>
-            ^c4 <c4>
-            ^opticflow-counter <oc>
-            ^c4x4-set <c4x4-set>)
--->
- (<s> ^c4x4 (* <c4> <oc>) +)
- (<s> ^c4x4 <c4x4> -)
- (<s> ^c4x4-set no - yes +)
- (write (crlf) |c4x4 = | <c4x4>) 
  }
 
 echo "\nLoading apply-sum-weights"
@@ -70,20 +55,18 @@ sp {apply*apply-sum-weights
                ^c1x1 <c1x1>
                ^c2x2 <c2x2>
                ^c3x3 <c3x3>
-               ^c4x4 <c4x4>
                ^sum <sum>
                ^sum-weights <sum-w>)
 -->
     (<s> ^sum <sum> -
-         ^sum (+ (+ (+ (+ <c1x1>) <c2x2>) <c3x3>) <c4x4>))
+         ^sum (+ (+ (+ <c1x1>) <c2x2>) <c3x3>))
     (<s> ^sum-weights no - yes +)
     (write (crlf) |Total Sum: | <sum> )
 }
 
 sp {apply*apply-normal-cybersickness-level
   (state <s> ^operator.name apply-normal-cybersickness-level
-             ^io.output-link <out>
-             ^sum-weights <sum-w>)
+             ^io.output-link <out>)
   (<out> ^cybersickness-level <cl>)
 
 -->
@@ -94,8 +77,7 @@ sp {apply*apply-normal-cybersickness-level
 
 sp {apply*apply-affected-cybersickness-level
   (state <s> ^operator.name apply-affected-cybersickness-level
-             ^io.output-link <out>
-             ^sum-weights <sum-w>)
+             ^io.output-link <out>)
   (<out> ^cybersickness-level <cl>)
 
 -->
@@ -106,8 +88,7 @@ sp {apply*apply-affected-cybersickness-level
 
 sp {apply*apply-incapacitated-cybersickness-level
   (state <s> ^operator.name apply-incapacitated-cybersickness-level
-             ^io.output-link <out>
-             ^sum-weights <sum-w>)
+             ^io.output-link <out>)
   (<out> ^cybersickness-level <cl>)
 
 -->
@@ -121,8 +102,7 @@ sp {apply*check*cybersickness
                ^operator.name switch-monitor
                ^c1x1-set <c1x1-set>
                ^c2x2-set <c2x2-set>
-               ^c3x3-set <c3x3-set>
-               ^c4x4-set <c4x4-set>)
+               ^c3x3-set <c3x3-set>)
 -->
     (write (crlf) |Switched... Cybersickness-Monitor to Hardware |)
     (<s> ^check-flag yes - no +)
@@ -131,7 +111,6 @@ sp {apply*check*cybersickness
     (<s> ^c1x1-set <c1x1-set> - no +)
     (<s> ^c2x2-set <c2x2-set> - no +)
     (<s> ^c3x3-set <c3x3-set> - no +)
-    (<s> ^c4x4-set <c4x4-set> - no +)
     (<s> ^name cybersickness-monitor - )
     (<s> ^name hw-cybersickness-monitor)
 }

@@ -9,17 +9,13 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     (<s> ^name demographic-monitor)
-    (<s> ^latency-upper-counter 0
-         ^latency-lower-counter 0
-         ^latency-upper-violated no
-         ^latency-lower-violated no)
-    (<s> ^opticflow-counter 0
-         ^opticflow-violated no) 
+    (<s> ^latency-counter 0)
+    (<s> ^opticflow-counter 0) 
     (<s> ^gender-threshold-set no)
     (<s> ^age-set no)
-    (<s> ^ssq-low 20)
-    (<s> ^ssq-medium 30)
-    (<s> ^ssq-high 50)
+    (<s> ^ssq-low 9)
+    (<s> ^ssq-medium 14)
+    (<s> ^ssq-high 20)
     (<s> ^sum 0)
     (<s> ^sum-weights no)
     (<s> ^x1 0)
@@ -32,9 +28,6 @@ sp {apply*initialize
     (<s> ^c3x3 0)
     (<s> ^c3 0.3)
     (<s> ^c3x3-set no)
-    (<s> ^c4x4 0)
-    (<s> ^c4 0.4)
-    (<s> ^c4x4-set no)
     (<s> ^check-flag no)
     (<s> ^cybersickness-level-checked no)
     (<out> ^cybersickness-level none)
