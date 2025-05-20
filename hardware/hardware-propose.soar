@@ -3,8 +3,8 @@
 #
 # @created parth 20241022
 
-# R0: If sys_latency > latency_upper_threshold then increment the latency upper counter
-# latency-violated-high agent
+# R0: If sys_latency > latency_threshold then increment the latency counter
+# latency-violated agent
 sp {propose*latency-violated
     (state <s> ^name hw-cybersickness-monitor
                ^latency-threshold <lt>
@@ -20,15 +20,15 @@ sp {propose*latency-violated
          ^original-latency-counter <lc>)
     }
 
-# R1: If sys_opticflow < opticflow_threshold then cybersickness_level equal to affected
+# R1: If sys_opticflow < opticflow_threshold then increment the optical counter
 # opticflow-check agent
 sp {propose*opticflow-check
     (state <s> ^name hw-cybersickness-monitor
-               ^optic-flow-threshold <ot>
+               ^opticflow-threshold <ot>
                ^io.input-link.systemdata <sd>
                ^opticflow-counter <oc>)
     (<s> ^opticflow-counter <oc> < 15)
-    (<sd> ^sys-opticflow <sof> < <ot>)
+    (<sd> ^sys-opticflow <sof> > <ot>)
 -->
     (write (crlf) |Checking for cybersickness for System OpticFlow: | <sof>)
     (<s> ^operator <o> + = 1.0)
