@@ -28,10 +28,10 @@ module hardware
 
     // --- Opticflow violation ---
     [] state_name=0 & state_operator_name=2 & state_sys-opticflow < state_opticflow-threshold & state_opticflow-counter < 15 ->
-       0.0((state_opticflow-counter' = state_opticflow-counter + 1) & (state_check-flag' = true)) + 1.0((state_opticflow-counter' = state_opticflow-counter) & (state_check-flag' = false));
+       0.0:((state_opticflow-counter' = state_opticflow-counter + 1) & (state_check-flag' = true)) + 1.0:((state_opticflow-counter' = state_opticflow-counter) & (state_check-flag' = false));
 
     // --- Mode switch ---
     [] state_name=0 & state_operator_name=3 & state_check-flag = true ->
-       1.0((state_operator_name' = 1));
+       1.0:((state_operator_name' = 1));
 
 endmodule
