@@ -24,14 +24,14 @@ module hardware
 
     // --- Latency violation ---
     [] state_name=0 & state_operator_name=1 & state_io_input-link_systemdata_sys-latency > state_latency-threshold & state_latency-counter < 20 ->
-       0.3:((state_latency-counter' = state_latency-counter + 1) & (state_check-flag' = true)) + 0.7:((state_latency-counter' = state_latency-counter) & (state_check-flag' = false));
+       0.8:((state_latency-counter' = state_latency-counter + 1) & (state_check-flag' = true)) + 0.2:((state_latency-counter' = state_latency-counter) & (state_check-flag' = false));
 
     // --- Opticflow violation ---
     [] state_name=0 & state_operator_name=2 & state_sys-opticflow < state_opticflow-threshold & state_opticflow-counter < 15 ->
-       0.0:((state_opticflow-counter' = state_opticflow-counter + 1) & (state_check-flag' = true)) + 1.0:((state_opticflow-counter' = state_opticflow-counter) & (state_check-flag' = false));
+       0.4:((state_opticflow-counter' = state_opticflow-counter + 1) & (state_check-flag' = true)) + 0.6:((state_opticflow-counter' = state_opticflow-counter) & (state_check-flag' = false));
 
     // --- Mode switch ---
     [] state_name=0 & state_operator_name=3 & state_check-flag = true ->
-       1.0:((state_operator_name' = 1));
+       0.2:(state_operator_name' = 1) +  0.8:(state_operator_name' = state_operator_name);
 
 endmodule
