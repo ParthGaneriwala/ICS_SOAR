@@ -1,0 +1,35 @@
+// (1) What's the probability that the latency counter eventually reaches its max (20)?
+// (1) Fires if state_operator_name = 1 -> triggers latency counter update
+P=? [ F state_latency_counter = 20 ]
+
+// (2) What's the probability that the opticflow counter reaches max (15)?
+// (2) Fires if state_operator_name = 2 -> triggers opticflow counter update
+P=? [ F state_opticflow_counter = 15 ]
+
+// (3) Will the system eventually raise the check flag?
+// (3) Can be triggered by either operator 1 or 2 -> updates check_flag on success
+P=? [ F state_check_flag = true ]
+
+// (4) Will the system eventually switch from hw-cybersickness-monitor to cybersickness-monitor?
+// (4) Fires only if state_operator_name = 3 and check_flag = true
+P=? [ F state_name = 1 ]
+
+// (5) Is it guaranteed that the latency counter never exceeds 20?
+// (5) Holds if counter update (from operator 1) respects upper bound
+P>=1 [ G state_latency_counter <= 20 ]
+
+// (6) Is it guaranteed that the opticflow counter never exceeds 15?
+// (6) Holds if counter update (from operator 2) respects upper bound
+P>=1 [ G state_opticflow_counter <= 15 ]
+
+// (7) Is it always the case that check-flag is either true or false? (sanity property)
+// (7) Always true due to check_flag being boolean (sanity check)
+P>=1 [ G (state_check_flag = true | state_check_flag = false) ]
+
+// (8) What’s the minimum probability of eventually reaching operator state apply-latency-violated?
+// (8) Measures reachability of operator 1 (apply_latency_violated)
+Pmin=? [ F state_operator_name = 1 ]
+
+// (9) What’s the maximum probability of eventually reaching operator state apply-opticflow-violated?
+// (9) Measures reachability of operator 2 (apply_opticflow_violated)
+Pmax=? [ F state_operator_name = 2 ]
