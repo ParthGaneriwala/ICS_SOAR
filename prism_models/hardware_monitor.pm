@@ -59,12 +59,12 @@ module hardware
 
   // Apply latency-violated
   [] phase=1 & state_operator_name=1 ->
-     0.8 : (state_latency_counter' = min(state_latency_counter + 1, 20)) & (state_check_flag' = true) & (phase' = 0) +
+     0.8 : (state_latency_counter' = state_latency_counter + 1) & (state_check_flag' = true) & (phase' = 0) +
      0.2 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply opticflow-violated
   [] phase=1 & state_operator_name=2 ->
-     0.4 : (state_opticflow_counter' = min(state_opticflow_counter + 1, 15)) & (state_check_flag' = true) & (phase' = 0) +
+     0.4 : (state_opticflow_counter' = state_opticflow_counter + 1) & (state_check_flag' = true) & (phase' = 0) +
      0.6 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply switch-monitor
