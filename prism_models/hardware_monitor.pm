@@ -7,6 +7,7 @@ module hardware
   // ============
 
   state_name : [0..1] init 0; // 0 = hw_cybersickness_monitor, 1 = cybersickness_monitor
+  phase : [0..1] init 0;      // 0 = propose, 1 = apply
   state_operator_name : [0..3] init 0; // 0 = none, 1 = apply_latency_violated, 2 = apply_opticflow_violated, 3 = switch_monitor
 
   // ============
@@ -36,15 +37,20 @@ module hardware
   // =============
 
   // Propose latency-violated operator
-  [] state_name=0 & state_io_input_link_systemdata_sys_latency > state_latency_threshold & state_latency_counter < 20 ->
+  [] phase=0 & state_name=0 &
+     state_io_input_link_systemdata_sys_latency > state_latency_threshold &
+     state_latency_counter < 20 ->
      1.0 : (state_operator_name' = 1) & (phase' = 1);
 
   // Propose opticflow-violated operator
-  [] state_name=0 & state_sys_opticflow < state_opticflow_threshold & state_opticflow_counter < 15 ->
+  [] phase=0 & state_name=0 &
+     state_sys_opticflow < state_opticflow_threshold &
+     state_opticflow_counter < 15 ->
      1.0 : (state_operator_name' = 2) & (phase' = 1);
 
   // Propose switch-monitor operator
-  [] state_name=0 & state_check_flag = true ->
+  [] phase=0 & state_name=0 &
+     state_check_flag = true ->
      1.0 : (state_operator_name' = 3) & (phase' = 1);
 
   // ======================
@@ -52,18 +58,18 @@ module hardware
   // ======================
 
   // Apply latency-violated
-  [] state_operator_name=1 ->
-     0.8 : (state_latency_counter' = state_latency_counter + 1) & (state_check_flag' = true) & (phase' = 0) +
+  [] phase=1 & state_operator_name=1 ->
+     0.8 : (state_latency_counter' = min(state_latency_counter + 1, 20)) & (state_check_flag' = true) & (phase' = 0) +
      0.2 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply opticflow-violated
-  [] state_operator_name=2 ->
-     0.4 : (state_opticflow_counter' = state_opticflow_counter + 1) & (state_check_flag' = true) & (phase' = 0) +
+  [] phase=1 & state_operator_name=2 ->
+     0.4 : (state_opticflow_counter' = min(state_opticflow_counter + 1, 15)) & (state_check_flag' = true) & (phase' = 0) +
      0.6 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply switch-monitor
-  [] state_operator_name=3 ->
+  [] phase=1 & state_operator_name=3 ->
      0.2 : (state_name' = 1) & (phase' = 0) +
-     0.8 : (phase' = 0);
+     0.8 : (state_name' = 0) & (phase' = 0);
 
 endmodule
