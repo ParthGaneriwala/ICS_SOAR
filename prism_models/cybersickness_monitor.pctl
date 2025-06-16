@@ -1,0 +1,45 @@
+// PCTL Property File for cybersickness.prism
+
+// Cybersickness monitor with phases and operator logic
+
+
+// 1. LIVENESS: The system eventually assigns a cybersickness level
+P=? [ F cybersickness_level_checked = true ]
+// Eventually, the model reaches a state where the cybersickness level is computed.
+
+// 2. TERMINATION: The model returns to propose phase after any apply
+P>=1 [ G F phase = 0 ]
+// From any state, the system eventually returns to phase = 0 (propose phase).
+
+// 3. SWITCHING: The system eventually switches back to hardware monitor
+P=? [ F state_name = 0 ]
+// Probability that we eventually transition back to hardware monitoring mode.
+
+// 4. BOUNDEDNESS: The sum value never exceeds ssq_high threshold
+P>=1 [ G sum < ssq_high ]
+// Ensures sum never exceeds 900 (no overflow or incorrect weight accumulation).
+
+// 5. SAFETY: Sum is only calculated after all c1x1, c2x2, c3x3 are set
+P>=1 [ G (state_operator_name = 4 -> (c1x1_set & c2x2_set & c3x3_set)) ]
+// If the model attempts to sum, all weight components must be computed first.
+
+// 6. CLASSIFICATION OUTCOME: Probability of ending in a specific cybersickness level
+P=? [ F cybersickness_level = 0 ]  // Not affected
+P=? [ F cybersickness_level = 1 ]  // Affected
+P=? [ F cybersickness_level = 2 ]  // Incapacitated
+// These show how likely the model is to classify the input into each level.
+
+// 7. OPERATOR COVERAGE: Can each operator eventually be executed?
+P=? [ F state_operator_name = 1 ]  // apply-c1x1
+P=? [ F state_operator_name = 2 ]  // apply-c2x2
+P=? [ F state_operator_name = 3 ]  // apply-c3x3
+P=? [ F state_operator_name = 4 ]  // apply-sum-weights
+P=? [ F state_operator_name = 5 ]  // apply-normal-level
+P=? [ F state_operator_name = 6 ]  // apply-affected-level
+P=? [ F state_operator_name = 7 ]  // apply-incapacitated-level
+P=? [ F state_operator_name = 8 ]  // switch-monitor
+// Checks if each operator can eventually become active during execution.
+
+// 8. VALIDITY: cybersickness_level always stays in defined range
+P>=1 [ G (cybersickness_level = 0 | cybersickness_level = 1 | cybersickness_level = 2) ]
+// Prevents illegal state assignments.
