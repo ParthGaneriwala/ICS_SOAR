@@ -60,13 +60,13 @@ module hardware
 
   // Apply latency-violated
   [] phase=1 & state_name=0 & hw_state_operator_name=1 ->
-     0.8 : (state_latency_counter' = min(state_latency_counter + 1, 3)) & (state_check_flag' = true) & (phase' = 0) +
-     0.2 : (state_check_flag' = false) & (phase' = 0);
+     0.731 : (state_latency_counter' = min(state_latency_counter + 1, 3)) & (state_check_flag' = true) & (phase' = 0) +
+     0.269 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply opticflow-violated
   [] phase=1 & state_name=0 & hw_state_operator_name=2 ->
-     0.4 : (state_opticflow_counter' = min(state_opticflow_counter + 1, 3)) & (state_check_flag' = true) & (phase' = 0) +
-     0.6 : (state_check_flag' = false) & (phase' = 0);
+     0.269 : (state_opticflow_counter' = min(state_opticflow_counter + 1, 3)) & (state_check_flag' = true) & (phase' = 0) +
+     0.731 : (state_check_flag' = false) & (phase' = 0);
 
   // Apply switch-monitor
   [] phase=1 & state_name=0 & hw_state_operator_name=3 ->
@@ -85,9 +85,9 @@ module cybersickness
   // Inputs & Constants
   // ====================
 
-  c1 : [0..5] init 3;
-  c2 : [0..5] init 2;
-  c3 : [0..5] init 1;
+  c1 : [0..5] init 4;
+  c2 : [0..5] init 4;
+  c3 : [0..5] init 4;
 
   // ====================
   // Computed Weights
@@ -113,7 +113,7 @@ module cybersickness
   // ====================
   // SSQ Thresholds
   // ====================
-  ssq_low    : [0..60] init 20;
+  ssq_low    : [0..60] init 30;
   ssq_medium : [0..60] init 40;
   ssq_high   : [0..60] init 60;
 
@@ -154,12 +154,10 @@ module cybersickness
            (c1x1_set' = true) & (phase' = 0);
 
   [] phase=1 & state_name=1 & cs_state_operator_name=2 ->
-     1.0 : (c2x2' = c2 * state_latency_counter) &
-           (c2x2_set' = true) & (phase' = 0);
+     0.269 : (c2x2' = c2 * state_latency_counter) & (c2x2_set' = true) & (phase' = 0) + 0.731 : (c2x2' = c2x2) & (c2x2_set' = false) & (phase' = 0);
 
   [] phase=1 & state_name=1 & cs_state_operator_name=3 ->
-     1.0 : (c3x3' = c3 * state_opticflow_counter) &
-           (c3x3_set' = true) & (phase' = 0);
+     0.731 : (c3x3' = c3 * state_opticflow_counter) & (c3x3_set' = true) & (phase' = 0) + 0.269 : (c3x3' = c3x3) & (c3x3_set' = false) & (phase' = 0);
 
   [] phase=1 & state_name=1 & cs_state_operator_name=4 ->
      1.0 : (sum' = c1x1 + c2x2 + c3x3) &
