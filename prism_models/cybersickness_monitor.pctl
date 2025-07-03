@@ -20,8 +20,8 @@ P>=1 [ G sum < ssq_high ]
 // Ensures sum never exceeds 900 (no overflow or incorrect weight accumulation).
 
 // 5. SAFETY: Sum is only calculated after all c1x1, c2x2, c3x3 are set
-P>=1 [ G (state_operator_name = 4 -> (c1x1_set & c2x2_set & c3x3_set)) ]
-// If the model attempts to sum, all weight components must be computed first.
+P>=1 [ G (! (cs_state_operator_name = 4) | (c1x1_set & c2x2_set & c3x3_set)) ]
+// In all paths, at all times (G), if operator 4 is triggered, then the three weights must have been set.
 
 // 6. CLASSIFICATION OUTCOME: Probability of ending in a specific cybersickness level
 P=? [ F cybersickness_level = 0 ]  // Not affected
