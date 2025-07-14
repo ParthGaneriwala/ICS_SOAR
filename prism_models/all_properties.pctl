@@ -1,0 +1,82 @@
+// (1) What's the probability that the latency counter eventually reaches its max (20)?
+// (1) Fires if state_operator_name = 1 -> triggers latency counter update
+P=? [ F state_latency_counter = 20 ]
+
+// (2) What's the probability that the opticflow counter reaches max (15)?
+// (2) Fires if state_operator_name = 2 -> triggers opticflow counter update
+P=? [ F state_opticflow_counter = 15 ]
+
+// (3) Will the system eventually raise the check flag?
+// (3) Can be triggered by either operator 1 or 2 -> updates check_flag on success
+P=? [ F state_check_flag = true ]
+
+// (4) Will the system eventually switch from hw-cybersickness-monitor to cybersickness-monitor?
+// (4) Fires only if state_operator_name = 3 and check_flag = true
+P=? [ F state_name = 1 ]
+
+// (5) Is it guaranteed that the latency counter never exceeds 20?
+// (5) Holds if counter update (from operator 1) respects upper bound
+P>=1 [ G state_latency_counter <= 20 ]
+
+// (6) Is it guaranteed that the opticflow counter never exceeds 15?
+// (6) Holds if counter update (from operator 2) respects upper bound
+P>=1 [ G state_opticflow_counter <= 15 ]
+
+// (7) Is it always the case that check-flag is either true or false? (sanity property)
+// (7) Always true due to check_flag being boolean (sanity check)
+P>=1 [ G (state_check_flag = true | state_check_flag = false) ]
+
+// (8) What’s the minimum probability of eventually reaching operator state apply-latency-violated?
+// (8) Measures reachability of operator 1 (apply_latency_violated)
+Pmin=? [ F state_operator_name = 1 ]
+
+// (9) What’s the maximum probability of eventually reaching operator state apply-opticflow-violated?
+// (9) Measures reachability of operator 2 (apply_opticflow_violated)
+Pmax=? [ F state_operator_name = 2 ]
+
+
+// PCTL Property File for cybersickness.prism
+
+// Cybersickness monitor with phases and operator logic
+
+
+// 1. LIVENESS: The system eventually assigns a cybersickness level
+P=? [ F cybersickness_level_checked = true ]
+// Eventually, the model reaches a state where the cybersickness level is computed.
+
+// 2. TERMINATION: The model returns to propose phase after any apply
+P>=1 [ G F phase = 0 ]
+// From any state, the system eventually returns to phase = 0 (propose phase).
+
+// 3. SWITCHING: The system eventually switches back to hardware monitor
+P=? [ F state_name = 0 ]
+// Probability that we eventually transition back to hardware monitoring mode.
+
+// 4. BOUNDEDNESS: The sum value never exceeds ssq_high threshold
+P>=1 [ G sum < ssq_high ]
+// Ensures sum never exceeds 900 (no overflow or incorrect weight accumulation).
+
+// 5. SAFETY: Sum is only calculated after all c1x1, c2x2, c3x3 are set
+P>=1 [ G (! (cs_state_operator_name = 4) | (c1x1_set & c2x2_set & c3x3_set)) ]
+// In all paths, at all times (G), if operator 4 is triggered, then the three weights must have been set.
+
+// 6. CLASSIFICATION OUTCOME: Probability of ending in a specific cybersickness level
+P=? [ F cybersickness_level = 0 ]  // Not affected
+P=? [ F cybersickness_level = 1 ]  // Affected
+P=? [ F cybersickness_level = 2 ]  // Incapacitated
+// These show how likely the model is to classify the input into each level.
+
+// 7. OPERATOR COVERAGE: Can each operator eventually be executed?
+P=? [ F state_operator_name = 1 ]  // apply-c1x1
+P=? [ F state_operator_name = 2 ]  // apply-c2x2
+P=? [ F state_operator_name = 3 ]  // apply-c3x3
+P=? [ F state_operator_name = 4 ]  // apply-sum-weights
+P=? [ F state_operator_name = 5 ]  // apply-normal-level
+P=? [ F state_operator_name = 6 ]  // apply-affected-level
+P=? [ F state_operator_name = 7 ]  // apply-incapacitated-level
+P=? [ F state_operator_name = 8 ]  // switch-monitor
+// Checks if each operator can eventually become active during execution.
+
+// 8. VALIDITY: cybersickness_level always stays in defined range
+P>=1 [ G (cybersickness_level = 0 | cybersickness_level = 1 | cybersickness_level = 2) ]
+// Prevents illegal state assignments.
