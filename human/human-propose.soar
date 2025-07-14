@@ -4,9 +4,19 @@
 # @created candice 20241107
 
 # Switching to the software monitor
-sp {propose*check*h-cybersickness
-    (state <s> ^name demographic-monitor)
 
+# Assigning the users age
+sp {top-state*elaborate*exposure-time
+    (state <s> ^io.input-link.systemdata.sys-exposuretime <x1>)
+-->
+    (<s> ^x1 <x1>)
+    (<s> ^exposure-time-set yes)
+    (write (crlf) |Assigning the length of time the user is completing the mission: | <x1>)
+    }
+
+sp {propose*check*h-cybersickness
+    (state <s> ^name demographic-monitor
+               ^exposure-time-set yes)
 -->
     (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)

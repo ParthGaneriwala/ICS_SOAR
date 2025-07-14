@@ -8,9 +8,9 @@
 
 # Linear equation for calculating the cybersickness level
 # c1x1 + c2x2 + c3x3  >= [ssq-low, ssq2-medium,ssq3-high]
-# c1 = 0.59, c2 = 0.30, c3= 0.013 weights
+# c1 = 0.38, c2 = 0.12, c3= 4.51 weights
 
-# x1 = total number of violations
+# x1 = total exposure time
 # x2 = total number of latency violations
 # x3 = total number of optical flow violations
 

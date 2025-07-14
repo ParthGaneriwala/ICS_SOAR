@@ -6,15 +6,15 @@
 echo "\nLoading apply-c1x1"
 sp {apply*apply-c1x1
     (state <s> ^operator.name apply-c1x1
-             ^latency-counter <lc>
-             ^opticflow-counter <oc>
-             ^x1 <x1>
-             ^c1 <c1>
-             ^c1x1 <c1x1>
-             ^c1x1-set <c1x1-set>)
+               ^latency-counter <lc>
+               ^opticflow-counter <oc>
+               ^x1 <x1>
+               ^c1 <c1>
+               ^c1x1 <c1x1>
+               ^c1x1-set <c1x1-set>)
 -->
-    (<s> ^x1 <x1> -
-         ^x1 (+ (+ <oc>) <lc>))
+    # (<s> ^x1 <x1> -
+    #      ^x1 (+ (+ <oc>) <lc>))
     (<s> ^c1x1 (* <c1> <x1> )+)
     (<s> ^c1x1 <c1x1> -)
     (<s> ^c1x1-set no - yes +)
