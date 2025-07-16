@@ -3,12 +3,14 @@ dtmc
 
 // ========= Shared global variables =========
 global state_name : [0..1] init 0; // 0 = hardware, 1 = cybersickness
+global state_operator_name : [0..11] init 0; 
 global phase : [0..1] init 0;      // 0 = propose, 1 = apply
 global state_latency_counter : [0..3] init 1;
 global state_opticflow_counter : [0..3] init 1;
-global state_operator_name : [0..11] init 0; // 0 = none, 1 = apply_latency_violated, 2 = apply_opticflow_violated, 3 = switch_monitor, 4....11 (cybersickness)
+
 module hardware
 
+ 
   // ============
   // Latency subsystem
   // ============
@@ -70,11 +72,6 @@ module hardware
 endmodule
 
 module cybersickness
-
-  // ====================
-  // State and Control
-  // ====================
-  cs_state_operator_name : [0..8] init 0;
 
   // ====================
   // Inputs & Constants
