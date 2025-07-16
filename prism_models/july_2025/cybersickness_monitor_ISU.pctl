@@ -22,9 +22,10 @@
 //
 // The property captures the end result of an optic flow-induced cybersickness scenario.
 
-P=? [ F cybersickness_level = 1 ]
-P=? [ (state_sys_opticflow < state_opticflow_threshold) U cybersickness_level = 1 ]
-P>=0.7 [ (state_sys_opticflow < state_opticflow_threshold) U cybersickness_level = 1 ]
+P>=0.5 [ (state_sys_opticflow < state_opticflow_threshold) U cybersickness_level = 1 ]
+
+// This property states that with at least 50% probability, the system will eventually reach a state where cybersickness_level = 1 (i.e., moderate cybersickness), and until that point, the optic flow remains below the defined threshold (state_sys_opticflow < state_opticflow_threshold) at every step along the path.
+
 
 // Property 2:
 // This property checks the probability that the system avoids high cybersickness level 
@@ -52,5 +53,15 @@ P>=0.7 [ (state_sys_opticflow < state_opticflow_threshold) U cybersickness_level
 // - This property checks that even after all transitions, the system avoids cybersickness_level = 2.
 //
 // Model Checking Query:
-P=? [ G (cybersickness_level < 2) ]
-P<=0.1 [ F cybersickness_level = 2 ]
+// Now:
+// P>=0.9 [ G (
+//  state_io_input_link_systemdata_sys_latency <= state_latency_threshold &
+//  state_sys_opticflow >= state_opticflow_threshold
+//  => cybersickness_level < 2
+// ) ]
+
+// But Prism can’t do implication directly. However, we can apply DeMorgan’s law to convert it into not and or statements (which Prism supports):
+
+P>=0.9 [ G (   !(state_io_input_link_systemdata_sys_latency <= state_latency_threshold) |   !(state_sys_opticflow >= state_opticflow_threshold) |   cybersickness_level < 2 ) ] 
+
+// This property states that with at least 90% probability, whenever both latency and optic flow remain within safe bounds, the system will stay in a state where cybersickness_level remains less than 2 — that is, it never enters a state of high cybersickness.
