@@ -170,7 +170,7 @@ module cybersickness
      1.0 : (cybersickness_level' = 2) &
            (cybersickness_level_checked' = true) & (phase' = 0);
 
-  [] phase=1 & state_name=1 & cstate_operator_name=11 ->
+  [] phase=1 & state_name=1 & state_operator_name=11 ->
      1.0 : (state_name' = 0) &
            (cybersickness_level_checked' = false) &
            (sum_weights' = false) &
