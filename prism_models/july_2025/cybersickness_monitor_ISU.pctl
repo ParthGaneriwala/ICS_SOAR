@@ -28,8 +28,8 @@ P>=0.5 [ (state_sys_opticflow < state_opticflow_threshold) U cybersickness_level
 
 
 // Property 2:
-// This property checks the probability that the system avoids high cybersickness level 
-// (i.e., SSQ score does not exceed S2) assuming none of the triggering conditions are active.
+// This property checks the probability that the system avoids a moderate or a high cybersickness level 
+// (i.e., SSQ score does not exceed S1 or S2) assuming none of the triggering conditions are active.
 // We use this to confirm that the system remains in no cybersickness (0)
 // and never reaches moderate (1) or high severity (2), when no latency or optic flow violations are detected.
 //
