@@ -19,7 +19,7 @@ module hardware
   // Opticflow subsystem
   // ============
 
-  state_sys_opticflow : [0..200] init 0;
+  state_sys_opticflow : [0..200] init 1;
   state_opticflow_threshold : [0..200] init 1;
 
   // ============
@@ -40,7 +40,7 @@ module hardware
 
   // Propose opticflow-violated operator
   [] phase=0 & state_name=0 &
-     state_sys_opticflow < state_opticflow_threshold &
+     state_sys_opticflow > state_opticflow_threshold &
      state_opticflow_counter < 15 ->
      1.0 : (state_operator_name' = 2) & (phase' = 1);
 
@@ -170,7 +170,7 @@ module cybersickness
      1.0 : (cybersickness_level' = 2) &
            (cybersickness_level_checked' = true) & (phase' = 0);
 
-  [] phase=1 & state_name=1 & cstate_operator_name=11 ->
+  [] phase=1 & state_name=1 & state_operator_name=11 ->
      1.0 : (state_name' = 0) &
            (cybersickness_level_checked' = false) &
            (sum_weights' = false) &
