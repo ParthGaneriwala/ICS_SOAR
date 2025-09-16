@@ -4,3 +4,45 @@ P>=0.9 [ G (cybersickness_level<1) U ((state_io_input_link_systemdata_sys_latenc
 
 P>=0.9 [ G ((state_io_input_link_systemdata_sys_latency>state_latency_threshold)|(state_sys_opticflow>state_opticflow_threshold)) => (cybersickness_level<1)   ]
 
+<<<<<<< HEAD
+=======
+
+// Property 2:
+// This property checks the probability that the system avoids a moderate or a high cybersickness level 
+// (i.e., SSQ score does not exceed S1 or S2) assuming none of the triggering conditions are active.
+// We use this to confirm that the system remains in no cybersickness (0)
+// and never reaches moderate (1) or high severity (2), when no latency or optic flow violations are detected.
+//
+// Source Guarantee from Document:
+// "# sickness guarantee: If the assumptions are true AND none of the claims in the model are met,
+// then the user’s SSQ (cybersickness) score will not exceed S1 with W4% probability."
+//
+// Mapping:
+// | Concept from Doc                          | Mapping in Model                                               |
+// |-------------------------------------------|----------------------------------------------------------------|
+// | "None of the claims met"                  | Latency and opticflow values are within safe thresholds        |
+// | "SSQ score will not exceed S1"            | cybersickness_level ≠ 2 (i.e., stays at 0 or 1)                |
+// | "Probability of remaining below S1"       | Computed as: P=? [ G (cybersickness_level < 2) ]               |
+//
+// Notes:
+// - "None of the claims met" means we assume the following conditions hold true:
+//     - state_io_input_link_systemdata_sys_latency ≤ state_latency_threshold
+//     - state_sys_opticflow ≥ state_opticflow_threshold
+//   which prevent proposal of violation-handling operators in hardware phase.
+// - cybersickness_level is updated in cybersickness APPLY phase based on sum of weights.
+// - This property checks that even after all transitions, the system avoids cybersickness_level = 2.
+//
+// Model Checking Query:
+// Now:
+// P>=0.9 [ G (
+//  state_io_input_link_systemdata_sys_latency <= state_latency_threshold &
+//  state_sys_opticflow >= state_opticflow_threshold
+//  => cybersickness_level < 2
+// ) ]
+
+// But Prism can’t do implication directly. However, we can apply DeMorgan’s law to convert it into not and or statements (which Prism supports):
+
+P>=0.9 [ G (   !(state_io_input_link_systemdata_sys_latency <= state_latency_threshold) |   !(state_sys_opticflow >= state_opticflow_threshold) |   cybersickness_level < 2 ) ] 
+
+// This property states that with at least 90% probability, whenever both latency and optic flow remain within safe bounds, the system will stay in a state where cybersickness_level remains less than 2 — that is, it never enters a state of high cybersickness.
+>>>>>>> dcad77ff65d0a22e3bf83d556a28f21607f458d7
