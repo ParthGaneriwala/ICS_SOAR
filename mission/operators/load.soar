@@ -5,4 +5,4 @@
 
 echo "\nLoading operators/load.soar"
 
-source "transition.soar"
+source "task-apply.soar"

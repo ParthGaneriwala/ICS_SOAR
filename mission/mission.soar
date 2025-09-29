@@ -6,7 +6,7 @@
 echo "\nLoading mission/task.soar"
 
 sp {propose*notsick*scan
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 0
                ^sick 0
                ^time <t>)
@@ -18,7 +18,7 @@ sp {propose*notsick*scan
 
  }
  sp {propose*notsick*deciding
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 1
                ^sick 0
                ^time <t>)
@@ -30,7 +30,7 @@ sp {propose*notsick*scan
 
  }
  sp {propose*notsick*decided
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 2
                ^sick 0
                ^time <t>)
@@ -43,7 +43,7 @@ sp {propose*notsick*scan
 
  }
  sp {propose*sick*scan
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 0
                ^sick 0
                ^time <t>)
@@ -56,7 +56,7 @@ sp {propose*notsick*scan
 
  }
  sp {propose*sick*deciding
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 0
                ^sick 1
                ^time <t>)
@@ -69,7 +69,7 @@ sp {propose*notsick*scan
 
  }
  sp {propose*sick*decided
-    (state <s> ^name monitor
+    (state <s> ^name mission-monitor
                ^action 2
                ^sick 2
                ^time <t>)

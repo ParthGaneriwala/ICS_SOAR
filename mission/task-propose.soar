@@ -1,0 +1,59 @@
+##!
+# @file
+#
+# @created parth 20250929
+
+# Scan and Select -> Deciding
+sp{propose*SS-transition
+    (state <s> ^name mission-monitor
+               ^time-counter <tc>
+               ^total-time <total-time>
+               ^io.input-link.systemdata <sd>)
+    (<s> ^time-counter <tc> < <total-time>)
+    (<sd> ^t1 <t1>)
+-->
+    (write (crlf) |Transition from Scan and Select to Deciding ...| <t1>)
+    (<s> ^operator <o> + =,>)
+    (<o> ^name apply-SS-transition
+         ^original-time-counter <tc>)
+}
+
+# Deciding -> Decided
+sp{propose*D-transition
+    (state <s> ^name mission-monitor
+               ^time-counter <tc>
+               ^total-time <total-time>
+               ^io.input-link.systemdata <sd>)
+    (<s> ^time-counter <tc> < <total-time>)
+    (<sd> ^t2 <t2>)
+-->
+    (write (crlf) |Transition from Scan and Select to Deciding ...| <t2>)
+    (<s> ^operator <o> + =,>)
+    (<o> ^name apply-D-transition
+         ^original-time-counter <tc>)
+}
+
+# Decided -> Scan and Select
+sp{propose*DD-transition
+    (state <s> ^name mission-monitor
+               ^time-counter <tc>
+               ^total-time <total-time>
+               ^io.input-link.systemdata <sd>)
+    (<s> ^time-counter <tc> < <total-time>)
+    (<sd> ^t3 <t3>)
+-->
+    (write (crlf) |Transition from Scan and Select to Deciding ...| <t3>)
+    (<s> ^operator <o> + =,>)
+    (<o> ^name apply-DD-transition
+         ^original-time-counter <tc>)
+}
+
+# Some factor of 5 blah blah
+sp {propose*check*hw-cybersickness
+    (state <s> ^name mission-monitor
+               ^transition-check yes)
+-->
+    (write (crlf) |Switched...|)
+    (<s> ^operator <o> + >,=)
+    (<o> ^name switch-monitor)
+    }

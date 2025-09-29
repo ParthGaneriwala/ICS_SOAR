@@ -1,0 +1,41 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+echo "\nLoading mission/sickness-apply.soar"
+
+echo "\nLoading apply-notsick"
+sp {apply*apply-notsick
+    (state <s> ^operator.name apply-notsick
+               ^io.output-link <out>)
+    (<out> ^sick <sick>)
+-->
+    (<s> ^sick 0)
+    (write (crlf) |Agent not sick...|)
+    (<s> ^sickness-checked no - yes +)
+    (<out> ^sick <sick> - not-sick +)
+ }
+
+echo "\nLoading sick"
+ sp {apply*apply-sick
+    (state <s> ^operator.name sick
+                ^io.output-link <out>)
+    (<out> ^sick <sick>)
+-->
+    (<s> ^sick 1)
+    (write (crlf) |Agent sick...|)
+    (<s> ^sickness-checked no - yes +)
+    (<out> ^sick <sick> - sick +)
+ }
+
+echo "\nLoading cybersickness"
+ sp {apply*check*cybersickness
+    (state <s> ^name cybersickness-monitor
+               ^operator.name switch-monitor)
+-->
+    (write (crlf) |Switched... Sickness-Monitor to Mission |)
+    (<s> ^sickness-checked yes - no +)
+    (<s> ^name sickness-monitor - )
+    (<s> ^name mission-monitor)
+}

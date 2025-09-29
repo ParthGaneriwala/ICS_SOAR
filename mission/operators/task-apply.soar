@@ -1,0 +1,56 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+echo "\nLoading apply-SS-transition"
+sp {apply*apply-SS-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>)
+    (<o> ^name apply-SS-transition
+         ^original-time-counter <tc>)
+-->
+    (<s> ^time-counter <tc> -
+         ^time-counter (+ 1 <tc>))
+    (<s> ^action 0)
+    (write (crlf) |State = Scan and Select | <tc>)
+}
+
+echo "\nLoading apply-D-transition"
+sp {apply*apply-D-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>)
+    (<o> ^name apply-D-transition
+         ^original-time-counter <tc>)
+-->
+    (<s> ^time-counter <tc> -
+         ^time-counter (+ 1 <tc>))
+    (<s> ^action 1)
+    (write (crlf) |State = Deciding | <tc>)
+}
+
+echo "\nLoading apply-DD-transition"
+sp {apply*apply-DD-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>)
+    (<o> ^name apply-DD-transition
+         ^original-time-counter <tc>)
+-->
+    (<s> ^time-counter <tc> -
+         ^time-counter (+ 1 <tc>))
+    (<s> ^action 2)
+    (write (crlf) |State = Decided | <tc>)
+}
+
+echo "\nLoading transition"
+ sp {apply*check*transition
+    (state <s> ^name cybersickness-monitor
+               ^operator.name switch-monitor)
+-->
+    (write (crlf) |Switched... Mission-Monitor to Task |)
+    (<s> ^name mission-monitor -)
+    (<s> ^name sickness-monitor)
+}

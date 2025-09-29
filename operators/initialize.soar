@@ -9,10 +9,15 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     # -- User state
-    (<s> ^name monitor
+    (<s> ^name mission-monitor
          ^action 0                 # Action (0,1,2) -> (Scanning, Deciding, Decided)
          ^sick 0                # Sick (0,1) -> (Not Sick, Sick)
          ^time 0                # Time (0-20) -> Time steps in current state
          ^mission-success none
+         ^time-counter 0
+         ^total-time 80
+         ^sickness-checked no)
+    (<out> ^sick not-sick
+           ^state no)
     (write (crlf) |Agent initialized.|)
 }
