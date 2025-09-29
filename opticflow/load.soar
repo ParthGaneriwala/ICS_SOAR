@@ -1,2 +1,0 @@
-source "transitions.soar"
-source "operators/load.soar"

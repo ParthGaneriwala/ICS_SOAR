@@ -1,0 +1,18 @@
+##!
+# @file
+#
+# @created parth 20250924
+
+echo "\nLoading mission/transition.soar"
+
+sp {apply*transition*notsick
+    (state <s> ^operator.name transition
+               ^name monitor
+               ^io.output-link <out>)
+ 
+-->
+    (<s> ^action 0
+         ^sick 0)
+    (write (crlf) |Agent transitioning...|)
+
+ }

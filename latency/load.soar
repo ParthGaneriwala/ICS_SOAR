@@ -1,7 +1,0 @@
-##!
-# @file
-#
-# @created parth 20250325
-
-source "transitions.soar"
-source "operators/load.soar"

@@ -10,46 +10,9 @@ sp {apply*initialize
 -->
     # -- User state
     (<s> ^name monitor
-         ^ssq 0                 # PRISM SSQ starts at 0 (low)
-         ^gender 1           # 0 = male, 1 = female
+         ^action 0                 # Action (0,1,2) -> (Scanning, Deciding, Decided)
+         ^sick 0                # Sick (0,1) -> (Not Sick, Sick)
+         ^time 0                # Time (0-20) -> Time steps in current state
          ^mission-success none
-
-    # -- Opticflow Module
-         ^opticflow.range 0
-         ^hs 0.2
-         ^log-hs -0.6989
-         ^no-change 0.6
-         ^log-no-change -0.2218
-    # -- PRISM-derived transition probabilities 
-    
-    # We map these to preference values using softmax-friendly logit scores:
-
-    # logit(p) = log ⁡ ( p / 1 − p ) 
-
-    # Or, more generally:
-    # utility_i = log ⁡ ( p_i )  (up to a constant shift) 
-
-    # So for 0.75 and 0.25:
-    # log(0.75) ≈ -0.2877 
-    # log(0.25) ≈ -1.386 
-
-    # We also precomupte the probablities given below as l2mprob and log of those variables. 
-
-         ^low-to-med-prob -0.2877
-         ^low-to-high-prob -1.386
-         ^med-to-high-prob -0.301
-         ^gender-factor 1.2
-
-         ^l2mprob 0.9                   # low → med transition prob (0.75*gender-factor (1.2))
-         ^stay-low-prob 0.1             # complement
-         ^log-l2mprob -0.105            # log(0.9)
-         ^log-stay-low -2.302)           # log(0.1)
-    (write (crlf) |Agent initialized with PRISM model variables.|)
+    (write (crlf) |Agent initialized.|)
 }
-
-
-
-    # -- Headset state
-     #     ^headset.h 4           # initial headset sickness influence index
-     #     ^headset.optic-flow low
-     #     ^headset.latency low

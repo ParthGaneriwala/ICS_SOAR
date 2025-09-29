@@ -1,8 +1,0 @@
-##!
-# @file
-#
-# @created parth 20250325
-
-echo "\nLoading operators/load.soar"
-
-source "apply-latency.soar"

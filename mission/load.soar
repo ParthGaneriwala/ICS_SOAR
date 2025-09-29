@@ -1,0 +1,8 @@
+##!
+# @file
+#
+# @created parth 20250924
+
+echo "\nLoading mission/load.soar"
+
+source "task.soar"
