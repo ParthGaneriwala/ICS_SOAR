@@ -10,14 +10,21 @@ sp {apply*initialize
 -->
     # -- User state
     (<s> ^name mission-monitor
+         ^start-mission no
          ^action 0                 # Action (0,1,2) -> (Scanning, Deciding, Decided)
          ^sick 0                # Sick (0,1) -> (Not Sick, Sick)
          ^time 0                # Time (0-20) -> Time steps in current state
+         ^sst 0.5
+         ^dt 0.5
+         ^ddt 0.5
+         ^sick_thres 0.5
          ^mission-success none
          ^time-counter 0
-         ^total-time 80
+         ^total-time 1200
          ^sickness-checked no)
     (<out> ^sick not-sick
-           ^state no)
+           ^event Scan-and-Select
+           ^current-time 0
+           ^total-time 1200)
     (write (crlf) |Agent initialized.|)
 }

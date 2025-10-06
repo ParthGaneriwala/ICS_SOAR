@@ -5,4 +5,4 @@
 
 echo "\nLoading mission/load.soar"
 
-source "task.soar"
+source "task-propose.soar"
