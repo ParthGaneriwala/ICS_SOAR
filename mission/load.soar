@@ -6,3 +6,4 @@
 echo "\nLoading mission/load.soar"
 
 source "task-propose.soar"
+source "operators/load.soar"

@@ -6,3 +6,4 @@
 echo "\nLoading sickness/load.soar"
 
 source "sickness-propose.soar"
+source "operators/load.soar"
