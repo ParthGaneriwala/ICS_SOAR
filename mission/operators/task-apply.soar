@@ -8,15 +8,20 @@ sp {apply*apply-SS-transition
     (state <s> ^name mission-monitor
                ^operator <o>
                ^time-counter <tc>
+               ^action <a>
+               ^io.input-link.systemdata <sd>
                ^io.output-link <out>)
+    (<sd> ^pdf2 <pdf2>)
+    (<out> ^event <e>
+           ^current-time <ct>)
     (<o>  ^name apply-SS-transition
           ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
          ^time-counter (+ 1 <tc>))
-    (<s> ^action 0)
-    (<out> ^event Deciding +)
-    (<out> ^current-time (+ 1 <tc>))
+    (<s> ^action <a> - 0 +)
+    (<out> ^event <e> - Deciding +
+           ^current-time <ct> - (+ <pdf2> <tc>) +)
     (write (crlf) |State = Deciding | <tc>)
 }
 
@@ -28,15 +33,20 @@ sp {apply*apply-D-transition
     (state <s> ^name mission-monitor
                ^operator <o>
                ^time-counter <tc>
+               ^action <a>
+               ^io.input-link.systemdata <sd>
                ^io.output-link <out>)
+    (<sd> ^pdf3 <pdf3>)
+    (<out> ^event <e>
+           ^current-time <ct>)
     (<o> ^name apply-D-transition
          ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
          ^time-counter (+ 1 <tc>))
-    (<s> ^action 1)
-    (<out> ^event Decided +)
-    (<out> ^current-time (+ 1 <tc>))
+    (<s> ^action <a> - 1 +)
+    (<out> ^event <e> - Decided + 
+            ^current-time <ct> - (+ <pdf3> <tc>) +)
     (write (crlf) |State = Decided | <tc>)
 }
 
@@ -45,15 +55,20 @@ sp {apply*apply-DD-transition
     (state <s> ^name mission-monitor
                ^operator <o>
                ^time-counter <tc>
+               ^action <a>
+               ^io.input-link.systemdata <sd>
                ^io.output-link <out>)
+    (<sd> ^pdf4 <pdf4>)
+    (<out> ^event <e>
+           ^current-time <ct>)
     (<o> ^name apply-DD-transition
          ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
          ^time-counter (+ 1 <tc>))
-    (<s> ^action 2)
-    (<out> ^event Scan-and-Select +)
-    (<out> ^current-time (+ 1 <tc>))
+    (<s> ^action <a> - 2 +)
+    (<out> ^event <e> - Scan-and-Select +
+           ^current-time <ct> - (+ <pdf4> <tc>) +)
     (write (crlf) |State = Scan-and-Select | <tc>)
 }
 

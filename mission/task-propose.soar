@@ -19,11 +19,12 @@ sp {propose*SS-transition
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
+    (<sd> ^pdf2 <pdf2>)
+    (<s> ^action << 4 2 >>)
     (<s> ^time-counter <tc> < <tt>)
-    (<sd> ^pdf2 <p2> )
 -->
-    (write (crlf) |Transition from Scan and Select to Deciding ...| <p2>)
-    (<s> ^operator <o> + = <p2>)
+    (write (crlf) |Transition from Scan and Select to Deciding ...|)
+    (<s> ^operator <o> + >,=)
     (<o> ^name apply-SS-transition
          ^original-time-counter <tc>)
 }
@@ -35,11 +36,13 @@ sp {propose*D-transition
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
+    (<sd> ^pdf3 <pdf3>)
+    (<s> ^action 0)
     (<s> ^time-counter <tc> < <tt>)
-    (<sd> ^pdf3 <p3>)
+
 -->
-    (write (crlf) |Transition from Deciding to Decided ...| <p3>)
-    (<s> ^operator <o> + = <p3>)
+    (write (crlf) |Transition from Deciding to Decided ...| )
+    (<s> ^operator <o> + >,=)
     (<o> ^name apply-D-transition
          ^original-time-counter <tc>)
 }
@@ -51,11 +54,12 @@ sp {propose*DD-transition
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
+    (<sd> ^pdf4 <pdf4>)
+    (<s> ^action 1)
     (<s> ^time-counter <tc> < <tt>)
-    (<sd> ^pdf4 <p4>)
 -->
-    (write (crlf) |Transition from Decided to Scan and Select ...| <p4>)
-    (<s> ^operator <o> + = <p4>)
+    (write (crlf) |Transition from Decided to Scan and Select ...| )
+    (<s> ^operator <o> + >,=)
     (<o> ^name apply-DD-transition
          ^original-time-counter <tc>)
 }
