@@ -69,7 +69,7 @@ sp {propose*check*transition
     (state <s> ^name mission-monitor
                ^start-mission yes
                ^time-counter <tc>)
-    (<s> ^time-counter <tc> > 300)
+    (<s> ^time-counter <tc> > 50)
 -->
     (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)

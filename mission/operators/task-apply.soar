@@ -18,10 +18,10 @@ sp {apply*apply-SS-transition
           ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
-         ^time-counter (+ 1 <tc>))
+         ^time-counter (+ <pdf2> <tc>) +)
     (<s> ^action <a> - 0 +)
     (<out> ^event <e> - Deciding +
-           ^current-time <ct> - (+ <pdf2> <tc>) +)
+           ^current-time <ct> - <tc> +)
     (write (crlf) |State = Deciding | <tc>)
 }
 
@@ -43,10 +43,10 @@ sp {apply*apply-D-transition
          ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
-         ^time-counter (+ 1 <tc>))
+         ^time-counter (+ <pdf3> <tc>) +)
     (<s> ^action <a> - 1 +)
     (<out> ^event <e> - Decided + 
-            ^current-time <ct> - (+ <pdf3> <tc>) +)
+           ^current-time <ct> - <tc> +)
     (write (crlf) |State = Decided | <tc>)
 }
 
@@ -65,10 +65,10 @@ sp {apply*apply-DD-transition
          ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
-         ^time-counter (+ 1 <tc>))
+         ^time-counter (+ <pdf4> <tc>) +)
     (<s> ^action <a> - 2 +)
     (<out> ^event <e> - Scan-and-Select +
-           ^current-time <ct> - (+ <pdf4> <tc>) +)
+           ^current-time <ct> - <tc> +)
     (write (crlf) |State = Scan-and-Select | <tc>)
 }
 
@@ -77,7 +77,7 @@ sp {apply*check*transition
     (state <s> ^name mission-monitor
                ^operator.name switch-monitor)
 -->
-    (write (crlf) |Switched... Mission-Monitor to Task |)
+    (write (crlf) |Switched... Mission-Monitor to Sickness|)
     (<s> ^name mission-monitor -)
     (<s> ^name sickness-monitor)
 }
