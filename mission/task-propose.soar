@@ -2,7 +2,7 @@
 # @file
 #
 # @created candice 20250929
-
+# testing it out
 sp {top-state*elaborate*startmission
     (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
                ^start-mission no)
