@@ -11,7 +11,7 @@ sp {propose*notsick
                ^sick_thres <st>
                ^sickness-checked no
                ^io.input-link.systemdata <sd>)
-    (<sd> ^pdf1 <p1> < <st>)
+    (<sd> ^pdf1 <pdf1> < <st>)
 -->
     (<s> ^operator <o> + >,=)
     (<o> ^name apply-notsick)
@@ -23,7 +23,7 @@ sp {propose*sick
                ^sick_thres <st>
                ^sickness-checked no
                ^io.input-link.systemdata <sd>)
-    (<sd> ^pdf1 <p1> > <st>)
+    (<sd> ^pdf1 <pdf1> > <st>)
 -->
     (<s> ^operator <o> + >,=)
     (<o> ^name apply-sick)

@@ -2,7 +2,7 @@
 # @file
 #
 # @created candice 20250929
-# testing it out
+
 sp {top-state*elaborate*startmission
     (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
                ^start-mission no)
@@ -11,16 +11,24 @@ sp {top-state*elaborate*startmission
     (<s> ^start-mission yes)
     (write (crlf) |Start mission: | <sm>)
 }
-
+sp {top-state*elaborate*sickness-time-interval
+    (state <s> ^io.input-link.systemdata.time-interval <ti>
+               ^sickness-time-interval-set no)
+-->
+    (<s> ^ti <ti>)
+    (<s> ^sickness-time-interval-set yes)
+    (write (crlf) |Sickness Time Interval: | <ti>)
+}
 # Scan and Select -> Deciding
 sp {propose*SS-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
+               ^sickness-time-interval-set yes
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
     (<sd> ^pdf2 <pdf2>)
-    (<s> ^action << 4 2 >>)
+    (<s> ^action << 3 2 >>)
     (<s> ^time-counter <tc> < <tt>)
 -->
     (write (crlf) |Transition from Scan and Select to Deciding ...|)
@@ -33,6 +41,7 @@ sp {propose*SS-transition
 sp {propose*D-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
+               ^sickness-time-interval-set yes
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
@@ -51,6 +60,7 @@ sp {propose*D-transition
 sp {propose*DD-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
+               ^sickness-time-interval-set yes
                ^time-counter <tc>
                ^total-time <tt>
                ^io.input-link.systemdata <sd>)
@@ -68,9 +78,13 @@ sp {propose*DD-transition
 sp {propose*check*transition
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^time-counter <tc>)
-    (<s> ^time-counter <tc> > 50)
--->
+               ^sickness-time-interval-set yes
+               ^time-counter <tc>
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^time-interval <ti>)
+    (<s> ^time-counter <tc> > <ti>)
+--> 
+
     (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)
     (<o> ^name switch-monitor)
