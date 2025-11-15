@@ -74,18 +74,15 @@ sp {propose*DD-transition
          ^original-time-counter <tc>)
 }
 
-# Some factor of 5 blah blah
+# Mission -> Sickness
 sp {propose*check*transition
     (state <s> ^name mission-monitor
                ^start-mission yes
                ^sickness-time-interval-set yes
-               ^time-counter <tc>
                ^io.input-link.systemdata <sd>)
-    (<sd> ^time-interval <ti>)
-    (<s> ^time-counter <tc> > <ti>)
+    (<sd> ^check-sickness <cs> yes)
 --> 
-
     (write (crlf) |Switched...|)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)
 }
