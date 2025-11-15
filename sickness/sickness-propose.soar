@@ -32,7 +32,9 @@ sp {propose*sick
 
 sp {propose*check*cybersickness
     (state <s> ^name sickness-monitor
-               ^sickness-checked yes)
+               ^sickness-checked yes
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^check-done <cd> yes)
 -->
     (write (crlf) |Switched...|)
     (<s> ^operator <o> + >,=)
