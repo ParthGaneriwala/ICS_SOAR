@@ -13,7 +13,7 @@ sp {propose*notsick
                ^io.input-link.systemdata <sd>)
     (<sd> ^pdf1 <pdf1> < <st>)
 -->
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + <)
     (<o> ^name apply-notsick)
 }
 
@@ -23,7 +23,7 @@ sp {propose*sick
                ^sick_thres <st>
                ^sickness-checked no
                ^io.input-link.systemdata <sd>)
-    (<sd> ^pdf1 <pdf1> > <st>)
+    (<sd> ^pdf1 <pdf1> < <st>)
 -->
     (<s> ^operator <o> + >,=)
     (<o> ^name apply-sick)
@@ -34,9 +34,9 @@ sp {propose*check*cybersickness
     (state <s> ^name sickness-monitor
                ^sickness-checked yes
                ^io.input-link.systemdata <sd>)
-    (<sd> ^check-done <cd> yes)
+    (<sd> ^check-done yes)
 -->
     (write (crlf) |Switched...|)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)
     }

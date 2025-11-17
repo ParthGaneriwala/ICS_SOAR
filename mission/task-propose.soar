@@ -32,7 +32,7 @@ sp {propose*SS-transition
     (<s> ^time-counter <tc> < <tt>)
 -->
     (write (crlf) |Transition from Scan and Select to Deciding ...|)
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name apply-SS-transition
          ^original-time-counter <tc>)
 }
@@ -51,7 +51,7 @@ sp {propose*D-transition
 
 -->
     (write (crlf) |Transition from Deciding to Decided ...| )
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name apply-D-transition
          ^original-time-counter <tc>)
 }
@@ -69,7 +69,7 @@ sp {propose*DD-transition
     (<s> ^time-counter <tc> < <tt>)
 -->
     (write (crlf) |Transition from Decided to Scan and Select ...| )
-    (<s> ^operator <o> + >,=)
+    (<s> ^operator <o> + =)
     (<o> ^name apply-DD-transition
          ^original-time-counter <tc>)
 }
