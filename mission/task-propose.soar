@@ -79,10 +79,12 @@ sp {propose*check*transition
     (state <s> ^name mission-monitor
                ^start-mission yes
                ^sickness-time-interval-set yes
-               ^io.input-link.systemdata <sd>)
-    (<sd> ^check-sickness <cs> yes)
+               ^io.input-link.systemdata <sd>
+               ^sickness-checked no)
+    (<sd> ^check-sickness yes
+           ^check-done no)
+    
 --> 
-    (write (crlf) |Switched...|)
     (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)
 }

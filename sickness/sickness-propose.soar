@@ -34,7 +34,6 @@ sp {propose*check*cybersickness
     (state <s> ^name sickness-monitor
                ^sickness-checked yes)
 -->
-    (write (crlf) |Switched...|)
     (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)
     }

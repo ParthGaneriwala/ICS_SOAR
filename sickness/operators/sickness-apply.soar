@@ -10,14 +10,17 @@ sp {apply*apply-notsick
     (state <s> ^operator.name apply-notsick
                ^sickness-checked <sc>
                ^io.output-link <out>)
-    (<out> ^sick <old-sick>)
+    (<out> ^sick <old-sick>
+           ^check-done)
 -->
     (<s> ^sick 0)
     (write (crlf) |Agent not sick...|)
     (<s> ^sickness-checked <sc> - yes +)
     (<out> ^sick <old-sick> -)
     (<out> ^sick not-sick +)
+    (<out> ^check-done no -)
     (<out> ^check-done yes +)
+
  }
 
 echo "\nLoading sick"
@@ -26,20 +29,25 @@ echo "\nLoading sick"
                ^sickness-checked <sc>
                ^io.output-link <out>)
     (<out> ^sick <old-sick>)
+    (<out> ^check-done)
 -->
     (<s> ^sick 1)
     (write (crlf) |Agent sick...|)
     (<s> ^sickness-checked <sc> - yes +)
     (<out> ^sick <old-sick> -)
     (<out> ^sick sick +)
+    (<out> ^check-done no -)
     (<out> ^check-done yes +)
+
  }
 
 echo "\nLoading cybersickness"
  sp {apply*check*cybersickness
     (state <s> ^name sickness-monitor
                ^sickness-checked <sc>
-               ^operator.name switch-monitor)
+               ^operator.name switch-monitor
+               ^io.output-link <out>)
+    (<out> ^check-done yes)
 -->
     (write (crlf) |Switched... Sickness-Monitor to Mission |)
     (<s> ^sickness-checked <sc> - no +)
