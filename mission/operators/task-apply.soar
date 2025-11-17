@@ -56,16 +56,12 @@ sp {apply*apply-DD-transition
                ^operator <o>
                ^time-counter <tc>
                ^action <a>
-               ^io.input-link.systemdata <sd>
                ^io.output-link <out>)
-    (<sd> ^pdf4 <pdf4>)
     (<out> ^event <e>
            ^current-time <ct>)
     (<o> ^name apply-DD-transition
          ^original-time-counter <tc>)
 -->
-    (<s> ^time-counter <tc> -
-         ^time-counter (+ <pdf4> <tc>) +)
     (<s> ^action <a> - 2 +)
     (<out> ^event <e> - Scan-and-Select +
            ^current-time <ct> - <tc> +)

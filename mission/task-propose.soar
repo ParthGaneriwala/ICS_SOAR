@@ -62,9 +62,7 @@ sp {propose*DD-transition
                ^start-mission yes
                ^sickness-time-interval-set yes
                ^time-counter <tc>
-               ^total-time <tt>
-               ^io.input-link.systemdata <sd>)
-    (<sd> ^pdf4 <pdf4>)
+               ^total-time <tt>)
     (<s> ^action 1)
     (<s> ^time-counter <tc> < <tt>)
 -->
