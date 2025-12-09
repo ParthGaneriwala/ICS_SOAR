@@ -18,8 +18,8 @@ sp {apply*apply-SS-transition
           ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
-         ^time-counter (+ <pdf2> <tc>) +)
-    (<s> ^action <a> - 0 +)
+         ^time-counter (+ <pdf2> <tc>) +
+         ^action <a> - 1 +)
     (<out> ^event <e> - Deciding +
            ^current-time <ct> - <tc> +)
     (write (crlf) |State = Deciding | <tc>)
@@ -43,8 +43,8 @@ sp {apply*apply-D-transition
          ^original-time-counter <tc>)
 -->
     (<s> ^time-counter <tc> -
-         ^time-counter (+ <pdf3> <tc>) +)
-    (<s> ^action <a> - 1 +)
+         ^time-counter (+ <pdf3> <tc>) +
+         ^action <a> - 2 +)
     (<out> ^event <e> - Decided + 
            ^current-time <ct> - <tc> +)
     (write (crlf) |State = Decided | <tc>)
@@ -62,7 +62,7 @@ sp {apply*apply-DD-transition
     (<o> ^name apply-DD-transition
          ^original-time-counter <tc>)
 -->
-    (<s> ^action <a> - 2 +)
+    (<s> ^action <a> - 3 +)
     (<out> ^event <e> - Scan-and-Select +
            ^current-time <ct> - <tc> +)
     (write (crlf) |State = Scan-and-Select | <tc>)

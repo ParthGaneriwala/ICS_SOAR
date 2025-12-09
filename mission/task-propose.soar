@@ -7,16 +7,16 @@ sp {top-state*elaborate*startmission
     (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
                ^start-mission no)
 -->
-    (<s> ^sm <sm>)
-    (<s> ^start-mission yes)
+    (<s> ^sm <sm>
+         ^start-mission yes)
     (write (crlf) |Start mission: | <sm>)
 }
 sp {top-state*elaborate*sickness-time-interval
     (state <s> ^io.input-link.systemdata.time-interval <ti>
                ^sickness-time-interval-set no)
 -->
-    (<s> ^ti <ti>)
-    (<s> ^sickness-time-interval-set yes)
+    (<s> ^ti <ti>
+         ^sickness-time-interval-set yes)
     (write (crlf) |Sickness Time Interval: | <ti>)
 }
 # Scan and Select -> Deciding
@@ -26,10 +26,10 @@ sp {propose*SS-transition
                ^sickness-time-interval-set yes
                ^time-counter <tc>
                ^total-time <tt>
-               ^io.input-link.systemdata <sd>)
+               ^io.input-link.systemdata <sd>
+               ^time-counter <tc> < <tt>
+               ^action << 0 3 >>)
     (<sd> ^pdf2 <pdf2>)
-    (<s> ^action << 3 2 >>)
-    (<s> ^time-counter <tc> < <tt>)
 -->
     (write (crlf) |Transition from Scan and Select to Deciding ...|)
     (<s> ^operator <o> + =)
@@ -44,11 +44,10 @@ sp {propose*D-transition
                ^sickness-time-interval-set yes
                ^time-counter <tc>
                ^total-time <tt>
-               ^io.input-link.systemdata <sd>)
+               ^io.input-link.systemdata <sd>
+               ^time-counter <tc> < <tt>
+               ^action 1)
     (<sd> ^pdf3 <pdf3>)
-    (<s> ^action 0)
-    (<s> ^time-counter <tc> < <tt>)
-
 -->
     (write (crlf) |Transition from Deciding to Decided ...| )
     (<s> ^operator <o> + =)
@@ -62,9 +61,9 @@ sp {propose*DD-transition
                ^start-mission yes
                ^sickness-time-interval-set yes
                ^time-counter <tc>
-               ^total-time <tt>)
-    (<s> ^action 1)
-    (<s> ^time-counter <tc> < <tt>)
+               ^total-time <tt>
+               ^time-counter <tc> < <tt>
+               ^action 2)
 -->
     (write (crlf) |Transition from Decided to Scan and Select ...| )
     (<s> ^operator <o> + =)
@@ -80,7 +79,7 @@ sp {propose*check*transition
                ^io.input-link.systemdata <sd>
                ^sickness-checked no)
     (<sd> ^check-sickness yes
-           ^check-done no)
+          ^check-done no)
     
 --> 
     (<s> ^operator <o> + >)
