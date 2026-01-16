@@ -3,20 +3,20 @@
 #
 # @created candice 20250929
 
-echo "\nLoading sickness/sickness-apply.soar"
+echo "\nLoading cognitive_attack/sickness-apply.soar"
 
 echo "\nLoading apply-notsick"
 sp {apply*apply-notsick
     (state <s> ^operator.name apply-notsick
                ^sickness-checked <sc>
                ^io.output-link <out>)
-    (<out> ^sick <old-sick>
+    (<out> ^operator <old-sick>
            ^check-done)
 -->
-    (<s> ^sick 0
+    (<s> ^operator 0
          ^sickness-checked <sc> - yes +)
-    (<out> ^sick <old-sick> -
-           ^sick not-sick +
+    (<out> ^operator <old-sick> -
+           ^operator not-sick +
            ^check-done no -
            ^check-done yes +)
     (write (crlf) |Agent not sick...|)
@@ -28,13 +28,13 @@ echo "\nLoading sick"
     (state <s> ^operator.name apply-sick
                ^sickness-checked <sc>
                ^io.output-link <out>)
-    (<out> ^sick <old-sick>
+    (<out> ^operator <old-sick>
            ^check-done)
 -->
-    (<s> ^sick 1)
+    (<s> ^operator 1)
     (<s> ^sickness-checked <sc> - yes +)
-    (<out> ^sick <old-sick> -
-           ^sick sick +
+    (<out> ^operator <old-sick> -
+           ^operator sick +
            ^check-done no -
            ^check-done yes +)
     (write (crlf) |Agent sick...|)

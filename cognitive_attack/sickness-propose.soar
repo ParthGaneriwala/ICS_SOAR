@@ -27,7 +27,6 @@ sp {propose*sick
 -->
     (<s> ^operator <o> + >,=)
     (<o> ^name apply-sick)
-
 }
 
 sp {propose*check*cybersickness
