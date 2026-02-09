@@ -1,9 +1,0 @@
-##!
-# @file
-#
-# @created parth 20250924
-
-echo "\nLoading cognitive_attack/load.soar"
-
-source "sickness-propose.soar"
-source "operators/load.soar"
