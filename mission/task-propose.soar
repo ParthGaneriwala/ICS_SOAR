@@ -11,77 +11,40 @@ sp {top-state*elaborate*startmission
          ^start-mission yes)
     (write (crlf) |Start mission: | <sm>)
 }
-sp {top-state*elaborate*sickness-time-interval
-    (state <s> ^io.input-link.systemdata.time-interval <ti>
-               ^sickness-time-interval-set no)
--->
-    (<s> ^ti <ti>
-         ^sickness-time-interval-set yes)
-    (write (crlf) |Sickness Time Interval: | <ti>)
-}
-# Scan and Select -> Deciding
-sp {propose*SS-transition
+
+# Select -> Inspecting
+sp {propose*S-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^sickness-time-interval-set yes
-               ^time-counter <tc>
-               ^total-time <tt>
-               ^io.input-link.systemdata <sd>
-               ^time-counter <tc> < <tt>
-               ^action << 0 3 >>)
-    (<sd> ^pdf2 <pdf2>)
+               ^io.input-link.systemdata <sd>)
+    ()
 -->
-    (write (crlf) |Transition from Scan and Select to Deciding ...|)
+    (write (crlf) |Transition from Select to Inspecting...|)
     (<s> ^operator <o> + =)
-    (<o> ^name apply-SS-transition
+    (<o> ^name apply-S-transition
          ^original-time-counter <tc>)
 }
 
-# Deciding -> Decided
-sp {propose*D-transition
+# Inspceting -> Tag
+sp {propose*I-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^sickness-time-interval-set yes
-               ^time-counter <tc>
-               ^total-time <tt>
-               ^io.input-link.systemdata <sd>
-               ^time-counter <tc> < <tt>
-               ^action 1)
-    (<sd> ^pdf3 <pdf3>)
+               ^io.input-link.systemdata <sd>)
+    ()
 -->
-    (write (crlf) |Transition from Deciding to Decided ...| )
+    (write (crlf) |Transition from Inspecting to Tag...| )
     (<s> ^operator <o> + =)
-    (<o> ^name apply-D-transition
+    (<o> ^name apply-I-transition
          ^original-time-counter <tc>)
 }
 
-# Decided -> Scan and Select
-sp {propose*DD-transition
+# Tagged
+sp {propose*T-transition
     (state <s> ^name mission-monitor
-               ^start-mission yes
-               ^sickness-time-interval-set yes
-               ^time-counter <tc>
-               ^total-time <tt>
-               ^time-counter <tc> < <tt>
-               ^action 2)
+               ^start-mission yes)
 -->
-    (write (crlf) |Transition from Decided to Scan and Select ...| )
+    (write (crlf) |Tag Attacker| )
     (<s> ^operator <o> + =)
-    (<o> ^name apply-DD-transition
+    (<o> ^name apply-T-transition
          ^original-time-counter <tc>)
-}
-
-# Mission -> Sickness
-sp {propose*check*transition
-    (state <s> ^name mission-monitor
-               ^start-mission yes
-               ^sickness-time-interval-set yes
-               ^io.input-link.systemdata <sd>
-               ^sickness-checked no)
-    (<sd> ^check-sickness yes
-          ^check-done no)
-    
---> 
-    (<s> ^operator <o> + >)
-    (<o> ^name switch-monitor)
 }

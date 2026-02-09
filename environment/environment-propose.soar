@@ -1,0 +1,10 @@
+# Envrionment -> Mission
+sp {propose*transition-mission
+    (state <s> ^name environment-monitor)
+    (<sd> ^check-sickness yes
+          ^check-done no)
+    
+--> 
+    (<s> ^operator <o> + >)
+    (<o> ^name switch-monitor)
+}

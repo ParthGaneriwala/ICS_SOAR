@@ -1,0 +1,9 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+echo "\nLoading envrionment/load.soar"
+
+source "environment-propose.soar"
+source "operators/load.soar"

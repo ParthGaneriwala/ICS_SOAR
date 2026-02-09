@@ -3,12 +3,10 @@
 #
 # @created candice 20250929
 
-# Loading apply-SS-transition
-sp {apply*apply-SS-transition
+# Loading apply-S-transition
+sp {apply*apply-S-transition
     (state <s> ^name mission-monitor
                ^operator <o>
-               ^time-counter <tc>
-               ^action <a>
                ^io.input-link.systemdata <sd>
                ^io.output-link <out>)
     (<sd> ^pdf2 <pdf2>)
@@ -20,7 +18,7 @@ sp {apply*apply-SS-transition
     (<s> ^time-counter <tc> -
          ^time-counter (+ <pdf2> <tc>) +
          ^action <a> - 1 +)
-    (<out> ^event <e> - Deciding +
+    (<out> ^event <e> - Inspecting +
            ^current-time <ct> - <tc> +)
     (write (crlf) |State = Deciding | <tc>)
 }
@@ -28,8 +26,8 @@ sp {apply*apply-SS-transition
 
 
 
-# Loading apply-D-transition
-sp {apply*apply-D-transition
+# Loading apply-I-transition
+sp {apply*apply-I-transition
     (state <s> ^name mission-monitor
                ^operator <o>
                ^time-counter <tc>
@@ -50,8 +48,8 @@ sp {apply*apply-D-transition
     (write (crlf) |State = Decided | <tc>)
 }
 
-# Loading apply-DD-transition
-sp {apply*apply-DD-transition
+# Loading apply-T-transition
+sp {apply*apply-T-transition
     (state <s> ^name mission-monitor
                ^operator <o>
                ^time-counter <tc>

@@ -9,17 +9,12 @@ sp {apply*initialize
                ^io.output-link <out>)
 -->
     # -- User state
-    (<s> ^name mission-monitor
+    (<s> ^name environment-monitor
          ^start-mission no
-         ^action 3                 # Action (0,1,2) -> (Scanning, Deciding, Decided)
-         ^sick 0                # Sick (0,1) -> (Not Sick, Sick)
-         ^sick_thres 0.5
+         ^action 3                 # Action (0,1,2) -> (Select, Inspect, Tag)
          ^time-counter 1
-         ^total-time 1200
-         ^sickness-checked no
-         ^sickness-time-interval-set no)
-    (<out> ^sick not-sick
-           ^event Scan-and-Select
+         ^total-time 1200)
+    (<out> ^event Select
            ^current-time 1
            ^total-time 1200
            ^check-done no)
