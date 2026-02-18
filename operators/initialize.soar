@@ -10,6 +10,7 @@ sp {apply*initialize
 -->
     # -- User state
     (<s> ^name environment-monitor
+         ^crowd <c>
          ^start-mission no
          ^action 2                 # Action (0,1) -> (Select, Tag)
          ^time-to-inspect 1
@@ -17,11 +18,17 @@ sp {apply*initialize
          ^current-time-inspecting 0
          ^current-time-interacting 0
          ^environment
-         ^crowd 
-         ^atr
-         ^selected-id 0
-         ^reliability 
+         ^atrSet no
+         ^atrSelected 
+         ^atrRel 
+         ^enviroSet no
          ^confidence 0)
+    (<c> ^person <p>)
+    (<p> ^id
+         ^line
+         ^index
+         ^x
+         ^y) 
     (<out> ^action null
            ^current-time-inspecting 0
            ^current-time-interacting 0

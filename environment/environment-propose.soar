@@ -3,36 +3,53 @@
 #
 # @created candice 20260217
 
-sp{propose*mental-environment
-    (state <s> ^name environment-monitor
-               ^io.input-link.environment <env>)
-    (<env> ^crowd <crowd>)
-    (<crowd> ^person <p>
-             ^id <id>
-             ^line <line>
-             ^index <index>
-             ^x <x>
-             ^y <y>)
+sp {top-state*elaborate*startmission
+    (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
+               ^start-mission no)
 -->
-    (<s> ^operator <o> + >,=)
-    (<o> ^name apply-mental-environment)
+    (<s> ^sm <sm>
+         ^start-mission yes)
+    (write (crlf) |Start mission: | <sm>)
 }
 
-sp {propose*atr
-    (state <s> ^name environment-monitor
-               ^io.input-link.atr <atr>)
-    (<atr> ^selected-id <atrSelected>
-           ^reliability <atrRel>)
+sp {top-state*elaborate*atr
+    (state <s> ^io.input-link.atr.selected-id <atrSelected>
+               ^io.input-link.atr.reliability <atrRel>
+               ^atrSet no)
 -->
-    (<s> ^operator <o> + >,=)
-    (<o> ^name apply-atr)
+    (<s> ^atrSelected <atrSelected>
+         ^atrRel <atrRel>
+         ^atrSet - yes +)
+    (write (crlf) |Initializing the person the ATR selected and the ATR reliability|)
+}
+
+sp{elaborate*mental-environment
+    (state <s> ^io.input-link.environment.crowd <crowd>
+               ^enviroSet no)
+    (<crowd> ^person <p>)
+    (<p> ^id <id>
+         ^line <line>
+         ^index <index>
+         ^x <x>
+         ^y <y>)
+-->
+    (<s> ^crowd <c>
+         ^enviroSet - yes +)
+    (<c> ^person <p>)
+    (<p> ^id <id> 
+         ^line <line>
+         ^index <index>
+         ^x <x>
+         ^y <y>)
+    (write (crlf) |Creating the environment with 20 people|)
 }
 
 # Envrionment -> Mission
 sp {propose*transition-mission
-    (state <s> ^name environment-monitor)
-    (<sd> ^environment no
-          ^check-done no)
+    (state <s> ^name environment-monitor
+               ^start-mission yes
+               ^atrSet yes
+               ^enviroSet yes)
 --> 
     (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)

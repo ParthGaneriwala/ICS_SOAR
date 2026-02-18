@@ -3,15 +3,6 @@
 #
 # @created candice 20250929
 
-sp {top-state*elaborate*startmission
-    (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
-               ^start-mission no)
--->
-    (<s> ^sm <sm>
-         ^start-mission yes)
-    (write (crlf) |Start mission: | <sm>)
-}
-
 # Selecting an Attacker
 sp {propose*S-transition
     (state <s> ^name mission-monitor
