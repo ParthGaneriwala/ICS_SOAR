@@ -11,12 +11,20 @@ sp {apply*initialize
     # -- User state
     (<s> ^name environment-monitor
          ^start-mission no
-         ^action 3                 # Action (0,1,2) -> (Select, Inspect, Tag)
-         ^time-counter 1
-         ^total-time 1200)
-    (<out> ^event Select
-           ^current-time 1
-           ^total-time 1200
-           ^check-done no)
+         ^action 2                 # Action (0,1) -> (Select, Tag)
+         ^time-to-inspect 1
+         ^time-to-interact 5
+         ^current-time-inspecting 0
+         ^current-time-interacting 0
+         ^environment
+         ^crowd 
+         ^atr
+         ^selected-id 0
+         ^reliability 
+         ^confidence 0)
+    (<out> ^action null
+           ^current-time-inspecting 0
+           ^current-time-interacting 0
+           ^attacker-location null)
     (write (crlf) |Agent initialized.|)
 }

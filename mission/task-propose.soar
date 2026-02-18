@@ -12,39 +12,40 @@ sp {top-state*elaborate*startmission
     (write (crlf) |Start mission: | <sm>)
 }
 
-# Select -> Inspecting
+# Selecting an Attacker
 sp {propose*S-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
+               ^time-to-inspect <tti>
+               ^time-to-interact <tt>
+               ^current-time-inspecting <cti>
+               ^current-time-interacting <ct>
+               ^current-time-inspecting <cti> < <tti>
+               ^current-time-interacting <ct> < <tt>
+               ^action << 0 2 >>
                ^io.input-link.systemdata <sd>)
     ()
 -->
-    (write (crlf) |Transition from Select to Inspecting...|)
+    (write (crlf) |Selecting ...|)
     (<s> ^operator <o> + =)
-    (<o> ^name apply-S-transition
-         ^original-time-counter <tc>)
+    (<o> ^name apply-S-transition)
 }
 
-# Inspceting -> Tag
-sp {propose*I-transition
-    (state <s> ^name mission-monitor
-               ^start-mission yes
-               ^io.input-link.systemdata <sd>)
-    ()
--->
-    (write (crlf) |Transition from Inspecting to Tag...| )
-    (<s> ^operator <o> + =)
-    (<o> ^name apply-I-transition
-         ^original-time-counter <tc>)
-}
-
-# Tagged
+# Tagged the Attacker
 sp {propose*T-transition
     (state <s> ^name mission-monitor
-               ^start-mission yes)
+               ^start-mission yes
+               ^time-to-inspect <tti>
+               ^time-to-interact <tt>
+               ^current-time-inspecting <cti>
+               ^current-time-interacting <ct>
+               ^current-time-inspecting <cti> < <tti>
+               ^current-time-interacting <ct> < <tt>
+               ^action 0
+               ^io.input-link.systemdata <sd>)
+    ()
 -->
     (write (crlf) |Tag Attacker| )
     (<s> ^operator <o> + =)
-    (<o> ^name apply-T-transition
-         ^original-time-counter <tc>)
+    (<o> ^name apply-T-transition)
 }

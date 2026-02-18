@@ -1,77 +1,44 @@
 ##!
 # @file
 #
-# @created candice 20250929
+# @created candice 20260217
 
 # Loading apply-S-transition
 sp {apply*apply-S-transition
     (state <s> ^name mission-monitor
-               ^operator <o>
-               ^io.input-link.systemdata <sd>
-               ^io.output-link <out>)
-    (<sd> ^pdf2 <pdf2>)
-    (<out> ^event <e>
-           ^current-time <ct>)
-    (<o>  ^name apply-SS-transition
-          ^original-time-counter <tc>)
--->
-    (<s> ^time-counter <tc> -
-         ^time-counter (+ <pdf2> <tc>) +
-         ^action <a> - 1 +)
-    (<out> ^event <e> - Inspecting +
-           ^current-time <ct> - <tc> +)
-    (write (crlf) |State = Deciding | <tc>)
-}
-
-
-
-
-# Loading apply-I-transition
-sp {apply*apply-I-transition
-    (state <s> ^name mission-monitor
-               ^operator <o>
-               ^time-counter <tc>
                ^action <a>
-               ^io.input-link.systemdata <sd>
+               ^operator <o>
+               ^current-time-inspecting <cti>
+               ^current-time-interacting <ct>
                ^io.output-link <out>)
-    (<sd> ^pdf3 <pdf3>)
-    (<out> ^event <e>
-           ^current-time <ct>)
-    (<o> ^name apply-D-transition
-         ^original-time-counter <tc>)
+    (<out> ^action <out-a>
+           ^current-time-inspecting <out-cti>
+           ^current-time-interacting <out-ct>)
+    (<o>  ^name apply-S-transition)
 -->
-    (<s> ^time-counter <tc> -
-         ^time-counter (+ <pdf3> <tc>) +
-         ^action <a> - 2 +)
-    (<out> ^event <e> - Decided + 
-           ^current-time <ct> - <tc> +)
-    (write (crlf) |State = Decided | <tc>)
+    (<s> ^action <a> - 0 +)
+    (<out> ^action <out-a> - Selecting +
+           ^current-time-inspecting <out-cti> - <cti> +
+           ^current-time-interacting <out-ct1> - <ct> +)
+    (write (crlf) |State = | <out-a>)
 }
 
 # Loading apply-T-transition
 sp {apply*apply-T-transition
     (state <s> ^name mission-monitor
                ^operator <o>
-               ^time-counter <tc>
-               ^action <a>
+               ^current-time-inspecting <cti>
+               ^current-time-interacting <ct>
                ^io.output-link <out>)
-    (<out> ^event <e>
-           ^current-time <ct>)
-    (<o> ^name apply-DD-transition
-         ^original-time-counter <tc>)
+    (<out> ^action <out-a>
+           ^attacker-location <al>
+           ^current-time-inspecting <out-cti>
+           ^current-time-interacting <out-ct>)
+    (<o> ^name apply-T-transition)
 -->
-    (<s> ^action <a> - 3 +)
-    (<out> ^event <e> - Scan-and-Select +
-           ^current-time <ct> - <tc> +)
-    (write (crlf) |State = Scan-and-Select | <tc>)
-}
-
-# Loading transition
-sp {apply*check*transition
-    (state <s> ^name mission-monitor
-               ^operator.name switch-monitor)
--->
-    (write (crlf) |Switched... Mission-Monitor to Sickness|)
-    (<s> ^name mission-monitor -)
-    (<s> ^name sickness-monitor)
+    (<s> ^action <a> - 1 +)
+    (<out> ^action <out-a> - Tagged +
+           ^current-time-inspecting <out-cti> - <cti> +
+           ^current-time-interacting <out-ct> - <ct> +)
+    (write (crlf) |State = | <out-a>)
 }
