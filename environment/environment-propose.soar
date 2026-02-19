@@ -3,46 +3,41 @@
 #
 # @created candice 20260217
 
-sp {top-state*elaborate*startmission
-    (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
-               ^start-mission no)
+sp {propose*start-mission
+    (state <s> ^name environment-monitor
+               ^start-mission no
+               ^io.input-link.systemdata <sd>)
+    (<sd> ^sys-start-mission <sm> > 0)
 -->
-    (<s> ^sm <sm>
-         ^start-mission yes)
-    (write (crlf) |Start mission: | <sm>)
+    (<s> ^operator <o> + >)
+    (<o> ^name start-mission ^value <sm>)
 }
 
-sp {top-state*elaborate*atr
-    (state <s> ^io.input-link.atr.selected-id <atrSelected>
-               ^io.input-link.atr.reliability <atrRel>
-               ^atrSet no)
+sp {propose*sync-atr
+    (state <s> ^name environment-monitor
+               ^atrSet no
+               ^io.input-link.atr.selected-id <atrSelected>
+               ^io.input-link.atr.reliability <atrRel>)
 -->
-    (<s> ^atrSelected <atrSelected>
-         ^atrRel <atrRel>
-         ^atrSet - yes +)
-    (write (crlf) |Initializing the person the ATR selected and the ATR reliability|)
+    (<s> ^operator <o> + =)
+    (<o> ^name sync-atr
+         ^atrSelected <atrSelected>
+         ^atrRel <atrRel>)
 }
 
-sp{elaborate*mental-environment
-    (state <s> ^io.input-link.environment.crowd <crowd>
-               ^enviroSet no)
-    (<crowd> ^person <p>)
-    (<p> ^id <id>
-         ^line <line>
-         ^index <index>
-         ^x <x>
-         ^y <y>)
+
+
+sp {propose*sync-environment
+    (state <s> ^name environment-monitor
+               ^enviroSet no
+               ^io.input-link.environment.crowd <crowd>)
 -->
-    (<s> ^crowd <c>
-         ^enviroSet - yes +)
-    (<c> ^person <p>)
-    (<p> ^id <id> 
-         ^line <line>
-         ^index <index>
-         ^x <x>
-         ^y <y>)
-    (write (crlf) |Creating the environment with 20 people|)
+    (<s> ^operator <o> + =)
+    (<o> ^name sync-environment
+         ^crowd <crowd>)
 }
+
+
 
 # Envrionment -> Mission
 sp {propose*transition-mission

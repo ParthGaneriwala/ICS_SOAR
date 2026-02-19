@@ -15,7 +15,6 @@ sp {propose*S-transition
                ^current-time-interacting <ct> < <tt>
                ^action << 0 2 >>
                ^io.input-link.systemdata <sd>)
-    ()
 -->
     (write (crlf) |Selecting ...|)
     (<s> ^operator <o> + =)
@@ -34,7 +33,6 @@ sp {propose*T-transition
                ^current-time-interacting <ct> < <tt>
                ^action 0
                ^io.input-link.systemdata <sd>)
-    ()
 -->
     (write (crlf) |Tag Attacker| )
     (<s> ^operator <o> + =)

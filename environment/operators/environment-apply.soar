@@ -3,6 +3,48 @@
 #
 # @created candice 20260217
 
+sp {apply*start-mission
+    (state <s> ^operator <o>
+               ^start-mission no)
+    (<o> ^name start-mission ^value <sm>)
+-->
+    (<s> ^start-mission no - yes)
+    (<s> ^sm <sm>)
+}
+
+sp {apply*sync-atr
+    (state <s> ^operator <o>
+               ^atrSet no)
+    (<o> ^name sync-atr
+         ^atrSelected <atrSelected>
+         ^atrRel <atrRel>)
+-->
+    (<s> ^atrSet no - yes)
+    (<s> ^atrSelected <atrSelected>)
+    (<s> ^atrRel <atrRel>)
+}
+
+sp {apply*sync-environment
+    (state <s> ^operator <o>
+               ^enviroSet no)
+    (<o> ^name sync-environment
+         ^crowd <crowd>)
+    (<crowd> ^person <p>)
+    (<p> ^id <id>
+         ^line <line>
+         ^index <index>
+         ^x <x>
+         ^y <y>)
+-->
+    (<s> ^enviroSet no - yes)
+    (<s> ^crowd <c>)
+    (<c> ^person <p2>)
+    (<p2> ^id <id>
+          ^line <line>
+          ^index <index>
+          ^x <x>
+          ^y <y>)
+}
 # Loading transition
 sp {apply*transition-mission
     (state <s> ^name environment-monitor
