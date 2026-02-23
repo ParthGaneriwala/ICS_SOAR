@@ -16,6 +16,7 @@ sp {propose*start-mission
 sp {propose*sync-atr
     (state <s> ^name environment-monitor
                ^atrSet no
+               ^enviroSet yes
                ^io.input-link.atr.selected-id <atrSelected>
                ^io.input-link.atr.reliability <atrRel>)
 -->
@@ -36,7 +37,6 @@ sp {propose*sync-environment
     (<o> ^name sync-environment
          ^crowd <crowd>)
 }
-
 
 
 # Envrionment -> Mission

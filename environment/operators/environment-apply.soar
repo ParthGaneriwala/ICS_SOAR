@@ -50,7 +50,7 @@ sp {apply*transition-mission
     (state <s> ^name environment-monitor
                ^operator.name switch-monitor)
 -->
-    (write (crlf) |Switched... Mission-Monitor to Sickness|)
+    (write (crlf) |Switched... Environment Monitor to Mission-Monitor|)
     (<s> ^name environment-monitor -)
     (<s> ^name mission-monitor)
 }

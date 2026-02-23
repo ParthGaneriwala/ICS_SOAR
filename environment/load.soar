@@ -3,7 +3,7 @@
 #
 # @created candice 20250929
 
-echo "\nLoading envrionment/load.soar"
+echo "\nLoading environment/load.soar"
 
 source "environment-propose.soar"
 source "operators/load.soar"
