@@ -17,34 +17,15 @@ sp {apply*sync-atr
                ^atrSet no)
     (<o> ^name sync-atr
          ^atrSelected <atrSelected>
-         ^atrRel <atrRel>)
+         ^atrRel <atrRel>
+         ^soarSelected <soarSelected>)
 -->
-    (<s> ^atrSet no - yes)
-    (<s> ^atrSelected <atrSelected>)
-    (<s> ^atrRel <atrRel>)
+    (<s> ^atrSet no - yes
+         ^atrSelected <atrSelected>
+         ^atrRel <atrRel>
+         ^soarSelected <soarSelected>)
 }
 
-sp {apply*sync-environment
-    (state <s> ^operator <o>
-               ^enviroSet no)
-    (<o> ^name sync-environment
-         ^crowd <crowd>)
-    (<crowd> ^person <p>)
-    (<p> ^id <id>
-         ^line <line>
-         ^index <index>
-         ^x <x>
-         ^y <y>)
--->
-    (<s> ^enviroSet no - yes)
-    (<s> ^crowd <c>)
-    (<c> ^person <p2>)
-    (<p2> ^id <id>
-          ^line <line>
-          ^index <index>
-          ^x <x>
-          ^y <y>)
-}
 # Loading transition
 sp {apply*transition-mission
     (state <s> ^name environment-monitor

@@ -8,33 +8,54 @@ sp {propose*S-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
                ^time-to-inspect <tti>
-               ^time-to-interact <tt>
-               ^current-time-inspecting <cti>
                ^current-time-interacting <ct>
+               ^current-time-inspecting <cti>
                ^current-time-inspecting <cti> < <tti>
-               ^current-time-interacting <ct> < <tt>
-               ^action << 0 2 >>
                ^io.input-link.systemdata <sd>)
 -->
     (write (crlf) |Selecting ...|)
-    (<s> ^operator <o> + =)
-    (<o> ^name apply-S-transition)
+    (<s> ^operator <o> >)
+    (<o> ^name apply-S-transition
+         ^original-current-time-inspecting <cti>
+         ^original-current-time-interacting <ct>)
 }
 
 # Tagged the Attacker
 sp {propose*T-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^time-to-inspect <tti>
                ^time-to-interact <tt>
                ^current-time-inspecting <cti>
                ^current-time-interacting <ct>
-               ^current-time-inspecting <cti> < <tti>
                ^current-time-interacting <ct> < <tt>
                ^action 0
                ^io.input-link.systemdata <sd>)
 -->
     (write (crlf) |Tag Attacker| )
     (<s> ^operator <o> + =)
-    (<o> ^name apply-T-transition)
+    (<o> ^name apply-T-transition
+         ^original-current-time-interacting <ct>)
 }
+
+# Follow ATR suggetion if there is a bag
+sp {propose*follow-atr
+    (state <s> ^name mission-monitor
+               ^bag yes
+               ^action 1)
+-->
+    (write (crlf) |Has bag ...| )
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-follow-atr)
+}
+
+# Don't follow ATR suggetion if there is a bag
+sp {propose*not-follow-atr
+    (state <s> ^name mission-monitor
+               ^bag no
+               ^action 1)
+-->
+    (write (crlf) |Atr suggetion does not have a bag ...| )
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-not-follow-atr)
+}
+

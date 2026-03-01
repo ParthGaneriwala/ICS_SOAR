@@ -16,35 +16,22 @@ sp {propose*start-mission
 sp {propose*sync-atr
     (state <s> ^name environment-monitor
                ^atrSet no
-               ^enviroSet yes
                ^io.input-link.atr.selected-id <atrSelected>
-               ^io.input-link.atr.reliability <atrRel>)
+               ^io.input-link.atr.reliability <atrRel>
+               ^io.input-link.atr.reliability <soarSelected>)
 -->
     (<s> ^operator <o> + =)
     (<o> ^name sync-atr
          ^atrSelected <atrSelected>
-         ^atrRel <atrRel>)
+         ^atrRel <atrRel>
+         ^soarSelected <soarSelected>)
 }
-
-
-
-sp {propose*sync-environment
-    (state <s> ^name environment-monitor
-               ^enviroSet no
-               ^io.input-link.environment.crowd <crowd>)
--->
-    (<s> ^operator <o> + =)
-    (<o> ^name sync-environment
-         ^crowd <crowd>)
-}
-
 
 # Envrionment -> Mission
 sp {propose*transition-mission
     (state <s> ^name environment-monitor
                ^start-mission yes
-               ^atrSet yes
-               ^enviroSet yes)
+               ^atrSet yes)
 --> 
     (<s> ^operator <o> + >)
     (<o> ^name switch-monitor)

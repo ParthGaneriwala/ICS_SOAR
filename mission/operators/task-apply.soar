@@ -8,37 +8,75 @@ sp {apply*apply-S-transition
     (state <s> ^name mission-monitor
                ^action <a>
                ^operator <o>
-               ^current-time-inspecting <cti>
                ^current-time-interacting <ct>
+               ^current-time-inspecting <cti>
                ^io.output-link <out>)
     (<out> ^action <out-a>
            ^current-time-inspecting <out-cti>
            ^current-time-interacting <out-ct>)
-    (<o>  ^name apply-S-transition)
+    (<o>  ^name apply-S-transition
+          ^original-current-time-interacting <ct>
+          ^original-current-time-inspecting <cti>)
 -->
     (<s> ^action <a> - 0 +)
+    (<s> ^current-time-interacting <ct>
+         ^current-time-interacting (+ 1 <ct>)
+         ^current-time-inspecting <cti>
+         ^current-time-inspecting (+ 1 <cti>))
     (<out> ^action <out-a> - Selecting +
            ^current-time-inspecting <out-cti> - <cti> +
-           ^current-time-interacting <out-ct1> - <ct> +)
+           ^current-time-interacting <out-ct> - <ct> +)
     (write (crlf) |State = | <out-a>)
+    (write (crlf) |Increment Current-Time-Inspecting...| <cti>)
+    (write (crlf) |Increment Current-Time-Interacting...| <ct>)
 }
 
 # Loading apply-T-transition
 sp {apply*apply-T-transition
     (state <s> ^name mission-monitor
                ^operator <o>
-               ^current-time-inspecting <cti>
                ^current-time-interacting <ct>
+               ^current-time-inspecting <cti>
                ^io.output-link <out>)
     (<out> ^action <out-a>
-           ^attacker-location <al>
            ^current-time-inspecting <out-cti>
            ^current-time-interacting <out-ct>)
-    (<o> ^name apply-T-transition)
+    (<o> ^name apply-T-transition
+         ^original-current-time-interacting <ct>
+         ^original-current-time-inspecting <cti>)
 -->
     (<s> ^action <a> - 1 +)
-    (<out> ^action <out-a> - Tagged +
-           ^current-time-inspecting <out-cti> - <cti> +
+    (<s> ^current-time-interacting <ct>
+         ^current-time-interacting (+ 1 <ct>))
+
+    (<out> ^action <out-a> - Tagging +
            ^current-time-interacting <out-ct> - <ct> +)
     (write (crlf) |State = | <out-a>)
+    (write (crlf) |Increment Current-Time-Interacting...| <ct>)
+}
+
+sp {apply*apply-follow-atr
+    (state <s> ^name mission-monitor
+               ^atrSelected <atrSelected>
+               ^operator <o>
+               ^io.output-link <out>)
+    (<out> ^attacker-location <al>
+           ^current-time-interacting <out-ct>)
+    (<o> ^name apply-follow-atr)
+-->
+    (<out> ^attacker-location <al> - <atrSelected> +)
+    (write (crlf) |Attacker Location = | <al>)
+}
+
+sp {apply*apply-not-follow-atr
+    (state <s> ^name mission-monitor
+               ^soarSelected <soarSelected>
+               ^operator <o>
+               ^io.output-link <out>)
+    (<out> ^attacker-location <al>
+           ^current-time-interacting <out-ct>)
+    (<o> ^name apply-not-follow-atr)
+-->
+    (<out> ^attacker-location <al> - <soarSelected> +)
+    (write (crlf) |Attacker Location = | <al>)
 }

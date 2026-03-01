@@ -12,23 +12,17 @@ sp {apply*initialize
     (<s> ^name environment-monitor
          ^crowd <c>
          ^start-mission no
-         ^action 2                 
-         ^time-to-inspect 1
-         ^time-to-interact 5
+         ^action 2 
+         ^bag no                
+         ^time-to-inspect 10
+         ^time-to-interact 20
          ^current-time-inspecting 0
          ^current-time-interacting 0
          ^environment none
          ^atrSet no
          ^atrSelected 0
-         ^atrRel 0
-         ^enviroSet no
+         ^soarSelected 0
          ^confidence 0)
-    (<c> ^person <p>)
-    (<p> ^id 0
-         ^line 0
-         ^index 0
-         ^x 0.0
-         ^y 0.0) 
     (<out> ^action null
            ^current-time-inspecting 0
            ^current-time-interacting 0
