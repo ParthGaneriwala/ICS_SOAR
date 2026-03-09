@@ -3,38 +3,90 @@
 #
 # @created candice 20250929
 
-# Selecting an Attacker
-sp {propose*S-transition
+# Phase 1: choose ATR person vs random mode (weighted by ATR reliability)
+sp {propose*choose-target-from-atr
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^time-to-inspect <tti>
-               ^time-to-interact <tt>
-               ^current-time-inspecting <cti>
-               ^current-time-interacting <ct>
-               ^current-time-inspecting <cti> < <tti>
-               ^current-time-interacting <ct> < <tt>
-               ^action << 0 2 >>
-               ^io.input-link.systemdata <sd>)
+               ^action 2
+               ^crowd <crowd>
+               ^io.input-link.systemdata <sd>
+               ^io.input-link.atr.selected-id <atrSelected>
+               ^io.input-link.atr.reliability <atrRel>
+               ^io.input-link.timing.inspect-complete 1)
+    (<crowd> ^person <p>)
+    (<p> ^id <atrSelected>)
 -->
-    (write (crlf) |Selecting ...|)
+    (write (crlf) |Selecting target from ATR...|)
     (<s> ^operator <o> + =)
-    (<o> ^name apply-S-transition)
+    (<o> ^name choose-target-from-atr
+         ^target-id <atrSelected>)
+    (<s> ^operator <o> = <atrRel>)
+}
+
+sp {propose*choose-target-random-mode
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^action 2
+               ^crowd <crowd>
+               ^io.input-link.systemdata <sd>
+               ^io.input-link.atr.reliability <atrRel>
+               ^io.input-link.timing.inspect-complete 1)
+-->
+    (write (crlf) |Selecting target via random mode...|)
+    (<s> ^operator <o> + =)
+    (<o> ^name choose-target-random-mode)
+    (<s> ^operator <o> = (- 1.0 <atrRel>))
+}
+
+sp {propose*choose-target-random-mode-no-atr
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^action 2
+               -^io.input-link.atr
+               ^crowd <crowd>
+               ^io.input-link.systemdata <sd>
+               ^io.input-link.timing.inspect-complete 1)
+-->
+    (write (crlf) |ATR unavailable, using random mode...|)
+    (<s> ^operator <o> + =)
+    (<o> ^name choose-target-random-mode)
+}
+
+# Phase 2: random mode chooses uniformly from all people in crowd
+sp {propose*choose-random-person
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^action 3
+               ^crowd <crowd>
+               ^io.input-link.systemdata <sd>)
+    (<crowd> ^person <p>)
+    (<p> ^id <id>)
+-->
+    (<s> ^operator <o> + =)
+    (<o> ^name choose-random-person
+         ^target-id <id>)
 }
 
 # Tagged the Attacker
 sp {propose*T-transition
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^time-to-inspect <tti>
-               ^time-to-interact <tt>
-               ^current-time-inspecting <cti>
-               ^current-time-interacting <ct>
-               ^current-time-inspecting <cti> < <tti>
-               ^current-time-interacting <ct> < <tt>
                ^action 0
-               ^io.input-link.systemdata <sd>)
+               ^io.input-link.systemdata <sd>
+               ^io.input-link.timing.interact-complete 1)
 -->
     (write (crlf) |Tag Attacker| )
     (<s> ^operator <o> + =)
     (<o> ^name apply-T-transition)
+}
+
+# Reset episode after tagging so mission continues with next selection cycle
+sp {propose*reset-after-tag
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^action 1
+               ^io.input-link.systemdata <sd>)
+-->
+    (<s> ^operator <o> + =)
+    (<o> ^name reset-selection-cycle)
 }

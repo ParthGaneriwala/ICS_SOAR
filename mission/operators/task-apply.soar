@@ -3,8 +3,62 @@
 #
 # @created candice 20260217
 
-# Loading apply-S-transition
-sp {apply*apply-S-transition
+# Apply ATR-based target choice directly
+sp {apply*choose-target-from-atr
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^current-time-inspecting <cti>
+               ^operator <o>
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^current-time-inspecting <out-cti>
+           ^attacker-location <out-al>)
+    (<o>  ^name choose-target-from-atr
+          ^target-id <id>)
+-->
+    (<s> ^selected-person-id <id>)
+    (<s> ^action <a> - 0 +)
+    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
+    (<out> ^action <out-a> - Selecting +
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+           ^attacker-location <out-al> - <id> +)
+    (write (crlf) |Selected (ATR) person id = | <id>)
+}
+
+# Apply random mode and move to random person selection phase
+sp {apply*choose-target-random-mode
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^operator.name choose-target-random-mode)
+-->
+    (<s> ^action <a> - 3 +)
+    (write (crlf) |Random mode selected.|)
+}
+
+# Apply random person choice
+sp {apply*choose-random-person
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^current-time-inspecting <cti>
+               ^operator <o>
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^current-time-inspecting <out-cti>
+           ^attacker-location <out-al>)
+    (<o>  ^name choose-random-person
+          ^target-id <id>)
+-->
+    (<s> ^selected-person-id <id>)
+    (<s> ^action <a> - 0 +)
+    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
+    (<out> ^action <out-a> - Selecting +
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+           ^attacker-location <out-al> - <id> +)
+    (write (crlf) |Selected (Random) person id = | <id>)
+}
+
+# Loading apply-T-transition
+sp {apply*apply-T-transition
     (state <s> ^name mission-monitor
                ^action <a>
                ^operator <o>
@@ -12,33 +66,30 @@ sp {apply*apply-S-transition
                ^current-time-interacting <ct>
                ^io.output-link <out>)
     (<out> ^action <out-a>
-           ^current-time-inspecting <out-cti>
-           ^current-time-interacting <out-ct>)
-    (<o>  ^name apply-S-transition)
--->
-    (<s> ^action <a> - 0 +)
-    (<out> ^action <out-a> - Selecting +
-           ^current-time-inspecting <out-cti> - <cti> +
-           ^current-time-interacting <out-ct1> - <ct> +)
-    (write (crlf) |State = | <out-a>)
-}
-
-# Loading apply-T-transition
-sp {apply*apply-T-transition
-    (state <s> ^name mission-monitor
-               ^operator <o>
-               ^current-time-inspecting <cti>
-               ^current-time-interacting <ct>
-               ^io.output-link <out>)
-    (<out> ^action <out-a>
            ^attacker-location <al>
-           ^current-time-inspecting <out-cti>
            ^current-time-interacting <out-ct>)
     (<o> ^name apply-T-transition)
 -->
     (<s> ^action <a> - 1 +)
+    (<s> ^current-time-interacting <ct> - (+ <ct> 1) +)
     (<out> ^action <out-a> - Tagged +
-           ^current-time-inspecting <out-cti> - <cti> +
-           ^current-time-interacting <out-ct> - <ct> +)
-    (write (crlf) |State = | <out-a>)
+           ^current-time-interacting <out-ct> - (+ <ct> 1) +)
+    (write (crlf) |State = Tagged|)
+}
+
+# Prepare next selection episode
+sp {apply*reset-selection-cycle
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^selected-person-id <sid>
+               ^operator.name reset-selection-cycle
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^attacker-location <out-al>)
+-->
+    (<s> ^action <a> - 2 +)
+    (<s> ^selected-person-id <sid> -)
+    (<out> ^action <out-a> - Waiting +
+           ^attacker-location <out-al> - null +)
+    (write (crlf) |State = Waiting|)
 }

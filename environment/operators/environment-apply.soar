@@ -14,43 +14,50 @@ sp {apply*start-mission
 
 sp {apply*sync-atr
     (state <s> ^operator <o>
-               ^atrSet no)
+               ^atrSet no
+               ^atrSelected <oldSelected>
+               ^atrRel <oldRel>)
     (<o> ^name sync-atr
          ^atrSelected <atrSelected>
          ^atrRel <atrRel>)
 -->
     (<s> ^atrSet no - yes)
-    (<s> ^atrSelected <atrSelected>)
-    (<s> ^atrRel <atrRel>)
+    (<s> ^atrSelected <oldSelected> - <atrSelected> +)
+    (<s> ^atrRel <oldRel> - <atrRel> +)
+}
+
+sp {apply*refresh-atr
+    (state <s> ^operator <o>
+               ^atrSet yes
+               ^atrSelected <oldSelected>
+               ^atrRel <oldRel>)
+    (<o> ^name sync-atr
+         ^atrSelected <atrSelected>
+         ^atrRel <atrRel>)
+-->
+    (<s> ^atrSelected <oldSelected> - <atrSelected> +)
+    (<s> ^atrRel <oldRel> - <atrRel> +)
 }
 
 sp {apply*sync-environment
     (state <s> ^operator <o>
-               ^enviroSet no)
+               ^enviroSet no
+               ^crowd <oldCrowd>)
     (<o> ^name sync-environment
          ^crowd <crowd>)
-    (<crowd> ^person <p>)
-    (<p> ^id <id>
-         ^line <line>
-         ^index <index>
-         ^x <x>
-         ^y <y>)
 -->
     (<s> ^enviroSet no - yes)
-    (<s> ^crowd <c>)
-    (<c> ^person <p2>)
-    (<p2> ^id <id>
-          ^line <line>
-          ^index <index>
-          ^x <x>
-          ^y <y>)
+    (<s> ^crowd <oldCrowd> - <crowd> +)
 }
 # Loading transition
 sp {apply*transition-mission
     (state <s> ^name environment-monitor
+               ^io.output-link <out>
                ^operator.name switch-monitor)
+    (<out> ^action <out-a>)
 -->
     (write (crlf) |Switched... Environment Monitor to Mission-Monitor|)
     (<s> ^name environment-monitor -)
     (<s> ^name mission-monitor)
+    (<out> ^action <out-a> - Waiting +)
 }

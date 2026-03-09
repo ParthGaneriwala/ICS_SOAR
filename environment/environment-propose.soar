@@ -26,6 +26,25 @@ sp {propose*sync-atr
          ^atrRel <atrRel>)
 }
 
+sp {propose*refresh-atr
+    (state <s> ^name environment-monitor
+               ^atrSet yes
+               ^enviroSet yes
+               ^atrSelected <oldSelected>
+               ^atrRel <oldRel>
+               ^io.input-link.atr.selected-id <atrSelected>
+               ^io.input-link.atr.reliability <atrRel>)
+    -{(<s> ^atrSelected <atrSelected>
+             ^atrRel <atrRel>)}
+-->
+    (<s> ^operator <o> + =)
+    (<o> ^name sync-atr
+         ^oldSelected <oldSelected>
+         ^oldRel <oldRel>
+         ^atrSelected <atrSelected>
+         ^atrRel <atrRel>)
+}
+
 
 
 sp {propose*sync-environment
