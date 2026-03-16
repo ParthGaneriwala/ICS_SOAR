@@ -8,21 +8,20 @@ sp {apply*initialize
     (state <s> ^operator.name initialize
                ^io.output-link <out>)
 -->
-    # -- User state
     (<s> ^name environment-monitor
          ^crowd <c>
          ^start-mission no
-         ^action 2                 
+         ^action idle
+         ^atr-reviewed no
+         ^current-person-id 0
+         ^current-person-boxed 0
+         ^wall-clock 0
+         ^tagged-attacker 0
          ^time-to-inspect 1
-         ^time-to-interact 5
          ^current-time-inspecting 0
          ^current-time-interacting 0
          ^environment none
-         ^atrSet no
-         ^atrSelected 0
-         ^atrRel 0
-         ^enviroSet no
-         ^confidence 0)
+         ^enviroSet no)
     (<c> ^person <p>)
     (<p> ^id 0
          ^line 0
@@ -32,6 +31,8 @@ sp {apply*initialize
     (<out> ^action null
            ^current-time-inspecting 0
            ^current-time-interacting 0
-           ^attacker-location null)
+         ^attacker-location null
+         ^current-person-id 0
+         ^current-person-boxed 0)
     (write (crlf) |Agent initialized.|)
 }

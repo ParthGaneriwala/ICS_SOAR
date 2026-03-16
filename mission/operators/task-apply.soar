@@ -3,93 +3,187 @@
 #
 # @created candice 20260217
 
-# Apply ATR-based target choice directly
-sp {apply*choose-target-from-atr
+# Boxed examination succeeds when current person matches attacker.
+sp {apply*examine-box-hit
     (state <s> ^name mission-monitor
                ^action <a>
+               ^tagged-attacker 0
+               ^current-person-id <person-id>
+               ^current-person-boxed 1
+               ^wall-clock <wall-clock>
                ^current-time-inspecting <cti>
-               ^operator <o>
+               ^io.input-link.scenario.attacker-id <person-id>
+               ^operator.name examine-box
                ^io.output-link <out>)
     (<out> ^action <out-a>
            ^current-time-inspecting <out-cti>
-           ^attacker-location <out-al>)
-    (<o>  ^name choose-target-from-atr
-          ^target-id <id>)
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
 -->
-    (<s> ^selected-person-id <id>)
-    (<s> ^action <a> - 0 +)
+    (<s> ^tagged-attacker 0 - 1 +)
+    (<s> ^action <a> - Tagged +)
+    (<s> ^current-person-id <person-id> - (+ <person-id> 1) +)
+    (<s> ^current-person-boxed 1 - 0 +)
     (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
-    (<out> ^action <out-a> - Selecting +
-           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
-           ^attacker-location <out-al> - <id> +)
-    (write (crlf) |Selected (ATR) person id = | <id>)
-}
-
-# Apply random mode and move to random person selection phase
-sp {apply*choose-target-random-mode
-    (state <s> ^name mission-monitor
-               ^action <a>
-               ^operator.name choose-target-random-mode)
--->
-    (<s> ^action <a> - 3 +)
-    (write (crlf) |Random mode selected.|)
-}
-
-# Apply random person choice
-sp {apply*choose-random-person
-    (state <s> ^name mission-monitor
-               ^action <a>
-               ^current-time-inspecting <cti>
-               ^operator <o>
-               ^io.output-link <out>)
-    (<out> ^action <out-a>
-           ^current-time-inspecting <out-cti>
-           ^attacker-location <out-al>)
-    (<o>  ^name choose-random-person
-          ^target-id <id>)
--->
-    (<s> ^selected-person-id <id>)
-    (<s> ^action <a> - 0 +)
-    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
-    (<out> ^action <out-a> - Selecting +
-           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
-           ^attacker-location <out-al> - <id> +)
-    (write (crlf) |Selected (Random) person id = | <id>)
-}
-
-# Loading apply-T-transition
-sp {apply*apply-T-transition
-    (state <s> ^name mission-monitor
-               ^action <a>
-               ^operator <o>
-               ^current-time-inspecting <cti>
-               ^current-time-interacting <ct>
-               ^io.output-link <out>)
-    (<out> ^action <out-a>
-           ^attacker-location <al>
-           ^current-time-interacting <out-ct>)
-    (<o> ^name apply-T-transition)
--->
-    (<s> ^action <a> - 1 +)
-    (<s> ^current-time-interacting <ct> - (+ <ct> 1) +)
+    (<s> ^wall-clock <wall-clock> - (+ <wall-clock> 1) +)
     (<out> ^action <out-a> - Tagged +
-           ^current-time-interacting <out-ct> - (+ <ct> 1) +)
-    (write (crlf) |State = Tagged|)
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+            ^attacker-location <out-al> - <person-id> +
+            ^current-person-id <out-pid> - (+ <person-id> 1) +
+            ^current-person-boxed <out-pboxed> - 0 +)
+    (write (crlf) |Boxed examine matched attacker at person id = | <person-id>)
 }
 
-# Prepare next selection episode
-sp {apply*reset-selection-cycle
+# Boxed examination misses and advances to next (unboxed) person.
+sp {apply*examine-box-miss
     (state <s> ^name mission-monitor
                ^action <a>
-               ^selected-person-id <sid>
-               ^operator.name reset-selection-cycle
+               ^tagged-attacker 0
+               ^current-person-id <person-id>
+               ^current-person-boxed 1
+               ^wall-clock <wall-clock>
+               ^current-time-inspecting <cti>
+               ^io.input-link.scenario.attacker-id <attacker-id> <> <person-id>
+               ^operator.name examine-box
                ^io.output-link <out>)
     (<out> ^action <out-a>
-           ^attacker-location <out-al>)
+           ^current-time-inspecting <out-cti>
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
 -->
-    (<s> ^action <a> - 2 +)
-    (<s> ^selected-person-id <sid> -)
+    (<s> ^action <a> - Waiting +)
+    (<s> ^current-person-id <person-id> - (+ <person-id> 1) +)
+    (<s> ^current-person-boxed 1 - 0 +)
+    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
+    (<s> ^wall-clock <wall-clock> - (+ <wall-clock> 1) +)
     (<out> ^action <out-a> - Waiting +
-           ^attacker-location <out-al> - null +)
-    (write (crlf) |State = Waiting|)
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+            ^attacker-location <out-al> - null +
+            ^current-person-id <out-pid> - (+ <person-id> 1) +
+            ^current-person-boxed <out-pboxed> - 0 +)
+    (write (crlf) |Boxed examine miss at person id = | <person-id>)
+}
+
+# Unboxed examination succeeds when current person matches attacker.
+sp {apply*examine-hit
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^tagged-attacker 0
+               ^current-person-id <person-id>
+               ^current-person-boxed 0
+               ^wall-clock <wall-clock>
+               ^current-time-inspecting <cti>
+               ^io.input-link.scenario.attacker-id <person-id>
+               ^operator.name examine
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^current-time-inspecting <out-cti>
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
+-->
+    (<s> ^tagged-attacker 0 - 1 +)
+    (<s> ^action <a> - Tagged +)
+    (<s> ^current-person-id <person-id> - (+ <person-id> 1) +)
+    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
+    (<s> ^wall-clock <wall-clock> - (+ <wall-clock> 1) +)
+    (<out> ^action <out-a> - Tagged +
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+            ^attacker-location <out-al> - <person-id> +
+            ^current-person-id <out-pid> - (+ <person-id> 1) +
+            ^current-person-boxed <out-pboxed> - 0 +)
+    (write (crlf) |Examine matched attacker at person id = | <person-id>)
+}
+
+# Unboxed examination misses and advances to next person.
+sp {apply*examine-miss
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^tagged-attacker 0
+               ^current-person-id <person-id>
+               ^current-person-boxed 0
+               ^wall-clock <wall-clock>
+               ^current-time-inspecting <cti>
+               ^io.input-link.scenario.attacker-id <attacker-id> <> <person-id>
+               ^operator.name examine
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^current-time-inspecting <out-cti>
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
+-->
+    (<s> ^action <a> - Waiting +)
+    (<s> ^current-person-id <person-id> - (+ <person-id> 1) +)
+    (<s> ^current-time-inspecting <cti> - (+ <cti> 1) +)
+    (<s> ^wall-clock <wall-clock> - (+ <wall-clock> 1) +)
+    (<out> ^action <out-a> - Waiting +
+           ^current-time-inspecting <out-cti> - (+ <cti> 1) +
+            ^attacker-location <out-al> - null +
+            ^current-person-id <out-pid> - (+ <person-id> 1) +
+            ^current-person-boxed <out-pboxed> - 0 +)
+    (write (crlf) |Examine miss at person id = | <person-id>)
+}
+
+sp {apply*deadline-reached
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^tagged-attacker 0
+               ^operator.name deadline-reached
+               ^current-person-id <person-id>
+               ^current-person-boxed <person-boxed>
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
+-->
+    (<s> ^action <a> - Deadline +)
+    (<out> ^action <out-a> - Deadline +
+           ^attacker-location <out-al> - null +
+           ^current-person-id <out-pid> - <person-id> +
+           ^current-person-boxed <out-pboxed> - <person-boxed> +)
+    (write (crlf) |Deadline reached before tagging attacker.|)
+}
+
+sp {apply*mission-complete-untagged
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^tagged-attacker 0
+               ^current-person-id <person-id>
+               ^current-person-boxed <person-boxed>
+               ^operator.name mission-complete-untagged
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^attacker-location <out-al>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
+-->
+    (<s> ^action <a> - Not-Tagged +)
+    (<out> ^action <out-a> - Not-Tagged +
+           ^attacker-location <out-al> - null +
+           ^current-person-id <out-pid> - <person-id> +
+           ^current-person-boxed <out-pboxed> - <person-boxed> +)
+    (write (crlf) |All people examined without tagging attacker.|)
+}
+
+sp {apply*mission-complete-tagged
+    (state <s> ^name mission-monitor
+               ^action <a>
+               ^tagged-attacker 1
+               ^current-person-id <person-id>
+               ^current-person-boxed <person-boxed>
+               ^operator.name mission-complete-tagged
+               ^io.output-link <out>)
+    (<out> ^action <out-a>
+           ^current-person-id <out-pid>
+           ^current-person-boxed <out-pboxed>)
+-->
+    (<s> ^action <a> - Complete +)
+    (<out> ^action <out-a> - Complete +
+           ^current-person-id <out-pid> - <person-id> +
+           ^current-person-boxed <out-pboxed> - <person-boxed> +)
+    (write (crlf) |Mission complete: attacker tagged.|)
 }

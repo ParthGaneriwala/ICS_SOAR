@@ -13,40 +13,6 @@ sp {propose*start-mission
     (<o> ^name start-mission ^value <sm>)
 }
 
-sp {propose*sync-atr
-    (state <s> ^name environment-monitor
-               ^atrSet no
-               ^enviroSet yes
-               ^io.input-link.atr.selected-id <atrSelected>
-               ^io.input-link.atr.reliability <atrRel>)
--->
-    (<s> ^operator <o> + =)
-    (<o> ^name sync-atr
-         ^atrSelected <atrSelected>
-         ^atrRel <atrRel>)
-}
-
-sp {propose*refresh-atr
-    (state <s> ^name environment-monitor
-               ^atrSet yes
-               ^enviroSet yes
-               ^atrSelected <oldSelected>
-               ^atrRel <oldRel>
-               ^io.input-link.atr.selected-id <atrSelected>
-               ^io.input-link.atr.reliability <atrRel>)
-    -{(<s> ^atrSelected <atrSelected>
-             ^atrRel <atrRel>)}
--->
-    (<s> ^operator <o> + =)
-    (<o> ^name sync-atr
-         ^oldSelected <oldSelected>
-         ^oldRel <oldRel>
-         ^atrSelected <atrSelected>
-         ^atrRel <atrRel>)
-}
-
-
-
 sp {propose*sync-environment
     (state <s> ^name environment-monitor
                ^enviroSet no
@@ -62,7 +28,6 @@ sp {propose*sync-environment
 sp {propose*transition-mission
     (state <s> ^name environment-monitor
                ^start-mission yes
-               ^atrSet yes
                ^enviroSet yes)
 --> 
     (<s> ^operator <o> + >)

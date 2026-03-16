@@ -3,90 +3,71 @@
 #
 # @created candice 20250929
 
-# Phase 1: choose ATR person vs random mode (weighted by ATR reliability)
-sp {propose*choose-target-from-atr
+# PRISM-aligned boxed examination for person 0 when use-box=1.
+sp {propose*examine-box
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^action 2
-               ^crowd <crowd>
-               ^io.input-link.systemdata <sd>
-               ^io.input-link.atr.selected-id <atrSelected>
-               ^io.input-link.atr.reliability <atrRel>
-               ^io.input-link.timing.inspect-complete 1)
-    (<crowd> ^person <p>)
-    (<p> ^id <atrSelected>)
+               ^action Waiting
+               ^tagged-attacker 0
+               ^current-person-id <person-id> < 20
+               ^current-person-boxed 1
+               ^wall-clock <wall-clock> < <deadline>
+               ^io.input-link.scenario.deadline <deadline>
+               ^io.input-link.timing.step-ready 1)
 -->
-    (write (crlf) |Selecting target from ATR...|)
-    (<s> ^operator <o> + =)
-    (<o> ^name choose-target-from-atr
-         ^target-id <atrSelected>)
-    (<s> ^operator <o> = <atrRel>)
+    (<s> ^operator <o> + >)
+    (<o> ^name examine-box
+         ^target-id <person-id>)
 }
 
-sp {propose*choose-target-random-mode
+# PRISM-aligned unboxed examination for remaining people.
+sp {propose*examine
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^action 2
-               ^crowd <crowd>
-               ^io.input-link.systemdata <sd>
-               ^io.input-link.atr.reliability <atrRel>
-               ^io.input-link.timing.inspect-complete 1)
+               ^action Waiting
+               ^tagged-attacker 0
+               ^current-person-id <person-id> < 20
+               ^current-person-boxed 0
+               ^wall-clock <wall-clock> < <deadline>
+               ^io.input-link.scenario.deadline <deadline>
+               ^io.input-link.timing.step-ready 1)
 -->
-    (write (crlf) |Selecting target via random mode...|)
-    (<s> ^operator <o> + =)
-    (<o> ^name choose-target-random-mode)
-    (<s> ^operator <o> = (- 1.0 <atrRel>))
+    (<s> ^operator <o> + >)
+    (<o> ^name examine
+         ^target-id <person-id>)
 }
 
-sp {propose*choose-target-random-mode-no-atr
+# Deadline reached before attacker was tagged.
+sp {propose*deadline-reached
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^action 2
-               -^io.input-link.atr
-               ^crowd <crowd>
-               ^io.input-link.systemdata <sd>
-               ^io.input-link.timing.inspect-complete 1)
+               ^tagged-attacker 0
+               ^wall-clock <wall-clock> >= <deadline>
+               ^io.input-link.scenario.deadline <deadline>)
 -->
-    (write (crlf) |ATR unavailable, using random mode...|)
-    (<s> ^operator <o> + =)
-    (<o> ^name choose-target-random-mode)
+    (<s> ^operator <o> + >)
+    (<o> ^name deadline-reached)
 }
 
-# Phase 2: random mode chooses uniformly from all people in crowd
-sp {propose*choose-random-person
+# All people examined without finding attacker.
+sp {propose*mission-complete-untagged
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^action 3
-               ^crowd <crowd>
-               ^io.input-link.systemdata <sd>)
-    (<crowd> ^person <p>)
-    (<p> ^id <id>)
+               ^action Waiting
+               ^tagged-attacker 0
+               ^current-person-id <person-id> >= 20)
 -->
-    (<s> ^operator <o> + =)
-    (<o> ^name choose-random-person
-         ^target-id <id>)
+    (<s> ^operator <o> + >)
+    (<o> ^name mission-complete-untagged)
 }
 
-# Tagged the Attacker
-sp {propose*T-transition
+# Tagged attacker is a terminal success state in the PRISM-aligned run.
+sp {propose*mission-complete-tagged
     (state <s> ^name mission-monitor
                ^start-mission yes
-               ^action 0
-               ^io.input-link.systemdata <sd>
-               ^io.input-link.timing.interact-complete 1)
+               ^action Tagged
+               ^tagged-attacker 1)
 -->
-    (write (crlf) |Tag Attacker| )
-    (<s> ^operator <o> + =)
-    (<o> ^name apply-T-transition)
-}
-
-# Reset episode after tagging so mission continues with next selection cycle
-sp {propose*reset-after-tag
-    (state <s> ^name mission-monitor
-               ^start-mission yes
-               ^action 1
-               ^io.input-link.systemdata <sd>)
--->
-    (<s> ^operator <o> + =)
-    (<o> ^name reset-selection-cycle)
+    (<s> ^operator <o> + >)
+    (<o> ^name mission-complete-tagged)
 }
