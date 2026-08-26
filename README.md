@@ -99,10 +99,12 @@ input-link `^check-done yes` for exactly one cycle, and that pulse lets
 **The `>=` / `<` split is deliberate and load-bearing.** The two tests must partition
 every case. An earlier `<` / `>` pair matched neither rule when `pdf1` landed exactly
 on the threshold, and because [`settings.soar`](settings.soar) sets `waitsnc --on`,
-that stalled the agent silently instead of raising a state-no-change impasse. Exact
+that stalled the agent silently instead of raising a state-no-change impasse. 
+
+<!-- Exact
 ties are the common case here, not a corner: the probabilities are k/32 (S1) and
 k/38 (S3), and the threshold is a midpoint of two of them, so for S1 level 4 the tie
-falls on intervals 26–27 — precisely where onset should happen.
+falls on intervals 26–27 — precisely where onset should happen. -->
 
 ---
 
