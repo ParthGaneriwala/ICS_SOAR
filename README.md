@@ -61,13 +61,13 @@ clock advances at the pace of the sampled durations, not wall-clock time. The cy
 runs while `^time-counter < ^total-time`, and mission progress is the ratio of the
 two.
 
-**The two are not obviously in the same units.** `^total-time` is `1200`, while
+<!-- **The two are not obviously in the same units.** `^total-time` is `1200`, while
 `pdf2`/`pdf3` are fitted to the study's per-event durations in minutes and add roughly
 4 per full task cycle — so a mission runs about 300 cycles, and reads as 1200 minutes
 rather than the 20 minutes 1200 seconds would suggest. Nothing downstream breaks,
 because every consumer uses the ratio rather than the absolute value, but it is worth
 settling which unit was intended before anyone reads a wall-clock number off
-`^current-time`.
+`^current-time`. -->
 
 Two elaborations gate the loop: `top-state*elaborate*startmission` latches
 `^start-mission yes` once the host reports the operator pressed start, and
@@ -233,7 +233,7 @@ Initial state, from `operators/initialize.soar`:
 
 ```
 ^name mission-monitor      ^action 3                 ^sick 0
-^start-mission no          ^time-counter 1           ^total-time 1200
+^start-mission no          ^time-counter 1           ^total-time 2400
 ^sickness-checked no       ^sickness-time-interval-set no
 ```
 
