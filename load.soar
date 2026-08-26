@@ -1,0 +1,13 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+
+echo "\nLoading load.soar"
+
+source "settings.soar"
+source "operators/load.soar"
+source "top-level.soar"
+source "mission/load.soar"
+source "sickness/load.soar"

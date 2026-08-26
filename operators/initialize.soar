@@ -1,0 +1,31 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+echo "\nLoading initialize.soar"
+sp {apply*initialize
+    (state <s> ^operator.name initialize
+               ^io.output-link <out>)
+-->
+    # -- User state
+    (<s> ^name mission-monitor
+         ^start-mission no
+         ^action 3                 # Action (0,1,2) -> (Scanning, Deciding, Decided)
+         ^sick 0                # Sick (0,1) -> (Not Sick, Sick)
+         # ^sick_thres removed: the threshold is no longer a constant on the
+         # state. Java pushes the selected condition and FMS level's
+         # ProbThreshold onto ^io.input-link.systemdata.sick-thres, where the
+         # sickness proposals read it. Keeping a copy here would only go stale
+         # when the operator changes the level mid-mission.
+         ^time-counter 1
+         ^total-time 1200
+         ^sickness-checked no
+         ^sickness-time-interval-set no)
+    (<out> ^sick not-sick
+           ^event Scan-and-Select
+           ^current-time 1
+           ^total-time 1200
+           ^check-done no)
+    (write (crlf) |Agent initialized.|)
+}

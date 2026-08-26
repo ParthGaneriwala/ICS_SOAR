@@ -1,0 +1,9 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+echo "\nLoading mission/load.soar"
+
+source "task-propose.soar"
+source "operators/load.soar"

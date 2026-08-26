@@ -1,0 +1,87 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+sp {top-state*elaborate*startmission
+    (state <s> ^io.input-link.systemdata.sys-start-mission <sm>
+               ^start-mission no)
+-->
+    (<s> ^sm <sm>
+         ^start-mission yes)
+    (write (crlf) |Start mission: | <sm>)
+}
+sp {top-state*elaborate*sickness-time-interval
+    (state <s> ^io.input-link.systemdata.time-interval <ti>
+               ^sickness-time-interval-set no)
+-->
+    (<s> ^ti <ti>
+         ^sickness-time-interval-set yes)
+    (write (crlf) |Sickness Time Interval: | <ti>)
+}
+# Scan and Select -> Deciding
+sp {propose*SS-transition
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^sickness-time-interval-set yes
+               ^time-counter <tc>
+               ^total-time <tt>
+               ^io.input-link.systemdata <sd>
+               ^time-counter <tc> < <tt>
+               ^action << 0 3 >>)
+    (<sd> ^pdf2 <pdf2>)
+-->
+    (write (crlf) |Transition from Scan and Select to Deciding ...|)
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-SS-transition
+         ^original-time-counter <tc>)
+}
+
+# Deciding -> Decided
+sp {propose*D-transition
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^sickness-time-interval-set yes
+               ^time-counter <tc>
+               ^total-time <tt>
+               ^io.input-link.systemdata <sd>
+               ^time-counter <tc> < <tt>
+               ^action 1)
+    (<sd> ^pdf3 <pdf3>)
+-->
+    (write (crlf) |Transition from Deciding to Decided ...| )
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-D-transition
+         ^original-time-counter <tc>)
+}
+
+# Decided -> Scan and Select
+sp {propose*DD-transition
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^sickness-time-interval-set yes
+               ^time-counter <tc>
+               ^total-time <tt>
+               ^time-counter <tc> < <tt>
+               ^action 2)
+-->
+    (write (crlf) |Transition from Decided to Scan and Select ...| )
+    (<s> ^operator <o> + =)
+    (<o> ^name apply-DD-transition
+         ^original-time-counter <tc>)
+}
+
+# Mission -> Sickness
+sp {propose*check*transition
+    (state <s> ^name mission-monitor
+               ^start-mission yes
+               ^sickness-time-interval-set yes
+               ^io.input-link.systemdata <sd>
+               ^sickness-checked no)
+    (<sd> ^check-sickness yes
+          ^check-done no)
+    
+--> 
+    (<s> ^operator <o> + >)
+    (<o> ^name switch-monitor)
+}

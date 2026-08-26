@@ -1,0 +1,77 @@
+##!
+# @file
+#
+# @created candice 20250929
+
+# Loading apply-SS-transition
+sp {apply*apply-SS-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>
+               ^action <a>
+               ^io.input-link.systemdata <sd>
+               ^io.output-link <out>)
+    (<sd> ^pdf2 <pdf2>)
+    (<out> ^event <e>
+           ^current-time <ct>)
+    (<o>  ^name apply-SS-transition
+          ^original-time-counter <tc>)
+-->
+    (<s> ^time-counter <tc> -
+         ^time-counter (+ <pdf2> <tc>) +
+         ^action <a> - 1 +)
+    (<out> ^event <e> - Deciding +
+           ^current-time <ct> - <tc> +)
+    (write (crlf) |State = Deciding | <tc>)
+}
+
+
+# Loading apply-D-transition
+sp {apply*apply-D-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>
+               ^action <a>
+               ^io.input-link.systemdata <sd>
+               ^io.output-link <out>)
+    (<sd> ^pdf3 <pdf3>)
+    (<out> ^event <e>
+           ^current-time <ct>)
+    (<o> ^name apply-D-transition
+         ^original-time-counter <tc>)
+-->
+    (<s> ^time-counter <tc> -
+         ^time-counter (+ <pdf3> <tc>) +
+         ^action <a> - 2 +)
+    (<out> ^event <e> - Decided + 
+           ^current-time <ct> - <tc> +)
+    (write (crlf) |State = Decided | <tc>)
+}
+
+# Loading apply-DD-transition
+sp {apply*apply-DD-transition
+    (state <s> ^name mission-monitor
+               ^operator <o>
+               ^time-counter <tc>
+               ^action <a>
+               ^io.output-link <out>)
+    (<out> ^event <e>
+           ^current-time <ct>)
+    (<o> ^name apply-DD-transition
+         ^original-time-counter <tc>)
+-->
+    (<s> ^action <a> - 3 +)
+    (<out> ^event <e> - Scan-and-Select +
+           ^current-time <ct> - <tc> +)
+    (write (crlf) |State = Scan-and-Select | <tc>)
+}
+
+# Loading transition
+sp {apply*check*transition
+    (state <s> ^name mission-monitor
+               ^operator.name switch-monitor)
+-->
+    (write (crlf) |Switched... Mission-Monitor to Sickness|)
+    (<s> ^name mission-monitor -)
+    (<s> ^name sickness-monitor)
+}

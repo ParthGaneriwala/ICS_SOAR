@@ -1,0 +1,18 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+echo "\nLoading top-level.soar"
+
+# Initialize agent
+sp {propose*initialize
+    (state <s> ^superstate nil
+               -^name)
+ 
+-->
+    (<s> ^operator <o> + >,=)
+    (<o> ^name initialize)
+    (write (crlf) |Agent initializing...|)
+
+ }

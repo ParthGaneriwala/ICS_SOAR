@@ -1,0 +1,10 @@
+##!
+# @file
+#
+# @created parth 20250324
+
+echo "\nLoading settings.soar"
+
+waitsnc --on
+
+# decide indifferent-selection --first
