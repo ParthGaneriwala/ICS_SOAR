@@ -6,18 +6,18 @@ the mission task cycle, and — on a fixed cadence — stopping to check whether
 become sick.
 
 The agent does not run standalone. It is sourced by a JSoar host,
-[`CheckCybersicknessAgent.java`](../ICS_MATRICS-version-2/src/agents/CheckCybersickness/CheckCybersicknessAgent.java),
+[`CheckCybersicknessAgent.java`](git: ICS_MATRICS-version-2) ,
 which owns all the numbers: it reads the empirical probability tables, samples the
 task durations, keeps the mission clock, and pushes everything onto the input-link.
 Soar contributes the control flow and the decisions; it computes no probabilities of
 its own.
 
-> **Note on history.** Earlier versions of this agent translated a PRISM DTMC of SSQ
+<!-- > **Note on history.** Earlier versions of this agent translated a PRISM DTMC of SSQ
 > state transitions into competing operators with log-probability numeric preferences,
 > resolved by Soar's indifference selection. None of that remains. Sickness is now a
 > single threshold test against measured study data, and no rule in this directory
 > uses a numeric preference. The `^ssq`, `^gender`, and `^headset` structures the old
-> README described do not exist.
+> README described do not exist. -->
 
 ---
 
