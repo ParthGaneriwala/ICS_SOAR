@@ -1,0 +1,11 @@
+##!
+# @file
+#
+# @created rsen 20260723
+
+echo "\nLoading ICS attention 3-agent model"
+
+
+source "environment/load.soar"   # @agent environment
+source "scenario/load.soar"      # @agent scenario
+source "mission/load.soar"       # @agent mission
