@@ -1,0 +1,120 @@
+##!
+# @file
+#
+# @created rsen 20261109
+
+echo "\nLoading operator-apply.soar"
+
+# ---- Start -> Idle ----
+
+# Initialize: Idle, e = 0. op_out none on the output-link.
+sp {operator*apply*initialize
+    (state <s> ^operator <o>
+               ^io.output-link <out>)
+    (<o> ^name initialize)
+-->
+    (<s> ^name operator)
+    (<s> ^op-state idle)
+    (<s> ^e-clock 0)
+    (<out> ^op_out none)
+}
+
+# ---- Idle ----
+
+# Idle -> Detecting: sojourn starts (e is 0 in Idle).
+sp {operator*apply*idle-detecting
+    (state <s> ^operator <o>
+               ^op-state idle)
+    (<o> ^name idle-detecting)
+-->
+    (<s> ^op-state idle -)
+    (<s> ^op-state detecting)
+}
+
+# ---- Detecting ----
+
+# Detecting -> Correct: op_out correct on the output-link.
+sp {operator*apply*detecting-correct
+    (state <s> ^operator <o>
+               ^op-state detecting
+               ^io.output-link <out>)
+    (<o> ^name detecting-correct)
+    (<out> ^op_out none)
+-->
+    (<s> ^op-state detecting -)
+    (<s> ^op-state correct)
+    (<out> ^op_out none -)
+    (<out> ^op_out correct)
+}
+
+# Detecting -> Wrong: op_out wrong on the output-link.
+sp {operator*apply*detecting-wrong
+    (state <s> ^operator <o>
+               ^op-state detecting
+               ^io.output-link <out>)
+    (<o> ^name detecting-wrong)
+    (<out> ^op_out none)
+-->
+    (<s> ^op-state detecting -)
+    (<s> ^op-state wrong)
+    (<out> ^op_out none -)
+    (<out> ^op_out wrong)
+}
+
+# Detecting -> Miss: no response by DL. op_out stays none
+# (HUD closes the trial at its own deadline).
+sp {operator*apply*detecting-miss
+    (state <s> ^operator <o>
+               ^op-state detecting)
+    (<o> ^name detecting-miss)
+-->
+    (<s> ^op-state detecting -)
+    (<s> ^op-state miss)
+}
+
+# No response this tick: stay Detecting, +1 tick for 100ms.
+sp {operator*apply*detecting-detecting
+    (state <s> ^operator <o>
+               ^e-clock <e>)
+    (<o> ^name detecting-detecting)
+-->
+    (<s> ^e-clock <e> -)
+    (<s> ^e-clock (+ <e> 1))
+}
+
+# ---- Correct / Wrong / Miss -> Idle ----
+
+# Correct / Wrong / Miss -> Idle: e := 0, op_out := none.
+# Miss: op_out already none, removed and added again, stays none.
+sp {operator*apply*back-to-idle
+    (state <s> ^operator <o>
+               ^op-state <st>
+               ^e-clock <e>
+               ^io.output-link <out>)
+    (<o> ^name back-to-idle)
+    (<out> ^op_out <v>)
+-->
+    (<s> ^op-state <st> -)
+    (<s> ^op-state idle)
+    (<s> ^e-clock <e> -)
+    (<s> ^e-clock 0)
+    (<out> ^op_out <v> -)
+    (<out> ^op_out none)
+}
+
+# Not needed: JSoar removes before it adds, so back-to-idle covers
+# Miss (op_out already none). Kept for reference.
+# Miss -> Idle: e := 0 (e = DL), op_out stays none.
+#sp {operator*apply*back-to-idle*miss
+#    (state <s> ^operator <o>
+#               ^op-state <st>
+#               ^e-clock <e>
+#               ^io.output-link <out>)
+#    (<o> ^name back-to-idle)
+#    (<out> ^op_out none)
+#-->
+#    (<s> ^op-state <st> -)
+#    (<s> ^op-state idle)
+#    (<s> ^e-clock <e> -)
+#    (<s> ^e-clock 0)
+#}

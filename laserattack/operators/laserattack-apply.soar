@@ -1,0 +1,137 @@
+##!
+# @file
+#
+# @created rsen 20261104
+
+echo "\nLoading laserattack-apply.soar"
+
+# Initialize: Clear, x = 0. obs = 0 and d = 0 on the output-link.
+sp {laserattack*apply*initialize
+    (state <s> ^operator <o>
+               ^io.output-link <out>)
+    (<o> ^name initialize)
+-->
+    (<s> ^name laserattack)
+    (<s> ^laser-state clear)
+    (<s> ^l-clock 0)
+    (<out> ^obs 0)
+    (<out> ^d 0)
+}
+
+# Strike onset / x := 0. obs = 1 on the output-link.
+sp {laserattack*apply*clear-obscured
+    (state <s> ^operator <o>
+               ^laser-state clear
+               ^l-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name clear-obscured)
+    (<out> ^obs 0)
+-->
+    (<s> ^laser-state clear -)
+    (<s> ^laser-state obscured)
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock 0)
+    (<out> ^obs 0 -)
+    (<out> ^obs 1)
+}
+
+# No strike onset this tick: stay Clear, +1 tick for 100ms.
+sp {laserattack*apply*clear-clear
+    (state <s> ^operator <o>
+               ^l-clock <c>)
+    (<o> ^name clear-clear)
+-->
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock (+ <c> 1))
+}
+
+# Natural end / x := 0. obs = 0 and d = 0 on the output-link.
+sp {laserattack*apply*obscured-clear
+    (state <s> ^operator <o>
+               ^laser-state obscured
+               ^l-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name obscured-clear)
+    (<out> ^obs 1
+           ^d <dv>)
+-->
+    (<s> ^laser-state obscured -)
+    (<s> ^laser-state clear)
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock 0)
+    (<out> ^obs 1 -)
+    (<out> ^obs 0)
+    (<out> ^d <dv> -)
+    (<out> ^d 0)
+}
+
+# No natural end this tick: stay Obscured, +1 tick for 100ms.
+# d (current obscuration period) also on the output-link.
+sp {laserattack*apply*obscured-obscured
+    (state <s> ^operator <o>
+               ^l-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name obscured-obscured)
+    (<out> ^d <c>)
+-->
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock (+ <c> 1))
+    (<out> ^d <c> -)
+    (<out> ^d (+ <c> 1))
+}
+
+# dim? (sync Mitigation) / x := 0 (mask removed). obs = 0 and d = 0 on the output-link.
+sp {laserattack*apply*obscured-dimmed
+    (state <s> ^operator <o>
+               ^laser-state obscured
+               ^l-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name obscured-dimmed)
+    (<out> ^obs 1
+           ^d <dv>)
+-->
+    (<s> ^laser-state obscured -)
+    (<s> ^laser-state dimmed)
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock 0)
+    (<out> ^obs 1 -)
+    (<out> ^obs 0)
+    (<out> ^d <dv> -)
+    (<out> ^d 0)
+}
+
+# x = 1s: back to Clear, no reset of x.
+sp {laserattack*apply*dimmed-clear
+    (state <s> ^operator <o>
+               ^laser-state dimmed)
+    (<o> ^name dimmed-clear)
+-->
+    (<s> ^laser-state dimmed -)
+    (<s> ^laser-state clear)
+}
+
+# Obscured: +1 tick for 100ms. d (current obscuration period) also on the output-link.
+sp {laserattack*apply*tick*obscured
+    (state <s> ^operator <o>
+               ^laser-state obscured
+               ^l-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name tick)
+    (<out> ^d <c>)
+-->
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock (+ <c> 1))
+    (<out> ^d <c> -)
+    (<out> ^d (+ <c> 1))
+}
+
+# Dimmed: +1 tick for 100ms.
+sp {laserattack*apply*tick*dimmed
+    (state <s> ^operator <o>
+               ^laser-state dimmed
+               ^l-clock <c>)
+    (<o> ^name tick)
+-->
+    (<s> ^l-clock <c> -)
+    (<s> ^l-clock (+ <c> 1))
+}

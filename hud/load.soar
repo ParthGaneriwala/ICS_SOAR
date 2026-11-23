@@ -1,0 +1,5 @@
+echo "\nLoading hud agent"
+
+source "../settings.soar"
+source "hud-propose.soar"
+source "operators/load.soar"

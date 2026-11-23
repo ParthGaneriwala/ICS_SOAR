@@ -1,0 +1,5 @@
+echo "\nLoading operator agent"
+
+source "../settings.soar"
+source "operator-propose.soar"
+source "operators/load.soar"

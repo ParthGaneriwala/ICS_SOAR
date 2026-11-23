@@ -1,0 +1,192 @@
+##!
+# @file
+#
+# @created rsen 20261105
+
+echo "\nLoading hud-apply.soar"
+
+# ---- Start -> Wait ----
+
+# Initialize: Wait, x = 0, y = 0, k = 0, all_ok true, starting sym.
+# sym and stimulus off on the output-link.
+sp {hud*apply*initialize
+    (state <s> ^operator <o>
+               ^io.output-link <out>)
+    (<o> ^name initialize)
+-->
+    (<s> ^name hud)
+    (<s> ^hud-state wait)
+    (<s> ^x-clock 0)
+    (<s> ^y-clock 0)
+    (<s> ^k 0)
+    (<s> ^all_ok true)
+    (<s> ^sym PERFECT)
+    (<s> ^symbol PERFECT CLIMB DESCEND)
+    (<out> ^sym PERFECT)
+    (<out> ^stimulus off)
+}
+
+# ---- Time passing (Wait, Stim) ----
+
+# +1 tick for 100ms (x and y).
+sp {hud*apply*tick
+    (state <s> ^operator <o>
+               ^x-clock <x>
+               ^y-clock <y>)
+    (<o> ^name tick)
+-->
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+    (<s> ^y-clock <y> -)
+    (<s> ^y-clock (+ <y> 1))
+}
+
+# ---- Wait ----
+
+# No symbol change this tick: stay Wait, +1 tick for 100ms.
+sp {hud*apply*wait-wait
+    (state <s> ^operator <o>
+               ^x-clock <x>)
+    (<o> ^name wait-wait)
+-->
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+}
+
+# Wait -> Stim: y := 0, sym' := chosen symbol (also on the output-link),
+# stimulus on. x keeps running: +1 tick for 100ms.
+sp {hud*apply*wait-stim
+    (state <s> ^operator <o>
+               ^hud-state wait
+               ^x-clock <x>
+               ^y-clock <y>
+               ^sym <cur>
+               ^io.output-link <out>)
+    (<o> ^name wait-stim
+         ^sym <new>)
+    (<out> ^sym <cur>
+           ^stimulus off)
+-->
+    (<s> ^hud-state wait -)
+    (<s> ^hud-state stim)
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+    (<s> ^y-clock <y> -)
+    (<s> ^y-clock 0)
+    (<s> ^sym <cur> -)
+    (<s> ^sym <new>)
+    (<out> ^sym <cur> -)
+    (<out> ^sym <new>)
+    (<out> ^stimulus off -)
+    (<out> ^stimulus on)
+}
+
+# ---- Stim ----
+
+# Stim -> Idle: click? / k++, stimulus off.
+# x keeps running: +1 tick for 100ms.
+sp {hud*apply*stim-idle*click
+    (state <s> ^operator <o>
+               ^hud-state stim
+               ^k <k>
+               ^x-clock <x>
+               ^io.input-link.op_out << correct wrong >>
+               ^io.output-link <out>)
+    (<o> ^name stim-idle)
+    (<out> ^stimulus on)
+-->
+    (<s> ^hud-state stim -)
+    (<s> ^hud-state idle)
+    (<s> ^k <k> -)
+    (<s> ^k (+ <k> 1))
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+    (<out> ^stimulus on -)
+    (<out> ^stimulus off)
+}
+
+# Stim -> Idle: y = DL (deadline) / k++, all_ok := false, stimulus off.
+# all_ok already false: removed and added again, stays false.
+# x keeps running: +1 tick for 100ms.
+sp {hud*apply*stim-idle*deadline
+    (state <s> ^operator <o>
+               ^hud-state stim
+               ^k <k>
+               ^all_ok <a>
+               ^x-clock <x>
+               ^io.input-link.op_out none
+               ^io.output-link <out>)
+    (<o> ^name stim-idle)
+    (<out> ^stimulus on)
+-->
+    (<s> ^hud-state stim -)
+    (<s> ^hud-state idle)
+    (<s> ^k <k> -)
+    (<s> ^k (+ <k> 1))
+    (<s> ^all_ok <a> -)
+    (<s> ^all_ok false)
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+    (<out> ^stimulus on -)
+    (<out> ^stimulus off)
+}
+
+# Not needed: JSoar removes before it adds, so stim-idle*deadline covers
+# all_ok already false. Kept for reference.
+# Stim -> Idle: y = DL (deadline) / k++, all_ok already false (stays false),
+# stimulus off. x keeps running: +1 tick for 100ms.
+#sp {hud*apply*stim-idle*deadline*all-ok-false
+#    (state <s> ^operator <o>
+#               ^hud-state stim
+#               ^k <k>
+#               ^all_ok false
+#               ^x-clock <x>
+#               ^io.input-link.op_out none
+#               ^io.output-link <out>)
+#    (<o> ^name stim-idle)
+#    (<out> ^stimulus on)
+#-->
+#    (<s> ^hud-state stim -)
+#    (<s> ^hud-state idle)
+#    (<s> ^k <k> -)
+#    (<s> ^k (+ <k> 1))
+#    (<s> ^x-clock <x> -)
+#    (<s> ^x-clock (+ <x> 1))
+#    (<out> ^stimulus on -)
+#    (<out> ^stimulus off)
+#}
+
+# ---- Idle ----
+
+# Window does not end this tick: stay Idle, +1 tick for 100ms.
+sp {hud*apply*idle-idle
+    (state <s> ^operator <o>
+               ^x-clock <x>)
+    (<o> ^name idle-idle)
+-->
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock (+ <x> 1))
+}
+
+# Idle -> Wait: x := 0 (next window).
+sp {hud*apply*idle-wait
+    (state <s> ^operator <o>
+               ^hud-state idle
+               ^x-clock <x>)
+    (<o> ^name idle-wait)
+-->
+    (<s> ^hud-state idle -)
+    (<s> ^hud-state wait)
+    (<s> ^x-clock <x> -)
+    (<s> ^x-clock 0)
+}
+
+# Idle -> Done (session over).
+sp {hud*apply*idle-done
+    (state <s> ^operator <o>
+               ^hud-state idle)
+    (<o> ^name idle-done)
+-->
+    (<s> ^hud-state idle -)
+    (<s> ^hud-state done)
+}

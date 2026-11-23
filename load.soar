@@ -1,0 +1,12 @@
+##!
+# @file
+#
+# @created rsen 20261101
+
+echo "\nLoading Perception (laser-strike) model"
+
+
+source "mitigation/load.soar"    # @agent mitigation
+source "laserattack/load.soar"   # @agent laserattack
+source "hud/load.soar"           # @agent hud
+source "operator/load.soar"      # @agent operator

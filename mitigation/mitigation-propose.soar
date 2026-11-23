@@ -1,0 +1,86 @@
+##!
+# @file
+#
+# @created rsen 20261101
+
+echo "\nLoading mitigation-propose.soar"
+
+# Initialize the mitigation agent.
+sp {mitigation*propose*initialize
+    (state <s> ^superstate nil
+              -^name)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name initialize)
+}
+
+# Armed, x < 200 ms: +1 tick for 100ms.
+sp {mitigation*propose*tick
+    (state <s> ^name mitigation
+               ^dim false
+               ^m-clock { <c> < <sense> }
+               ^SENSE <sense>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}
+
+# Sensing checkpoint: obscured, x = 200 ms, d >= d_sense.
+# Trigger probability p(d) = min(0.95, alpha_mit*d) -> dim := true.
+sp {mitigation*propose*armed-triggered
+    (state <s> ^name mitigation
+               ^dim false
+               ^m-clock <sense>
+               ^SENSE <sense>
+               ^p_mit_max <pmax>
+               ^io.input-link <in>)
+    (<in> ^obs 1
+          ^d { <d> >= <sense> }
+          ^alpha_mit <a>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name armed-triggered)
+    (<s> ^operator <o> = (min <pmax> (* <a> <d>)))
+}
+
+# Sensing checkpoint: 1 - p(d) (stay armed).
+sp {mitigation*propose*armed-armed
+    (state <s> ^name mitigation
+               ^dim false
+               ^m-clock <sense>
+               ^SENSE <sense>
+               ^p_mit_max <pmax>
+               ^io.input-link <in>)
+    (<in> ^obs 1
+          ^d { <d> >= <sense> }
+          ^alpha_mit <a>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name armed-armed)
+    (<s> ^operator <o> = (- 1.0 (min <pmax> (* <a> <d>))))
+}
+
+# Sensing checkpoint, obs = 0 or within sensor latency (d < d_sense): stay armed.
+sp {mitigation*propose*armed-armed*no-check
+    (state <s> ^name mitigation
+               ^dim false
+               ^m-clock <sense>
+               ^SENSE <sense>
+               ^io.input-link <in>)
+    (<in> ^obs << 0 1 >>
+          ^d { <d> < <sense> })
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name armed-armed)
+}
+
+# Triggered: obscuration cleared (obs = 0) / dim := false.
+# Note: Triggered with obs = 1 (dimming applied; LaserAttack clears next tick) has no rule.
+sp {mitigation*propose*triggered-armed
+    (state <s> ^name mitigation
+               ^dim true
+               ^io.input-link.obs 0)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name triggered-armed)
+}

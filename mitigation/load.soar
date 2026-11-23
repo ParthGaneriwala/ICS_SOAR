@@ -1,0 +1,5 @@
+echo "\nLoading mitigation agent"
+
+source "../settings.soar"
+source "mitigation-propose.soar"
+source "operators/load.soar"

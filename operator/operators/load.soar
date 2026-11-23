@@ -1,0 +1,3 @@
+echo "\nLoading operator operators"
+
+source "operator-apply.soar"

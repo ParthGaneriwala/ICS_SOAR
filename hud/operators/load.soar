@@ -1,0 +1,3 @@
+echo "\nLoading hud operators"
+
+source "hud-apply.soar"

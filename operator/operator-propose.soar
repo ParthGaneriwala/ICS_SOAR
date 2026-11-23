@@ -1,0 +1,226 @@
+##!
+# @file
+#
+# @created rsen 20261109
+
+echo "\nLoading operator-propose.soar"
+
+# ---- Start -> Idle ----
+
+# Initialize the operator agent.
+sp {operator*propose*initialize
+    (state <s> ^superstate nil
+              -^name)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name initialize)
+}
+
+# ---- Idle ----
+
+# Idle -> Detecting: symbol change at t_delta (stimulus from HUD).
+sp {operator*propose*idle-detecting
+    (state <s> ^name operator
+               ^op-state idle
+               ^io.input-link.stimulus on)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name idle-detecting)
+}
+
+# ---- Detecting ----
+
+# Detecting -> Correct, obs = 0 (not masked): response at T <= DL : acc(mask),
+# prob h_clear(e) * 0.98.
+sp {operator*propose*detecting-correct*obs-0
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 0
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-correct)
+    (<s> ^operator <o> = (* <h> 0.98))
+}
+
+# Detecting -> Correct, obs = 1 and dim true (not masked): response at T <= DL : acc(mask),
+# prob h_clear(e) * 0.98.
+sp {operator*propose*detecting-correct*dim-true
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim true
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-correct)
+    (<s> ^operator <o> = (* <h> 0.98))
+}
+
+# Detecting -> Correct, masked (obs = 1, dim false): response at T <= DL : acc(mask),
+# prob h_obsc(e) * acc_obsc.
+sp {operator*propose*detecting-correct*masked
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim false
+          ^acc_obsc <acc>
+          ^h_obsc <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-correct)
+    (<s> ^operator <o> = (* <h> <acc>))
+}
+
+# Detecting -> Wrong, obs = 0 (not masked): response at T <= DL : 1 - acc(mask),
+# prob h_clear(e) * (1 - 0.98).
+sp {operator*propose*detecting-wrong*obs-0
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 0
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-wrong)
+    (<s> ^operator <o> = (* <h> (- 1.0 0.98)))
+}
+
+# Detecting -> Wrong, obs = 1 and dim true (not masked): response at T <= DL : 1 - acc(mask),
+# prob h_clear(e) * (1 - 0.98).
+sp {operator*propose*detecting-wrong*dim-true
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim true
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-wrong)
+    (<s> ^operator <o> = (* <h> (- 1.0 0.98)))
+}
+
+# Detecting -> Wrong, masked (obs = 1, dim false): response at T <= DL : 1 - acc(mask),
+# prob h_obsc(e) * (1 - acc_obsc).
+sp {operator*propose*detecting-wrong*masked
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim false
+          ^acc_obsc <acc>
+          ^h_obsc <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-wrong)
+    (<s> ^operator <o> = (* <h> (- 1.0 <acc>)))
+}
+
+# Detecting, obs = 0 (not masked), e < DL: no response this tick, stay Detecting,
+# prob 1 - h_clear(e).
+sp {operator*propose*detecting-detecting*obs-0
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> < <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 0
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-detecting)
+    (<s> ^operator <o> = (- 1.0 <h>))
+}
+
+# Detecting, obs = 1 and dim true (not masked), e < DL: no response this tick,
+# stay Detecting, prob 1 - h_clear(e).
+sp {operator*propose*detecting-detecting*dim-true
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> < <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim true
+          ^h_clear <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-detecting)
+    (<s> ^operator <o> = (- 1.0 <h>))
+}
+
+# Detecting, masked (obs = 1, dim false), e < DL: no response this tick,
+# stay Detecting, prob 1 - h_obsc(e).
+sp {operator*propose*detecting-detecting*masked
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock { <e> < <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^obs 1
+          ^dim false
+          ^h_obsc <r>)
+    (<r> ^e <e>
+         ^h <h>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name detecting-detecting)
+    (<s> ^operator <o> = (- 1.0 <h>))
+}
+
+# Detecting -> Miss: no response by DL (lapse mass / slow tail), e = DL.
+# At e = DL Miss (>) is picked over a response.
+sp {operator*propose*detecting-miss
+    (state <s> ^name operator
+               ^op-state detecting
+               ^e-clock <dl>
+               ^io.input-link.DL <dl>)
+-->
+    (<s> ^operator <o> + >)
+    (<o> ^name detecting-miss)
+}
+
+# ---- Correct / Wrong / Miss -> Idle ----
+
+# Correct / Wrong / Miss -> Idle: HUD closes the trial (stimulus off),
+# back to Idle for the next window.
+sp {operator*propose*back-to-idle
+    (state <s> ^name operator
+               ^op-state << correct wrong miss >>
+               ^io.input-link.stimulus off)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name back-to-idle)
+}

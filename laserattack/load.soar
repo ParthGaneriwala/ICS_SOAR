@@ -1,0 +1,5 @@
+echo "\nLoading laserattack agent"
+
+source "../settings.soar"
+source "laserattack-propose.soar"
+source "operators/load.soar"

@@ -1,0 +1,112 @@
+##!
+# @file
+#
+# @created rsen 20261104
+
+echo "\nLoading laserattack-propose.soar"
+
+# Initialize the laserattack agent.
+sp {laserattack*propose*initialize
+    (state <s> ^superstate nil
+              -^name)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name initialize)
+}
+
+# Obscured, x < 0.5 s, dim false: +1 tick for 100ms.
+sp {laserattack*propose*tick*obscured
+    (state <s> ^name laserattack
+               ^laser-state obscured
+               ^l-clock < 5
+               ^io.input-link.dim false)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}
+
+# Clear: strike onset, operational: prob p_strike each tick.
+# ^l-clock: proposed again every tick, so the strike chance is drawn every tick.
+sp {laserattack*propose*clear-obscured
+    (state <s> ^name laserattack
+               ^laser-state clear
+               ^l-clock <c>
+               ^io.input-link.p_strike <ps>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name clear-obscured)
+    (<s> ^operator <o> = <ps>)
+}
+
+# Clear: no strike onset this tick, prob 1 - p_strike.
+# ^l-clock: proposed again every tick, so the strike chance is drawn every tick.
+sp {laserattack*propose*clear-clear
+    (state <s> ^name laserattack
+               ^laser-state clear
+               ^l-clock <c>
+               ^io.input-link.p_strike <ps>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name clear-clear)
+    (<s> ^operator <o> = (- 1.0 <ps>))
+}
+
+# Obscured -> Clear, natural end: x >= 0.5 s, prob p_end each tick.
+# At x = d_max this is the only choice (Obscured: x <= d_max).
+sp {laserattack*propose*obscured-clear
+    (state <s> ^name laserattack
+               ^laser-state obscured
+               ^l-clock >= 5
+               ^io.input-link <in>)
+    (<in> ^dim false
+          ^p_end <pe>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name obscured-clear)
+    (<s> ^operator <o> = <pe>)
+}
+
+# Obscured, x in [0.5 s, d_max): no natural end this tick, prob 1 - p_end.
+sp {laserattack*propose*obscured-obscured
+    (state <s> ^name laserattack
+               ^laser-state obscured
+               ^l-clock { >= 5 < <dmax> }
+               ^io.input-link <in>)
+    (<in> ^dim false
+          ^p_end <pe>
+          ^d_max <dmax>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name obscured-obscured)
+    (<s> ^operator <o> = (- 1.0 <pe>))
+}
+
+# Obscured: dim? (sync Mitigation).
+sp {laserattack*propose*obscured-dimmed
+    (state <s> ^name laserattack
+               ^laser-state obscured
+               ^io.input-link.dim true)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name obscured-dimmed)
+}
+
+# Dimmed: x = 1s (electro-chromic laser re-arms; no re-strike while dimmed).
+sp {laserattack*propose*dimmed-clear
+    (state <s> ^name laserattack
+               ^laser-state dimmed
+               ^l-clock 10)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name dimmed-clear)
+}
+
+# Dimmed, x < 1 s: +1 tick for 100ms.
+sp {laserattack*propose*tick*dimmed
+    (state <s> ^name laserattack
+               ^laser-state dimmed
+               ^l-clock < 10)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}

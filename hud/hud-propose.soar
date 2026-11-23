@@ -1,0 +1,165 @@
+##!
+# @file
+#
+# @created rsen 20261105
+
+echo "\nLoading hud-propose.soar"
+
+# ---- Start -> Wait ----
+
+# Initialize the hud agent.
+sp {hud*propose*initialize
+    (state <s> ^superstate nil
+              -^name)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name initialize)
+}
+
+# ---- Wait ----
+
+# Wait, x < 1.8 s: +1 tick for 100ms.
+sp {hud*propose*tick*wait
+    (state <s> ^name hud
+               ^hud-state wait
+               ^x-clock < 18)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}
+
+# Wait, x in [1.8 s, 2.2 s]: no symbol change this tick, stay Wait,
+# uniform symbol-change instant over [TD_LO, TD_HI]: per-tick hazard  
+# formula 1- chd = 1- (1.0/(TD_HI+1-tw)); 
+# prob 1 - 1/(22 + 1 - x) (0 at x = 2.2 s).
+sp {hud*propose*wait-wait
+    (state <s> ^name hud
+               ^hud-state wait
+               ^x-clock { <x> >= 18 <= 22 })
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name wait-wait)
+    (<s> ^operator <o> = (- 1.0 (/ 1.0 (- (+ 22 1) <x>))))
+}
+
+# Wait -> Stim, x in [1.8 s, 2.2 s]: symbol change, prob 1/(22 + 1 - x),
+# 0.5 : sym' := alt1 / 0.5 : sym' := alt2 (one match per other symbol).
+# formula chd = 1.0/(TD_HI+1-tw); and 0.5 because of 2 possible symbols
+# wait-stim (CLIMB)	0.5 × 1/(23 − 22) = 0.5 × 1	= 0.5
+# wait-stim (DESCEND)	0.5 × 1/(23 − 22) = 0.5 × 1	= 0.5
+# wait-wait	1 − 1/(23 − 22) = 1 − 1	= 0
+# Total		1.0
+sp {hud*propose*wait-stim
+    (state <s> ^name hud
+               ^hud-state wait
+               ^x-clock { <x> >= 18 <= 22 }
+               ^sym <cur>
+               ^symbol { <new> <> <cur> })
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name wait-stim
+         ^sym <new>)
+    (<s> ^operator <o> = (* 0.5 (/ 1.0 (- (+ 22 1) <x>))))
+}
+
+# ---- Stim ----
+
+# Stim, y <= DL, no response yet (op_out none): +1 tick for 100ms.
+# At y = DL the deadline (>) is picked over this tick.
+sp {hud*propose*tick*stim
+    (state <s> ^name hud
+               ^hud-state stim
+               ^y-clock { <y> <= <dl> }
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^op_out none)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}
+
+# Stim -> Idle: click? (sync Operator).
+sp {hud*propose*stim-idle*click
+    (state <s> ^name hud
+               ^hud-state stim
+               ^io.input-link.op_out << correct wrong >>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name stim-idle)
+}
+
+# Stim -> Idle: y = DL (deadline), no response (op_out none).
+sp {hud*propose*stim-idle*deadline
+    (state <s> ^name hud
+               ^hud-state stim
+               ^y-clock <dl>
+               ^io.input-link <in>)
+    (<in> ^DL <dl>
+          ^op_out none)
+-->
+    (<s> ^operator <o> + >)
+    (<o> ^name stim-idle)
+}
+
+# ---- Idle ----
+
+# Idle, x <= WIN: +1 tick for 100ms.
+# At x = WIN idle-idle / idle-wait / idle-done (>) are picked over this tick.
+sp {hud*propose*tick*idle
+    (state <s> ^name hud
+               ^hud-state idle
+               ^x-clock { <x> <= <win> }
+               ^io.input-link.WIN <win>)
+-->
+    (<s> ^operator <o> +)
+    (<o> ^name tick)
+}
+
+# Idle, x in [WIN, WIN + eps_w], eps_w = 2: window does not end this tick,
+# stay Idle, prob 1 - 1/(WIN + 2 + 1 - x).
+# uniform window end over [WIN, WIN+EPSW]
+# formula che = 1.0/(WIN+EPSW+1-tw);
+# 1-che is the chance the window does not end now
+sp {hud*propose*idle-idle
+    (state <s> ^name hud
+               ^hud-state idle
+               ^x-clock { <x> >= <win> }
+               ^io.input-link.WIN <win> )
+-->
+    (<s> ^operator <o> + >)
+    (<o> ^name idle-idle)
+    (<s> ^operator <o> = (- 1.0 (/ 1.0 (- (+ <win> 2 1) <x>)))) 
+}
+
+# Idle -> Wait, x in [WIN, WIN + eps_w], eps_w = 2, and k < K (next window),
+# formula che = 1.0/(WIN+EPSW+1-tw);
+# che is the chance the window ends now
+sp {hud*propose*idle-wait
+    (state <s> ^name hud
+               ^hud-state idle
+               ^x-clock { <x> >= <win> }
+               ^k <k>
+               ^io.input-link <in>)
+    (<in> ^WIN <win>
+          ^K > <k>)
+-->
+    (<s> ^operator <o> + >)
+    (<o> ^name idle-wait)
+    (<s> ^operator <o> = (/ 1.0 (- (+ <win> 2 1) <x>)))
+}
+
+# Idle -> Done, x in [WIN, WIN + eps_w], eps_w = 2, and k = K (session over),
+# prob 1/(WIN + 2 + 1 - x).
+sp {hud*propose*idle-done
+    (state <s> ^name hud
+               ^hud-state idle
+               ^x-clock { <x> >= <win> }
+               ^k <k>
+               ^io.input-link <in>)
+    (<in> ^WIN <win>
+          ^K <k>)
+-->
+    (<s> ^operator <o> + >)
+    (<o> ^name idle-done)
+    (<s> ^operator <o> = (/ 1.0 (- (+ <win> 2 1) <x>)))
+}

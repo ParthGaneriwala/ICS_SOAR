@@ -1,0 +1,3 @@
+echo "\nLoading laserattack operators"
+
+source "laserattack-apply.soar"

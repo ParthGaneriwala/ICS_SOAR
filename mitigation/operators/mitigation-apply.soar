@@ -1,0 +1,73 @@
+##!
+# @file
+#
+# @created rsen 20261101
+
+echo "\nLoading mitigation-apply.soar"
+
+# Initialize: Armed (dim false), x = 0, SENSE = 2, p_mit_max = 0.95.
+# dim on the output-link.
+sp {mitigation*apply*initialize
+    (state <s> ^operator <o>
+               ^io.output-link <out>)
+    (<o> ^name initialize)
+-->
+    (<s> ^name mitigation)
+    (<s> ^dim false)
+    (<s> ^m-clock 0)
+    (<s> ^SENSE 2)
+    (<s> ^p_mit_max 0.95)
+    (<out> ^dim false)
+}
+
+# +1 tick for 100ms.
+sp {mitigation*apply*tick
+    (state <s> ^operator <o>
+               ^m-clock <c>)
+    (<o> ^name tick)
+-->
+    (<s> ^m-clock <c> -)
+    (<s> ^m-clock (+ <c> 1))
+}
+
+# Triggered: dim := true (also on the output-link).
+# x := 1, not x := 0, so the sensing checkpoint stays every 200 ms.
+sp {mitigation*apply*armed-triggered
+    (state <s> ^operator <o>
+               ^dim false
+               ^m-clock <c>
+               ^io.output-link <out>)
+    (<o> ^name armed-triggered)
+    (<out> ^dim false)
+-->
+    (<s> ^dim false -)
+    (<s> ^dim true)
+    (<s> ^m-clock <c> -)
+    (<s> ^m-clock 1)
+    (<out> ^dim false -)
+    (<out> ^dim true)
+}
+
+# Stay armed. x := 1, not x := 0, so the sensing checkpoint stays every 200 ms.
+sp {mitigation*apply*armed-armed
+    (state <s> ^operator <o>
+               ^m-clock <c>)
+    (<o> ^name armed-armed)
+-->
+    (<s> ^m-clock <c> -)
+    (<s> ^m-clock 1)
+}
+
+# Triggered: obscuration cleared (obs = 0) / dim := false (also on the output-link).
+sp {mitigation*apply*triggered-armed
+    (state <s> ^operator <o>
+               ^dim true
+               ^io.output-link <out>)
+    (<o> ^name triggered-armed)
+    (<out> ^dim true)
+-->
+    (<s> ^dim true -)
+    (<s> ^dim false)
+    (<out> ^dim true -)
+    (<out> ^dim false)
+}
